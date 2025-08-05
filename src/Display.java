@@ -11,7 +11,7 @@ public class Display {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
         dialog.setSize(850, 550);
-        dialog.setLocationRelativeTo(parent);
+        dialog.setLocationRelativeTo(null);
         dialog.setResizable(false);
 
         JPanel main = new JPanel(new BorderLayout());
