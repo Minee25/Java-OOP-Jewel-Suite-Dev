@@ -10,15 +10,7 @@ public class Settings {
     public static final int BTN_WIDTH = 320;
     public static final int BTN_HEIGHT_BIG = 50; // ปุ่มใหญ่
     public static final int BTN_HEIGHT_MID = 42; // ปุ่มกลาง
-    public static final int BTN_HEIGHT_SMALL = 35; // ปุ่มเล็ก
     public static final int INPUT_HEIGHT = 45;
-    public static final int BTN_THEME_WIDTH = 120;
-    public static final int BTN_ABOUT_WIDTH = 130;
-    public static final int BTN_EXIT_WIDTH = 100;
-    public static final int BTN_HEIGHT = 40;
-    public static final int LEFT_PANEL_WIDTH = 320;
-    public static final int COLOR_BOX_SIZE = 24;
-    public static final int COLOR_ROW_HEIGHT = 30;
 
     // ข้อมูล
     public static final int GRID_W = 22;
@@ -27,13 +19,11 @@ public class Settings {
     public static final double DEFAULT_FLUID = 2500.0;
     public static final double TOP_BASE = 200.0;
     public static final double GAS_LIMIT = 0.5;
-    public static final int GRID_MARGIN = 40;
 
     // สี
     public static final Color COLOR_NO_GAS = Color.RED;
     public static final Color COLOR_LOW_GAS = Color.YELLOW;
     public static final Color COLOR_HIGH_GAS = Color.GREEN;
-    public static final Color COLOR_BORDER = Color.GRAY;
 
     // ฟอนต์
     public static final String FONT_NAME = "Segoe UI";
@@ -101,8 +91,6 @@ public class Settings {
     public static final int GRID_MIN_SIZE_HEIGHT = 400;
     public static final int GRID_MAX_SIZE_WIDTH = 1000;
     public static final int GRID_MAX_SIZE_HEIGHT = 800;
-    public static final int GRID_SCROLL_WIDTH = 800;
-    public static final int GRID_SCROLL_HEIGHT = 600;
     public static final String GRID_HOVER_MESSAGE = "Hover over grid cells to see information.";
     public static final String GRID_NO_GAS_STATUS = "No Gas";
     public static final String GRID_LOW_GAS_STATUS = "Low Gas";
@@ -113,14 +101,6 @@ public class Settings {
     public static final int ABOUT_CLOSE_BTN_WIDTH = 120;
     public static final int ABOUT_CLOSE_BTN_HEIGHT = 40;
     public static final int ABOUT_PIC_SIZE = 140;
-
-    // Colors
-    public static final Color TOP_BG_COLOR = new Color(245, 245, 245);
-    public static final Color TITLE_COLOR = new Color(50, 50, 50);
-    public static final Color VERSION_COLOR = new Color(100, 100, 100);
-    public static final Color THEME_BTN_COLOR = new Color(70, 130, 180);
-    public static final Color ABOUT_BTN_COLOR = new Color(46, 139, 87);
-    public static final Color EXIT_BTN_COLOR = new Color(220, 20, 60);
 
     // สมาชิกทีม 1
     public static final String MEMBER1 = "Wachirawit Wongsaeng";
