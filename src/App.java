@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 
 // App หลัก
 public class App extends JFrame {
-
+    //ประกาศตัวแปรต่างๆ
     private FileData data;
     private DisplayPanel panel;
     private JTextField input;
@@ -23,13 +23,13 @@ public class App extends JFrame {
     private JButton clearBtn;
     private JPanel btnBox;
     private JLabel infoLabel; // JLabel สำหรับแสดงข้อมูล hover
-
+    //แสดงหน้าแอพขึ้นมา
     public App() {
         data = new FileData();
         init();
         setVisible(true);
     }
-
+    //เซ็ตค่าต่างๆ
     private void init() {
         setTheme();
         setIcon();
@@ -37,11 +37,11 @@ public class App extends JFrame {
         makeUI();
         update();
     }
-
+    //เซ็ตธีม
     private void setTheme() {
         changeTheme(Settings.CURRENT_THEME);
     }
-
+    //เปลี่ยนะีมต่างๆภายในแอพโดยก่ารใช้ libraryปรับธีม
     private void changeTheme(String name) {
         try {
             switch (name) {
@@ -104,7 +104,7 @@ public class App extends JFrame {
             }
         }
     }
-
+    //ตามชื่อเลยคือการอัปเดตUI
     private void updateUI() {
         SwingUtilities.updateComponentTreeUI(this);
         if (btnBox != null) {
@@ -112,14 +112,14 @@ public class App extends JFrame {
         }
         repaint();
     }
-
+    //ตั้งค่าหน้าต่างหลัก
     private void makeWindow() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(Settings.WIN_W, Settings.WIN_H);
-        setLocationRelativeTo(null);
-        setResizable(true);
-        setUndecorated(Settings.WINDOW_MENU);
+        setSize(Settings.WIN_W, Settings.WIN_H);//ขนาดหน้าต่างหลักกว้าง × สูง
+        setLocationRelativeTo(null);    //เช็ตให้หน้าต่างมาอยู่ตรงกลางหน้าจอ
+        setResizable(true); // ปรับขนาดหน้าต่าง
+        setUndecorated(Settings.WINDOW_MENU);//ซ่อนขอบหน้าต่าง
     }
 
     private void makeUI() {
