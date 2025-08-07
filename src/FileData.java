@@ -39,6 +39,7 @@ public class FileData {
                 for (int c = 0; c < cols; c++) {
                     if (i < nums.size()) {
                         grid[r][c] = nums.get(i++);
+                        System.out.println(grid[r][c]);
                     }
                 }
             }
@@ -52,7 +53,7 @@ public class FileData {
     public double getBottom(int r, int c) {
         // ตรวจสอบว่าตำแหน่งที่ขออยู่ในตารางไหม
         if (r >= 0 && r < rows && c >= 0 && c < cols) {
-            System.out.println("Debug "+ grid[r][c]);
+
             return grid[r][c];
         }
         return 0;

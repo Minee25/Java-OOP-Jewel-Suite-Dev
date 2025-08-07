@@ -131,7 +131,7 @@ public class App extends JFrame {
 
         add(main);
     }
-
+    //สร้างสิ่งต่างๆที่อยู่ด้านบน
     private void makeTop(JPanel parent) {
         JPanel top = new JPanel(new BorderLayout());
         top.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -168,7 +168,7 @@ public class App extends JFrame {
             }
         });
 
-
+        //สร้างปุ่มabout
         JButton about = new JButton(Settings.BTN_ABOUT);
         about.setPreferredSize(new Dimension(100, 35));
         about.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
@@ -178,7 +178,7 @@ public class App extends JFrame {
                 Display.showAbout(about);
             }
         });
-
+        //สร้างปุ่มexit
         JButton exit = new JButton(Settings.BTN_EXIT);
         exit.setPreferredSize(new Dimension(80, 35));
         exit.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
@@ -198,7 +198,7 @@ public class App extends JFrame {
 
         parent.add(top, BorderLayout.NORTH);
     }
-
+    //สร้างตรงกลาง
     private void makeMiddle(JPanel parent) {
         JPanel mid = new JPanel(new BorderLayout(15, 15));
         mid.setBorder(new EmptyBorder(15, 0, 15, 0));
@@ -208,7 +208,7 @@ public class App extends JFrame {
 
         parent.add(mid, BorderLayout.CENTER);
     }
-
+    //สร้างทางด้านซ้าย
     private void makeLeft(JPanel parent) {
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -230,7 +230,7 @@ public class App extends JFrame {
 
         parent.add(left, BorderLayout.WEST);
     }
-
+    //สร้างจำพวกที่inputเข้ามา
     private JPanel makeInput() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -297,7 +297,7 @@ public class App extends JFrame {
 
         return box;
     }
-
+    //สร้างสีบอกระดับ
     private JPanel makeColors() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -315,10 +315,11 @@ public class App extends JFrame {
 
         return box;
     }
-
+    // แถวที่แสดง ตัวอย่างสี ข้อความอธิบาย
     private JPanel makeColor(String text, Color color) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        row.setMaximumSize(new Dimension(Settings.BTN_WIDTH, 30));
+        row.setMaximumSize(new Dimension(Settings.BTN_WIDTH, 30));//ใช้กำหนดขนาดสูงสุดของแถวนี้ให้
+                                                                        // ไม่เกินความกว้างที่กำหนด
 
         JPanel box = new JPanel();
         box.setPreferredSize(new Dimension(24, 24));
@@ -334,30 +335,31 @@ public class App extends JFrame {
 
         return row;
     }
-
+    //
     private JPanel makeResult() {
         JPanel box = new JPanel();
-        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
+        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));//สร้าง JPanel เปล่าๆ แล้วบอกว่าข้างในจะเรียงของในแนวตั้ง
 
         JLabel title = new JLabel(Settings.RESULT_TITLE);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        total = new JLabel(Settings.TOTAL_GAS);
+        total = new JLabel(Settings.TOTAL_GAS);//สร้างข้อความอีกอันไว้แสดงผลรวม
         total.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
         total.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        status = new JLabel(Settings.STATUS_READY);
+        status = new JLabel(Settings.STATUS_READY);//แสดงสถานะเริ่มต้น
         status.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        //เอาทุกอย่างมาใส่ในกล่องใหญ่ (box) พร้อมเว้นช่องว่างแนวตั้งระหว่างบรรทัด
         box.add(title);
         box.add(Box.createVerticalStrut(10));
         box.add(total);
         box.add(Box.createVerticalStrut(8));
         box.add(status);
 
-        return box;
+        return box;//ส่งกล่องที่ใส่ข้อความทั้งหมดกลับไป เพื่อเอาไปแปะบนหน้าต่างโปรแกรม
     }
-
+    //สร้สงในส่วนของฝั่งทางขวา
     private void makeRight(JPanel parent) {
         JPanel right = new JPanel(new BorderLayout(0, 10)); // เพิ่ม gap ระหว่าง components
         right.setBorder(new EmptyBorder(10, 20, 10, 20)); // เพิ่ม padding กลับมา
@@ -393,48 +395,48 @@ public class App extends JFrame {
 
         parent.add(right, BorderLayout.CENTER);
     }
-
+    //เช็กว่าในตัวแปร data มีข้อมูลอยู่จริงไหม
     private boolean hasData() {
         return data.getRows() > 0 && data.getCols() > 0;
     }
-
+    // สร้างช่องโหลดไฟล์
     private void load() {
-        JFileChooser fc = new JFileChooser();
+        JFileChooser fc = new JFileChooser();// สร้างช่องเลือกไฟล์
         fc.setDialogTitle(Settings.SELECT_FILE_TITLE);
-        fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));
-        fc.setCurrentDirectory(new File("src"));
+        fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));// กำหนดให้เลือกได้เฉพาะไฟล์ .txt เท่านั้น
+        fc.setCurrentDirectory(new File("src"));// ตั้งค่าที่อยู่เริ่มต้นของหน้าต่างเลือกไฟล์ (โฟลเดอร์ src)
 
-        int result = fc.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
+        int result = fc.showOpenDialog(this);// เปิดหน้าต่างให้เลือกไฟล์
+        if (result == JFileChooser.APPROVE_OPTION) { // ตรวจสอบว่ากด ตกลง หรือ เปิดไฟล์
             File file = fc.getSelectedFile();
-            if (data.loadFromFile(file.getAbsolutePath())) {
+            if (data.loadFromFile(file.getAbsolutePath())) { // ถ้าโหลดสำเร็จอัปเดตข้อมูลที่แสดงบนหน้าจอ
                 update();
-                status.setText(Settings.STATUS_LOAD + file.getName());
+                status.setText(Settings.STATUS_LOAD + file.getName());// แสดงข้อความสถานะว่าโหลดไฟล์ชื่ออะไร
             } else {
-                status.setText(Settings.STATUS_FAIL);
+                status.setText(Settings.STATUS_FAIL);// ถ้าโหลดไม่สำเร็จแสดงข้อความสถานะว่าล้มเหลว
                 Display.showMessage(this, Settings.STATUS_ERROR, Settings.STATUS_CHECK, JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
+    //ปุ่มคำนวณ
     private void calc() {
-        if (!hasData()) {
-            status.setText("Please load file first");
+        if (!hasData()) { //สอบว่ามีข้อมูลมั้ย
+            status.setText("Please load file first");//ถ้าไม่มีให้แสดงข้อความว่าต้องโหลดไฟล์เข้ามาก่อน
             return;
         }
 
         try {
-            double level = Double.parseDouble(input.getText());
-            data.setFluidLevel(level);
+            double level = Double.parseDouble(input.getText()); // แปลงค่าที่ผู้ใช้กรอกใน input ให้เป็นตัวเลขแบบทศนิยม
+            data.setFluidLevel(level); // กำหนดค่าระดับของเหลวให้กับอ็อบเจกต์ data
             update();
-            status.setText("Calculated with fluid level: " + level);
+            status.setText("Calculated with fluid level: " + level);// แสดงข้อความสถานะว่าคำนวณเรียบร้อย พร้อมกับค่าทีกรอก
         } catch (NumberFormatException e) {
-            status.setText("Invalid number format");
+            status.setText("Invalid number format");// ถ้ากรอกค่าที่ไม่ใช่ตัวเลข เช่น ตัวอักษร ให้แสดงข้อความว่าไม่ใช่รูปแบบตัวเลขที่ถูกต้อง
         }
     }
 
     private void clear() {
-        data.clearData();
+        data.clearData();  // ล้างข้อมูลในอ็อบเจกต์ data
         input.setText(String.valueOf(Settings.DEFAULT_FLUID));
         update();
         updateBtn();
@@ -442,18 +444,18 @@ public class App extends JFrame {
     }
 
     private void updateBtn() {
-        btnBox.removeAll();
+        btnBox.removeAll();// ล้างปุ่มทั้งหมดในฺBoxปุ่ม(btnBox)ก่อนเพื่อเตรียมเริ่มใหม่
 
-        if (hasData()) {
-            clearBtn.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
+        if (hasData()) {// ตรวจสอบว่ามีข้อมูลอยู่หรือไม่
+            clearBtn.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));// ตั้งค่าขนาดปุ่ม Clear
             clearBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
             clearBtn.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-            clearBtn.setBackground(null);
+            clearBtn.setBackground(null);//ตั้งค่าเป็นnullเพราะอยากให้เปลี่ยนสีไปตามธีม
             clearBtn.setForeground(null);
             clearBtn.setBorder(null);
-            clearBtn.updateUI();
-            btnBox.add(clearBtn);
-        } else {
+            clearBtn.updateUI();// รีเฟรช UI ของปุ่ม Clear
+            btnBox.add(clearBtn);// เพิ่มปุ่ม Clear ไปในกล่องปุ่ม
+        } else {  // กรณียังไม่มีข้อมูล ให้แสดงปุ่ม Load แทน
             loadBtn.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             loadBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
             loadBtn.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
@@ -471,7 +473,7 @@ public class App extends JFrame {
     }
 
     private void update() {
-        double sum = data.getTotalVolume();
+        double sum = data.getTotalVolume();// คำนวณปริมาณรวมของแก๊สจากข้อมูล แล้วแสดงผลใน JLabel total
         total.setText(String.format(Settings.TOTAL_GAS, sum));
 
         // สลับ panel
@@ -479,7 +481,7 @@ public class App extends JFrame {
             JPanel right = (JPanel) panel.getParent();
             JLabel info = null;
 
-            // หา JLabel info จาก right panel
+            // หา JLabel ที่เป็น info จาก panel ด้านขวา
             for (Component comp : right.getComponents()) {
                 if (comp instanceof JLabel && comp != right.getComponent(0)) { // ไม่ใช่ title
                     info = (JLabel) comp;
@@ -489,20 +491,20 @@ public class App extends JFrame {
 
             right.remove(panel);
 
-            if (hasData()) {
+            if (hasData()) {  // ถ้ามีข้อมูล: แสดงตาราง grid
                 GridDisplay gridDisplay = new GridDisplay(data);
-                gridDisplay.setInfoLabel(infoLabel);
+                gridDisplay.setInfoLabel(infoLabel);// ส่ง label สำหรับแสดงข้อมูลเพิ่มเติมให้
 
-                // สร้าง scroll pane ถ้า grid ใหญ่เกินไป
+                // ถ้าขนาดของ grid ใหญ่เกินหน้าจอ ให้ใส่ scroll
                 Dimension gridSize = gridDisplay.getPreferredSize();
                 if (gridSize.width > 800 || gridSize.height > 600) {
                     JScrollPane scrollPane = new JScrollPane(gridDisplay);
                     scrollPane.setPreferredSize(new Dimension(800, 600));
-
+                    // สร้าง panel ใหม่ที่รองรับ refresh()
                     panel = new DisplayPanel(data) {
                         @Override
                         public void refresh() {
-                            gridDisplay.refresh();
+                            gridDisplay.refresh();// เวลา refresh ให้ refresh gridDisplay ด้านใน
                         }
                     };
                     panel.setLayout(new BorderLayout());
@@ -511,14 +513,14 @@ public class App extends JFrame {
                     panel = gridDisplay;
                 }
             } else {
-                panel = new FileUploader(data);
-                panel.addMouseListener(new java.awt.event.MouseAdapter() {
+                panel = new FileUploader(data); // ถ้าไม่มีข้อมูล: แสดง uploader แทน
+                panel.addMouseListener(new java.awt.event.MouseAdapter() { // เพิ่ม event เมื่อคลิกที่ panel เพื่อให้เรียกโหลดไฟล์
                     public void mouseClicked(java.awt.event.MouseEvent e) {
                         load();
                     }
                 });
             }
-
+            // เพิ่ม panel ใหม่เข้าไปในตำแหน่ง CENTER ของ right panel
             right.add(panel, BorderLayout.CENTER);
             right.revalidate();
             right.repaint();
@@ -527,22 +529,22 @@ public class App extends JFrame {
                 panel.refresh();
             }
         }
-
+        // อัปเดตปุ่มด้านล่าง (เปลี่ยน load/clear ตามเงื่อนไข)
         updateBtn();
     }
-
+    // แสดงหน้ายืนยันเพื่อถามผว่าต้องการออกจากโปรแกรมมั้ย
     private void close() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
-                JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
+                JOptionPane.YES_NO_OPTION); // ตัวเลือกเป็น Yes กับ No
+        if (result == JOptionPane.YES_OPTION) { // ถ้าผู้ใช้กด "Yes" ให้ปิดโปรแกรม
             System.exit(0);
         }
     }
 
     private void setIcon() {
         try {
-            ImageIcon icon = new ImageIcon(Settings.ICON_APP);
-            setIconImage(icon.getImage());
+            ImageIcon icon = new ImageIcon(Settings.ICON_APP);// พยายามโหลดภาพไอคอนของแอปจากที่อยู่ไฟล์ที่กำหนดไว้ใน Settings.ICON_APP
+            setIconImage(icon.getImage());// ตั้งค่าไอคอนให้กับหน้าต่างของโปรแกรม
         } catch (Exception e) {
             // ไม่มีไอคอน
         }
@@ -550,18 +552,18 @@ public class App extends JFrame {
 
     private JLabel getIcon() {
         try {
-            ImageIcon icon = new ImageIcon(Settings.APP_ICON_PATH);
-            Image scaled = icon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL,
+            ImageIcon icon = new ImageIcon(Settings.APP_ICON_PATH);// โหลดรูปภาพไอคอนจาก path ที่กำหนดไว้ใน Settings.APP_ICON_PATH
+            Image scaled = icon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL,// ปรับขนาดรูปภาพให้มีขนาดเท่ากับ Settings.ICON_SIZE_SMALL × ICON_SIZE_SMALL โดยใช้การปรับแบบนุ่มนวล (SCALE_SMOOTH)
                     Image.SCALE_SMOOTH);
-            return new JLabel(new ImageIcon(scaled));
+            return new JLabel(new ImageIcon(scaled));// สร้าง JLabel ใหม่ที่มีไอคอนที่ปรับขนาดแล้วอยู่ภายใน
         } catch (Exception e) {
             return null;
         }
     }
 
     private void showThemeMenu(JButton themeBtn) {
-        JPopupMenu themeMenu = new JPopupMenu();
-
+        JPopupMenu themeMenu = new JPopupMenu();// สร้าง popup menu สำหรับแสดงรายการธีม
+        // กำหนดชื่อโค้ดธีม และชื่อที่จะแสดงในเมนู
         String[][] themes = {
                 { "LIGHT", "Light Theme" },
                 { "DARK", "Dark Theme" },
@@ -580,11 +582,11 @@ public class App extends JFrame {
                 { "COBALT_2", "Cobalt 2" },
                 { "CYAN_LIGHT", "Cyan Light" }
         };
-
+        // ใช้ลูปเพื่อสร้างเมนูรายการธีมแต่ละอัน
         for (String[] theme : themes) {
             JMenuItem item = new JMenuItem(theme[1]);
             item.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_NORMAL));
-
+            // วนลูปเพื่อสร้างเมนูรายการธีมแต่ละอัน
             if (theme[0].equals(Settings.CURRENT_THEME)) {
                 item.setText("+" + theme[1]);
                 item.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
@@ -592,17 +594,17 @@ public class App extends JFrame {
 
             final String themeCode = theme[0];
             final String themeName = theme[1];
-
+            // เพิ่ม Action เมื่อผู้ใช้คลิกเลือกธีม
             item.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Settings.CURRENT_THEME = themeCode;
-                    changeTheme(themeCode);
-                    updateBtn();
-                    status.setText("Theme: " + themeName);
+                    changeTheme(themeCode);// เรียกใช้ฟังก์ชันเปลี่ยนธีม
+                    updateBtn();//อัปเดตปุ่มให้สอดคล้องกับธีม
+                    status.setText("Theme: " + themeName);// แสดงสถานะธีมที่เลือก
                 }
             });
-                    themeMenu.add(item);
+                    themeMenu.add(item);// เพิ่มรายการธีมเข้าไปในเมนู
         }
 
         themeMenu.addSeparator();
@@ -615,16 +617,16 @@ public class App extends JFrame {
                 Settings.CURRENT_THEME = "ARC_ORANGE";
                 changeTheme("ARC_ORANGE");
                 updateBtn();
-                status.setText("Reset to default theme");
+                status.setText("Reset to default theme");// แจ้งว่ารีเซ็ตแล้ว
             }
         });
-                themeMenu.add(reset);
+                themeMenu.add(reset);// เพิ่มปุ่ม reset เข้าไปในเมนู
 
-        themeMenu.show(themeBtn, 0, themeBtn.getHeight());
+        themeMenu.show(themeBtn, 0, themeBtn.getHeight());// แสดง popup menu ใต้ปุ่มธีม
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
+        SwingUtilities.invokeLater(() -> { //ใช้คำสั่งSwingUtilities.invokeLaterเพื่อไม่ให้เกิดบั๊กต่างๆ
             new App();
         });
     }

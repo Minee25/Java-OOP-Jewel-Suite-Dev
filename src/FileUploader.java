@@ -22,7 +22,7 @@ public class FileUploader extends DisplayPanel {
 
         // ไอคอน
         g.setColor(UIManager.getColor("Label.foreground"));
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 32));
+        g.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 32));
         String icon = "📁";
         FontMetrics fm = g.getFontMetrics();
         int iconX = (w - fm.stringWidth(icon)) / 2;

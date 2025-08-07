@@ -71,7 +71,7 @@ public class GridDisplay extends DisplayPanel {
             }
         }
 
-        // Set preferred size for the grid panel
+        // กำหนดขนาดที่ต้องการ
         int totalWidth = cols * cellSize + (cols + 1);
         int totalHeight = rows * cellSize + (rows + 1);
         gridPanel.setPreferredSize(new Dimension(totalWidth + 40, totalHeight + 40));
@@ -88,7 +88,7 @@ public class GridDisplay extends DisplayPanel {
         cellPanel.setBorder(normalBorder);
         cellPanel.setOpaque(true);
 
-        // Add mouse listeners for hover effects
+        // เพิ่ม mouse listeners
         cellPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -106,18 +106,14 @@ public class GridDisplay extends DisplayPanel {
     }
 
     private void handleCellHover(int row, int col, JPanel cellPanel) {
-        // Clear previous hover state
         clearHover();
 
-        // Set new hover state
         hoverRow = row;
         hoverCol = col;
 
-        // Update visual appearance
         cellPanel.setBorder(hoverBorder);
         cellPanel.setBackground(getColor(row, col).brighter());
 
-        // Show info
         showInfo(row, col);
     }
 
@@ -192,21 +188,14 @@ public class GridDisplay extends DisplayPanel {
 
     @Override
     public void refresh() {
-        // Remove all components
+
         gridPanel.removeAll();
-
-        // Recalculate cell size
         calculateCellSize();
-
-        // Recreate cell panels
         createCellPanels();
-
-        // Refresh the display
         revalidate();
         repaint();
     }
 
-    // Optional: Method to update a specific cell
     public void updateCell(int row, int col) {
         if (cellPanels != null && row >= 0 && row < cellPanels.length &&
                 col >= 0 && col < cellPanels[0].length) {
@@ -218,7 +207,6 @@ public class GridDisplay extends DisplayPanel {
         }
     }
 
-    // Optional: Method to get cell panel for further customization
     public JPanel getCellPanel(int row, int col) {
         if (cellPanels != null && row >= 0 && row < cellPanels.length &&
                 col >= 0 && col < cellPanels[0].length) {
