@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -64,14 +66,20 @@ public class GridDisplay extends DisplayPanel {
         cellPanels = new JPanel[rows][cols];
 
         for (int r = 0; r < rows; r++) {
+            System.out.print("row" + r + ": ");
             for (int c = 0; c < cols; c++) {
                 JPanel cellPanel = createCellPanel(r, c);
                 cellPanels[r][c] = cellPanel;
                 gridPanel.add(cellPanel);
+
+                // debug
+                System.out.print("col" + c);
+                if (c < cols - 1) System.out.print(", ");
             }
+            System.out.println(); // ขึ้นบรรทัดใหม่เมื่อจบ row
         }
 
-        // กำหนดขนาดที่ต้องการ
+        // คำนวณขนาด
         int totalWidth = cols * cellSize + (cols + 1);
         int totalHeight = rows * cellSize + (rows + 1);
         gridPanel.setPreferredSize(new Dimension(totalWidth + 40, totalHeight + 40));
@@ -126,6 +134,7 @@ public class GridDisplay extends DisplayPanel {
     }
 
     public void setInfoLabel(JLabel label) {
+
         this.infoLabel = label;
     }
 
@@ -158,21 +167,28 @@ public class GridDisplay extends DisplayPanel {
 
     private Color getColor(int r, int c) {
         int level = data.getLevel(r, c);
+
         if (level == 0) {
             return Settings.COLOR_NO_GAS;
         } else if (level == 1) {
             return Settings.COLOR_LOW_GAS;
         } else if (level == 2) {
+
             return Settings.COLOR_HIGH_GAS;
         } else {
             return Color.WHITE;
         }
     }
-
     private String makeInfoText(int r, int c) {
         int level = data.getLevel(r, c);
         double percent = data.getPercent(r, c) * 100;
-        double volume = data.getVolume(r, c);
+        double volumeValue = data.getVolume(r, c);
+
+        DecimalFormat percentFormat = new DecimalFormat("0.00");
+        DecimalFormat volumeFormat = new DecimalFormat("#,##0.00");
+
+        String volume = volumeFormat.format(volumeValue);
+        String percentText = percentFormat.format(percent);
 
         String status;
         if (level == 0) {
@@ -183,8 +199,10 @@ public class GridDisplay extends DisplayPanel {
             status = Settings.GRID_HIGH_GAS_STATUS;
         }
 
-        return String.format(Settings.GRID_INFO_FORMAT, r, c, status, percent, volume);
+        return "Cell (" + r + "," + c + ") - " + status +
+                " | " + percentText + "% | " + volume + " m³";
     }
+
 
     @Override
     public void refresh() {

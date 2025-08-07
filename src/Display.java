@@ -1,18 +1,19 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class Display {
     public static void showMessage(Component parent, String title, String msg, int type) {
         JOptionPane.showMessageDialog(parent, msg, title, type);
     }
-
+    //โชว์หน้าต่างของabout
     public static void showAbout(Component parent) {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
         dialog.setSize(850, 550);
-        dialog.setLocationRelativeTo(null);
-        dialog.setResizable(false);
+        dialog.setLocationRelativeTo(null);//เซ็ตให้แสดงตรงกลาง
+        dialog.setResizable(false);//เอาไว้ไม่ให้ปรับขนาดได้
 
         JPanel main = new JPanel(new BorderLayout());
         main.setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -42,7 +43,12 @@ public class Display {
         JButton close = new JButton(Settings.BTN_CLOSE_ABOUT);
         close.setPreferredSize(new Dimension(Settings.ABOUT_CLOSE_BTN_WIDTH, Settings.ABOUT_CLOSE_BTN_HEIGHT));
         close.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        close.addActionListener(e -> dialog.dispose());
+        close.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dialog.dispose();
+            }
+        });
         btns.add(close);
 
         main.add(top, BorderLayout.NORTH);
@@ -52,13 +58,13 @@ public class Display {
         dialog.add(main);
         dialog.setVisible(true);
     }
-
+    //สร้างหน้าmemberขึ้นมา
     private static JPanel makeMember(String img, String name, String id, String job) {
         JPanel box = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2 = (Graphics2D) g.create();//
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//แต่งความเนียน
 
                 // วาดพื้นหลังโปร่งใส
                 g2.setColor(new Color(255, 255, 255, 30));

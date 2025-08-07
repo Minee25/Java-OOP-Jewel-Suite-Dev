@@ -39,7 +39,7 @@ public class FileData {
                 for (int c = 0; c < cols; c++) {
                     if (i < nums.size()) {
                         grid[r][c] = nums.get(i++);
-                        System.out.println(grid[r][c]);
+
                     }
                 }
             }
@@ -70,12 +70,10 @@ public class FileData {
         double top = getTop(r, c);       // ความลึกชั้นหินบน
         double bottom = getBottom(r, c); // ความลึกชั้นหินล่าง
 
+
         // ไม่มี
         if (level <= top) return 0;
 
-        // ความลึกของก๊าซ
-        // min(ระดับน้ำ, ชั้นล่าง)
-        // ความสูงก๊าซ = min(2500, 2549) - 2449 = 2500 - 2449 = 51 เมตร
         double depth = Math.min(level, bottom) - top; // ความลึก
         if (depth <= 0) return 0;
 
@@ -91,13 +89,8 @@ public class FileData {
 
         if (total <= 0) return 0; // ถ้าความหนา = 0 → ไม่มีชั้นหิน
 
-        // คำนวณส่วนที่มีก๊าซ (เหมือนฟังก์ชัน getVolume แต่ไม่คูณพื้นที่)
-        // ตัวอย่าง: ชั้นบน = 2449, ระดับน้ำ = 2500, ชั้นล่าง = 2549
-        //          ส่วนที่มีก๊าซ = min(2500, 2549) - 2449 = 51 เมตร
         double gas = Math.max(0, Math.min(level, bottom) - top);
 
-        // คำนวณเปอร์เซ็นต์ = ส่วนที่มีก๊าซ ÷ ความหนาทั้งหมด
-        // ตัวอย่าง: เปอร์เซ็นต์ = 51 ÷ 100 = 0.51 หรือ 51%
         return gas / total;
     }
 
@@ -105,10 +98,11 @@ public class FileData {
     public int getLevel(int r, int c) {
         double percent = getPercent(r, c); // หาเปอร์เซ็นต์ก๊าซ
 
+        System.out.println(r+" "+ c+" "+percent);
         // กำหนดเงื่อนไขการแสดงสี
-        if (percent <= 0) return 0;                    // ไม่มีก๊าซ (0%) → ระดับ 0 (สีขาว)
-        if (percent < Settings.GAS_LIMIT) return 1;    // ก๊าซน้อย (เช่น <50%) → ระดับ 1 (สีเหลือง)
-        return 2;                                      // ก๊าซเยอะ (เช่น ≥50%) → ระดับ 2 (สีแดง)
+        if (percent <= 0) return 0;
+        if (percent < Settings.GAS_LIMIT) return 1;
+        return 2;
     }
 
     // ฟังก์ชันคำนวณปริมาตรก๊าซทั้งหมดในพื้นที่

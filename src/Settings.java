@@ -13,7 +13,7 @@ public class Settings {
     public static final int INPUT_HEIGHT = 45;
 
     // ข้อมูล
-    public static final int GRID_W = 22;
+    public static final int GRID_W = 20;
     public static final int GRID_H = 10;
     public static final double CELL_SIZE = 150.0;
     public static final double DEFAULT_FLUID = 2500.0;
