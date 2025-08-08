@@ -5,45 +5,32 @@ public class FileUploader extends DisplayPanel {
 
     public FileUploader(FileData data) {
         super(data);
-        setLayout(null);
-    }
 
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 2, true),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
+        setOpaque(true);
+        setBackground(Color.WHITE);
+        add(Box.createVerticalStrut(150));
+        JLabel icon = new JLabel("📁", SwingConstants.CENTER);
+        icon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 32));
+        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        
-        int w = getWidth();
-        int h = getHeight();
+        JLabel title = new JLabel(Settings.FILE_TITLE, SwingConstants.CENTER);
+        title.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // วาดกรอบ
-        g.setColor(UIManager.getColor("Component.borderColor"));
-        g.drawRect(20, 20, w-40, h-40);
+        JLabel sub = new JLabel(Settings.FILE_SUB, SwingConstants.CENTER);
+        sub.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        sub.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // ไอคอน
-        g.setColor(UIManager.getColor("Label.foreground"));
-        g.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 32));
-        String icon = "📁";
-        FontMetrics fm = g.getFontMetrics();
-        int iconX = (w - fm.stringWidth(icon)) / 2;
-        int iconY = h/2 - 10;
-        g.drawString(icon, iconX, iconY);
-
-        // ข้อความหลัก
-        g.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        String title = Settings.FILE_TITLE;
-        fm = g.getFontMetrics();
-        int titleX = (w - fm.stringWidth(title)) / 2;
-        int titleY = h/2 + 20;
-        g.drawString(title, titleX, titleY);
-
-        // ข้อความรอง
-        g.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        String sub = Settings.FILE_SUB;
-        fm = g.getFontMetrics();
-        int subX = (w - fm.stringWidth(sub)) / 2;
-        int subY = h/2 + 40;
-        g.drawString(sub, subX, subY);
+        add(icon);
+        add(Box.createVerticalStrut(10));
+        add(title);
+        add(Box.createVerticalStrut(5));
+        add(sub);
     }
 
     @Override
@@ -51,6 +38,4 @@ public class FileUploader extends DisplayPanel {
         revalidate();
         repaint();
     }
-
-
 }

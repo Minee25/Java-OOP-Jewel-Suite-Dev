@@ -60,26 +60,12 @@ public class Display {
     }
     //สร้างหน้าmemberขึ้นมา
     private static JPanel makeMember(String img, String name, String id, String job) {
-        JPanel box = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();//
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);//แต่งความเนียน
-
-                // วาดพื้นหลังโปร่งใส
-                g2.setColor(new Color(255, 255, 255, 30));
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-
-                // วาดเส้นขอบ
-                g2.setColor(new Color(200, 200, 200, 100));
-                g2.setStroke(new BasicStroke(1.0f));
-                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
-
-                g2.dispose();
-            }
-        };
+        JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
-        box.setBorder(new EmptyBorder(30, 25, 30, 25));
+        box.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 2, true),
+                new EmptyBorder(30, 25, 30, 25)
+        ));
         box.setOpaque(false);
 
         JLabel pic = makePic(img);

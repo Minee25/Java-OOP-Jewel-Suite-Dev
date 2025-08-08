@@ -179,6 +179,7 @@ public class GridDisplay extends DisplayPanel {
             return Color.WHITE;
         }
     }
+
     private String makeInfoText(int r, int c) {
         int level = data.getLevel(r, c);
         double percent = data.getPercent(r, c) * 100;
@@ -212,24 +213,5 @@ public class GridDisplay extends DisplayPanel {
         createCellPanels();
         revalidate();
         repaint();
-    }
-
-    public void updateCell(int row, int col) {
-        if (cellPanels != null && row >= 0 && row < cellPanels.length &&
-                col >= 0 && col < cellPanels[0].length) {
-            JPanel cellPanel = cellPanels[row][col];
-            if (cellPanel != null) {
-                cellPanel.setBackground(getColor(row, col));
-                cellPanel.repaint();
-            }
-        }
-    }
-
-    public JPanel getCellPanel(int row, int col) {
-        if (cellPanels != null && row >= 0 && row < cellPanels.length &&
-                col >= 0 && col < cellPanels[0].length) {
-            return cellPanels[row][col];
-        }
-        return null;
     }
 }

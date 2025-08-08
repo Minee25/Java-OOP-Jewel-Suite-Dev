@@ -1,4 +1,5 @@
 import java.awt.Color;
+import static java.awt.Frame.*;
 
 // ตั้งค่า
 public class Settings {
@@ -35,7 +36,8 @@ public class Settings {
     // หน้าต่าง
     public static final int WIN_W = 1350;
     public static final int WIN_H = 800;
-    public static final Boolean WINDOW_MENU = true;
+    public static final Boolean WINDOW_MENU = false;
+    public static final int FULL_S_W = MAXIMIZED_BOTH;
 
     // ไอคอน
     public static final String APP_ICON_PATH = "./src/res/icon.png";
@@ -95,7 +97,6 @@ public class Settings {
     public static final String GRID_NO_GAS_STATUS = "No Gas";
     public static final String GRID_LOW_GAS_STATUS = "Low Gas";
     public static final String GRID_HIGH_GAS_STATUS = "High Gas";
-    public static final String GRID_INFO_FORMAT = "Position: [%d,%d] | Status: %s | Percentage: %.1f%% | Volume: %.2f CB.M";
 
     // Display
     public static final int ABOUT_CLOSE_BTN_WIDTH = 120;

@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
-// App หลัก
+// App หลักสืบทอดจาก JFrame
 public class App extends JFrame {
     //ประกาศตัวแปรต่างๆ
     private FileData data;
@@ -28,6 +28,7 @@ public class App extends JFrame {
         data = new FileData();
         init();
         setVisible(true);
+        setExtendedState(Settings.FULL_S_W);
     }
     //เซ็ตค่าต่างๆ
     private void init() {
@@ -41,7 +42,6 @@ public class App extends JFrame {
     private void setTheme() {
         changeTheme(Settings.CURRENT_THEME);
     }
-    //เปลี่ยนะีมต่างๆภายในแอพโดยก่ารใช้ libraryปรับธีม
     private void changeTheme(String name) {
         try {
             switch (name) {
@@ -118,7 +118,7 @@ public class App extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(Settings.WIN_W, Settings.WIN_H);//ขนาดหน้าต่างหลักกว้าง × สูง
         setLocationRelativeTo(null);    //เช็ตให้หน้าต่างมาอยู่ตรงกลางหน้าจอ
-        setResizable(true); // ปรับขนาดหน้าต่าง
+        setResizable(true); // ปรับขนาดหน้าต่างได้
         setUndecorated(Settings.WINDOW_MENU);//ซ่อนขอบหน้าต่าง
     }
 
@@ -338,7 +338,7 @@ public class App extends JFrame {
     //
     private JPanel makeResult() {
         JPanel box = new JPanel();
-        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));//สร้าง JPanel เปล่าๆ แล้วบอกว่าข้างในจะเรียงของในแนวตั้ง
+        box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 
         JLabel title = new JLabel(Settings.RESULT_TITLE);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -350,16 +350,16 @@ public class App extends JFrame {
         status = new JLabel(Settings.STATUS_READY);//แสดงสถานะเริ่มต้น
         status.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        //เอาทุกอย่างมาใส่ในกล่องใหญ่ (box) พร้อมเว้นช่องว่างแนวตั้งระหว่างบรรทัด
+        //เอาทุกอย่างมา
         box.add(title);
         box.add(Box.createVerticalStrut(10));
         box.add(total);
         box.add(Box.createVerticalStrut(8));
         box.add(status);
 
-        return box;//ส่งกล่องที่ใส่ข้อความทั้งหมดกลับไป เพื่อเอาไปแปะบนหน้าต่างโปรแกรม
+        return box;
     }
-    //สร้สงในส่วนของฝั่งทางขวา
+    //สร้างในส่วนของฝั่งทางขวา
     private void makeRight(JPanel parent) {
         JPanel right = new JPanel(new BorderLayout(0, 10)); // เพิ่ม gap ระหว่าง components
         right.setBorder(new EmptyBorder(10, 20, 10, 20)); // เพิ่ม padding กลับมา
@@ -395,7 +395,7 @@ public class App extends JFrame {
 
         parent.add(right, BorderLayout.CENTER);
     }
-    //เช็กว่าในตัวแปร data มีข้อมูลอยู่จริงไหม
+    //เช็กว่าในตัวแปร data มีข้อมูลอยู่จริงมั้ย
     private boolean hasData() {
         return data.getRows() > 0 && data.getCols() > 0;
     }
@@ -403,35 +403,35 @@ public class App extends JFrame {
     private void load() {
         JFileChooser fc = new JFileChooser();// สร้างช่องเลือกไฟล์
         fc.setDialogTitle(Settings.SELECT_FILE_TITLE);
-        fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));// กำหนดให้เลือกได้เฉพาะไฟล์ .txt เท่านั้น
-        fc.setCurrentDirectory(new File("src"));// ตั้งค่าที่อยู่เริ่มต้นของหน้าต่างเลือกไฟล์ (โฟลเดอร์ src)
+        fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));// เซ็ตให้มันเลือกได้เฉพาะไฟล์ .txt เท่านั้น
+        fc.setCurrentDirectory(new File("src"));//ให้มันเข้าไปใหนโฟลเดอร์ src โดยตรง
 
         int result = fc.showOpenDialog(this);// เปิดหน้าต่างให้เลือกไฟล์
-        if (result == JFileChooser.APPROVE_OPTION) { // ตรวจสอบว่ากด ตกลง หรือ เปิดไฟล์
+        if (result == JFileChooser.APPROVE_OPTION) { // ตรวจสอบว่ากดตกลงหรือเปิดไฟล์
             File file = fc.getSelectedFile();
-            if (data.loadFromFile(file.getAbsolutePath())) { // ถ้าโหลดสำเร็จอัปเดตข้อมูลที่แสดงบนหน้าจอ
+            if (data.loadFromFile(file.getAbsolutePath())) {
                 update();
-                status.setText(Settings.STATUS_LOAD + file.getName());// แสดงข้อความสถานะว่าโหลดไฟล์ชื่ออะไร
+                status.setText(Settings.STATUS_LOAD + file.getName());//แสดงชื่อไฟล์ที่เพิ่มเข้ามา
             } else {
-                status.setText(Settings.STATUS_FAIL);// ถ้าโหลดไม่สำเร็จแสดงข้อความสถานะว่าล้มเหลว
+                status.setText(Settings.STATUS_FAIL);
                 Display.showMessage(this, Settings.STATUS_ERROR, Settings.STATUS_CHECK, JOptionPane.ERROR_MESSAGE);
             }
         }
     }
     //ปุ่มคำนวณ
     private void calc() {
-        if (!hasData()) { //สอบว่ามีข้อมูลมั้ย
-            status.setText("Please load file first");//ถ้าไม่มีให้แสดงข้อความว่าต้องโหลดไฟล์เข้ามาก่อน
+        if (!hasData()) { //ตรวจสอบว่ามีข้อมูลมั้ย
+            status.setText("Please load file first"); // ถ้าไม่มีให้แสดงข้อความว่าต้องโหลดไฟล์เข้ามาก่อน
             return;
         }
 
         try {
-            double level = Double.parseDouble(input.getText()); // แปลงค่าที่ผู้ใช้กรอกใน input ให้เป็นตัวเลขแบบทศนิยม
+            double level = Double.parseDouble(input.getText()); // แปลงค่าที่กรอกในช่องให้เป็นตัวเลขทศนิยม
             data.setFluidLevel(level); // กำหนดค่าระดับของเหลวให้กับอ็อบเจกต์ data
             update();
-            status.setText("Calculated with fluid level: " + level);// แสดงข้อความสถานะว่าคำนวณเรียบร้อย พร้อมกับค่าทีกรอก
+            status.setText("Calculated with fluid level: " + level);
         } catch (NumberFormatException e) {
-            status.setText("Invalid number format");// ถ้ากรอกค่าที่ไม่ใช่ตัวเลข เช่น ตัวอักษร ให้แสดงข้อความว่าไม่ใช่รูปแบบตัวเลขที่ถูกต้อง
+            status.setText("Invalid number format");// ถ้ากรอกค่าที่ไม่ใช่ตัวเลขให้แสดงข้อความว่าไม่ใช่รูปแบบตัวเลขที่ถูกต้อง
         }
     }
 
@@ -444,7 +444,7 @@ public class App extends JFrame {
     }
 
     private void updateBtn() {
-        btnBox.removeAll();// ล้างปุ่มทั้งหมดในฺBoxปุ่ม(btnBox)ก่อนเพื่อเตรียมเริ่มใหม่
+        btnBox.removeAll();// ล้างปุ่มทั้งหมดในฺbtnBoxก่อนเพื่อเตรียมเริ่มใหม่
 
         if (hasData()) {// ตรวจสอบว่ามีข้อมูลอยู่หรือไม่
             clearBtn.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));// ตั้งค่าขนาดปุ่ม Clear
@@ -454,8 +454,8 @@ public class App extends JFrame {
             clearBtn.setForeground(null);
             clearBtn.setBorder(null);
             clearBtn.updateUI();// รีเฟรช UI ของปุ่ม Clear
-            btnBox.add(clearBtn);// เพิ่มปุ่ม Clear ไปในกล่องปุ่ม
-        } else {  // กรณียังไม่มีข้อมูล ให้แสดงปุ่ม Load แทน
+            btnBox.add(clearBtn);
+        } else {  // ถ้ายังไม่มีข้อมูล ให้แสดงปุ่ม Load แทน
             loadBtn.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             loadBtn.setAlignmentX(Component.LEFT_ALIGNMENT);
             loadBtn.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
