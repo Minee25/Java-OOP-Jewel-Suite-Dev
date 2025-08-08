@@ -10,7 +10,7 @@ public class FileData {
 
     // ฟังก์ชันสร้างออบเจ็กต์ - ตั้งค่าเริ่มต้น
     public FileData() {
-        level = Settings.DEFAULT_FLUID; // ตั้งระดับน้ำเริ่มต้น
+        level = Settings.DEFAULT_FLUID ; // ตั้งระดับชั้นfluidริ่มต้น
         load(); // โหลดข้อมูลจากไฟล์
     }
 

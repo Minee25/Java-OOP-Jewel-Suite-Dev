@@ -629,8 +629,6 @@ public class App extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> { //ใช้คำสั่งSwingUtilities.invokeLaterเพื่อไม่ให้เกิดบั๊กต่างๆ
-            new App();
-        });
+        new App();
     }
 }
