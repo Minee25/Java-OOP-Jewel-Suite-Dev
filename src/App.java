@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.text.DecimalFormat;
 
 
 // App หลักสืบทอดจาก JFrame
@@ -473,8 +474,10 @@ public class App extends JFrame {
     }
 
     private void update() {
-        double sum = data.getTotalVolume();// คำนวณปริมาณรวมของแก๊สจากข้อมูล แล้วแสดงผลใน JLabel total
-        total.setText(String.format(Settings.TOTAL_GAS, sum));
+        double sum = data.getTotalVolume();
+        DecimalFormat sumFormat = new DecimalFormat("#,##0.00");
+        total.setText(String.format(Settings.TOTAL_GAS, sumFormat.format(sum)));
+
 
         // สลับ panel
         if (panel != null) {

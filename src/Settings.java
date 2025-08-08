@@ -67,7 +67,8 @@ public class Settings {
 
     // ผลลัพธ์
     public static final String RESULT_TITLE = "Resultant:";
-    public static final String TOTAL_GAS = "Total Gas %.2f CB.M";
+    public static final String TOTAL_GAS = "Total Gas %s CB.M";
+
     public static final String STATUS_READY = "Ready";
 
     // สถานะ

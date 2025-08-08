@@ -201,7 +201,7 @@ public class GridDisplay extends DisplayPanel {
         }
 
         return "Cell (" + r + "," + c + ") - " + status +
-                " | " + percentText + "% | " + volume + " m³";
+                " | " + percentText + "% | " + volume + " CB.M";
     }
 
 
