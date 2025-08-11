@@ -29,7 +29,7 @@ public class App extends JFrame {
     private boolean isKm;
     private JLabel unitLabel;
     private JLabel statsLabel;
-    private String themeFile = "src/db/data.txt";
+    private String settingsFile = "src/db/settings.ini";
     // แสดงหน้าแอพขึ้นมา
 
     public App() {
@@ -41,17 +41,24 @@ public class App extends JFrame {
     }
 
     private void setup() {
-        theme();
         icon();
         window();
         ui();
         update();
+        theme();
     }
 
     private void theme() {
-        String savedTheme = loadThemeFromFile();
+        String[] loaded = loadSettings();
+        String savedTheme = loaded[0];
+        boolean savedKm = Boolean.parseBoolean(loaded[1]);
+
         setLaf(savedTheme);
         isDark = savedTheme.equals("MONOKAI");
+
+        km.setSelected(savedKm);
+        isKm = savedKm;
+
 
 
     }
@@ -622,18 +629,17 @@ public class App extends JFrame {
 
     private void showThemes(JButton btn) {
         isDark = !isDark;
-
         if (isDark) {
             setLaf("MONOKAI");
-            saveThemeToFile("MONOKAI");
+
             status.setText(Settings.THEME_STATUS_DARK);
             btn.setText(Settings.THEME_LIGHT);
         } else {
             setLaf("ARC_ORANGE");
-            saveThemeToFile("ARC_ORANGE");
             status.setText(Settings.THEME_STATUS_LIGHT);
             btn.setText(Settings.THEME_DARK);
         }
+        saveDB();
     }
 
 
@@ -677,21 +683,45 @@ public class App extends JFrame {
             e.printStackTrace();
         }
     }
-    private String loadThemeFromFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(themeFile))) {
-            return br.readLine();
-        } catch (IOException e) {
-            return Settings.CURRENT_THEME; // ถ้าไม่มีไฟล์ ใช้ค่ามาตรฐาน
-        }
-    }
 
-
-    private void saveThemeToFile(String theme) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(themeFile))) {
-            bw.write(theme);
+    private void saveSettings(String theme, boolean kmSelected) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
+            bw.write("THEME=" + theme);
+            bw.newLine();
+            bw.write("UNIT_KM=" + kmSelected);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String[] loadSettings() {
+        String theme = Settings.CURRENT_THEME;
+        boolean kmSelected = false;
+        try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("THEME=")) {
+                    theme = line.substring(6);
+                } else if (line.startsWith("UNIT_KM=")) {
+                    kmSelected = Boolean.parseBoolean(line.substring(8));
+                }
+            }
+        } catch (IOException e) {
+
+        }
+        return new String[]{theme, String.valueOf(kmSelected)};
+    }
+
+    private void saveDB(){
+        String themeToSave;
+        if (isDark) {
+            themeToSave = "MONOKAI";
+        } else {
+            themeToSave = "ARC_ORANGE";
+        }
+
+        saveSettings(themeToSave, km.isSelected());
+
     }
 
     private class ThemeButtonListener implements ActionListener {
@@ -727,6 +757,8 @@ public class App extends JFrame {
     private class UnitCheckboxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             changeUnit(km.isSelected());
+            saveDB();
+
         }
     }
 
