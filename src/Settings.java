@@ -4,6 +4,7 @@ import static java.awt.Frame.*;
 // ตั้งค่า
 public interface Settings {
 
+    String DB =  "src/db/settings.ini";
     // ธีม
     String CURRENT_THEME = "ARC_ORANGE";
 
@@ -155,5 +156,9 @@ public interface Settings {
     Color COLOR_LIGHT_GRAY = Color.LIGHT_GRAY;
     Color COLOR_BLACK = Color.BLACK;
     Color COLOR_WHITE = Color.WHITE;
+
+
+    String BTN_SUMMARY = "Summary";
+    String SUMMARY_TITLE = "Overview";
 
 }

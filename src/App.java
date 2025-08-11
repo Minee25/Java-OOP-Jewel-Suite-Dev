@@ -29,7 +29,8 @@ public class App extends JFrame {
     private boolean isKm;
     private JLabel unitLabel;
     private JLabel statsLabel;
-    private String settingsFile = "src/db/settings.ini";
+    private String settingsFile = Settings.DB;
+    private JButton sum;
     // แสดงหน้าแอพขึ้นมา
 
     public App() {
@@ -206,7 +207,6 @@ public class App extends JFrame {
 
         input = new JTextField(String.valueOf(data.getFluidLevel()), 10);
         input.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_INPUT));
-
         inp.add(input);
 
         JPanel unit = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -229,22 +229,36 @@ public class App extends JFrame {
         calc.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_BUTTON));
         calc.addActionListener(new CalculateButtonListener());
 
+
+        btns = new JPanel();
+        btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
+        btns.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
+        btns.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         load = new JButton(Settings.BTN_LOAD);
         load.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         load.setAlignmentX(Component.LEFT_ALIGNMENT);
         load.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
         load.addActionListener(new LoadButtonListener());
+        btns.add(load);
+        btns.add(Box.createVerticalStrut(5));
+
+        sum = new JButton(Settings.BTN_SUMMARY);
+        sum.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
+        sum.setAlignmentX(Component.LEFT_ALIGNMENT);
+        sum.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
+        sum.addActionListener(new SummaryButtonListener());
+        btns.add(sum);
+        btns.add(Box.createVerticalStrut(5));
+
 
         clear = new JButton(Settings.BTN_CLEAR);
         clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
         clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
         clear.addActionListener(new ClearButtonListener());
+        btns.add(clear);
 
-        btns = new JPanel();
-        btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
-        btns.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
-        btns.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         box.add(lbl);
         box.add(Box.createVerticalStrut(8));
@@ -464,17 +478,31 @@ public class App extends JFrame {
         btns.removeAll();
 
         if (hasData()) {
+
             clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             clear.setAlignmentX(Component.LEFT_ALIGNMENT);
             clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
             clear.updateUI();
             btns.add(clear);
+
+            btns.add(Box.createVerticalStrut(5));
+
+
+            sum.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
+            sum.setAlignmentX(Component.LEFT_ALIGNMENT);
+            sum.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
+            sum.updateUI();
+            btns.add(sum);
         } else {
+
             load.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             load.setAlignmentX(Component.LEFT_ALIGNMENT);
             load.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
             load.updateUI();
             btns.add(load);
+
+            btns.add(Box.createVerticalStrut(5));
+
         }
 
         SwingUtilities.updateComponentTreeUI(btns);
@@ -724,6 +752,32 @@ public class App extends JFrame {
 
     }
 
+    private void showSummary() {
+        if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
+            JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);
+            return;
+        }
+
+        int rows = data.getRows();
+        int cols = data.getCols();
+        int total = rows * cols;
+
+        int[] n = new int[3];
+        double[] vol = new double[3];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                int lv = data.getLevel(r, c);
+                if (lv < 0 || lv > 2) lv = 0;
+                n[lv]++;
+                vol[lv] += data.getVolume(r, c);
+            }
+        }
+
+        new SummaryView(this, n, vol, total).setVisible(true);
+    }
+
+
     private class ThemeButtonListener implements ActionListener {
         private JButton button;
 
@@ -779,5 +833,12 @@ public class App extends JFrame {
             clear();
         }
     }
+
+    private class SummaryButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            showSummary();
+        }
+    }
+
 
 }
