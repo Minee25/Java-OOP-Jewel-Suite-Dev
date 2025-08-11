@@ -67,7 +67,7 @@ public interface Settings {
 
     // ผลลัพธ์
     String RESULT_TITLE = "Result:";
-    String TOTAL_GAS = "Total Gas %s CB.M";
+    String TOTAL_GAS = "Total Gas %s ";
 
     String STATUS_READY = "Ready";
 
