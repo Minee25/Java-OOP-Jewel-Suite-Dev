@@ -52,7 +52,7 @@ public class App extends JFrame {
         setLaf(Settings.CURRENT_THEME);
     }
 
-    // UIManager.setLookAndFeel ให้lib จัดการgui 
+    // UIManager.setLookAndFeel ให้lib จัดการgui
     // repaintAll สร้างใหม่ทั้งหมด ใช้กับเปลี่บนธีม
     private void setLaf(String name) {
         try {
@@ -284,7 +284,7 @@ public class App extends JFrame {
 
         box.add(title);
         box.add(Box.createVerticalStrut(10));
-        box.add(colorItem(Settings.NO_GAS,Settings.COLOR_NO_GAS));
+        box.add(colorItem(Settings.NO_GAS, Settings.COLOR_NO_GAS));
         box.add(Box.createVerticalStrut(5));
         box.add(colorItem(Settings.LOW_GAS, Settings.COLOR_LOW_GAS));
         box.add(Box.createVerticalStrut(5));
@@ -386,7 +386,7 @@ public class App extends JFrame {
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle(Settings.SELECT_FILE_TITLE);
         fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));
-        fc.setCurrentDirectory(new File("src"));
+        fc.setCurrentDirectory(new File("src/data"));
 
         int result = fc.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
@@ -408,7 +408,7 @@ public class App extends JFrame {
 
     // คำนวณ
     private void calc() {
-        if (!hasData()) { 
+        if (!hasData()) {
             status.setText(Settings.LOAD_FIRST_MSG);
             Display.showMessage(this, Settings.STATUS_ERROR, Settings.LOAD_FIRST_MSG, JOptionPane.ERROR_MESSAGE);
             return;
@@ -428,7 +428,6 @@ public class App extends JFrame {
                 fluidLevelInMeters = inputValue;
                 status.setText(Settings.CALC_WITH_LEVEL + inputValue + " M");
             }
-            
 
             data.setFluidLevel(fluidLevelInMeters);
             update();
@@ -725,6 +724,5 @@ public class App extends JFrame {
             clear();
         }
     }
-
 
 }
