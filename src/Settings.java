@@ -26,8 +26,8 @@ public interface Settings {
     Color COLOR_LOW_GAS  = new Color(241, 196, 15);
     Color COLOR_HIGH_GAS = new Color(46, 204, 113);
 
-    // ฟอนต์ - ใช้ Tahoma ที่รองรับภาษาไทยในทุกระบบ
-    String FONT_NAME = "Tahoma"; // รองรับภาษาไทยดีที่สุด
+
+    String FONT_NAME = "Tahoma"; 
     int FONT_SIZE_TITLE = 24;
     int FONT_SIZE_NORMAL = 13;
     int FONT_SIZE_INPUT = 15;
