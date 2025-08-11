@@ -22,9 +22,9 @@ public interface Settings {
     double GAS_LIMIT = 0.5;
 
     // สี
-    Color COLOR_NO_GAS = Color.RED;
-    Color COLOR_LOW_GAS = Color.YELLOW;
-    Color COLOR_HIGH_GAS = Color.GREEN;
+    Color COLOR_NO_GAS   = new Color(231, 76, 60);
+    Color COLOR_LOW_GAS  = new Color(241, 196, 15);
+    Color COLOR_HIGH_GAS = new Color(46, 204, 113);
 
     // ฟอนต์ - ใช้ Tahoma ที่รองรับภาษาไทยในทุกระบบ
     String FONT_NAME = "Tahoma"; // รองรับภาษาไทยดีที่สุด

@@ -52,8 +52,8 @@ public class App extends JFrame {
 
     private void setLaf(String name) {
         try {
-            if ("MONOKAI".equals(name)) {
-                UIManager.setLookAndFeel(new FlatMonokaiProIJTheme());
+            if (name == "dark") {
+                UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
             } else {
                 UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
             }
@@ -605,11 +605,11 @@ public class App extends JFrame {
         isDark = !isDark;
 
         if (isDark) {
-            setLaf("MONOKAI");
+            setLaf("dark");
             status.setText(Settings.THEME_STATUS_DARK);
             btn.setText(Settings.THEME_LIGHT);
         } else {
-            setLaf("ARC_ORANGE");
+            setLaf("light");
             status.setText(Settings.THEME_STATUS_LIGHT);
             btn.setText(Settings.THEME_DARK);
         }
@@ -710,7 +710,4 @@ public class App extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        new App();
-    }
 }

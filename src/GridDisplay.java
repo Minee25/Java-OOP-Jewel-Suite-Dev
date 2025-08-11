@@ -66,14 +66,14 @@ public class GridDisplay extends JPanel {
         JPanel mainGrid = new JPanel(new GridLayout(rows, cols, 1, 1));
         cells = new JPanel[rows][cols];
 
-        // สร้าง cells ด้วยสีเทาก่อน
+
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 JPanel cell = makeCell(r, c);
                 cells[r][c] = cell;
                 mainGrid.add(cell);
                 
-                // เริ่มต้นด้วยสีเทา
+
                 cell.setBackground(Color.LIGHT_GRAY);
             }
         }
@@ -136,7 +136,7 @@ public class GridDisplay extends JPanel {
         String txt = String.format("%.0f%%", pct);
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
-        lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
+        lbl.setFont(new  Font(Settings.FONT_NAME, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
         cell.add(lbl, BorderLayout.CENTER);
         cell.addMouseListener(new CellMouse(r, c, cell));
         return cell;
