@@ -126,7 +126,12 @@ public class GridDisplay extends JPanel {
         cell.setOpaque(true);
 
         double pct = data.calculateGasPercentage(r, c) * 100;
-        String txt = String.format("%.0f%%", pct);
+        String txt;
+        if (Double.isNaN(pct) || Double.isInfinite(pct)) {
+            txt = "0%";
+        } else {
+            txt = String.format("%.0f%%", pct);
+        }
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
         lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
@@ -231,6 +236,13 @@ public class GridDisplay extends JPanel {
         int level = data.getGasLevel(r, c);
         double pct = data.calculateGasPercentage(r, c) * 100;
         double vol = data.calculateGasVolume(r, c);
+        
+        if (Double.isNaN(pct) || Double.isInfinite(pct)) {
+            pct = 0.0;
+        }
+        if (Double.isNaN(vol) || Double.isInfinite(vol)) {
+            vol = 0.0;
+        }
 
         DecimalFormat pctFmt = new DecimalFormat("0.00");
         DecimalFormat volFmt = new DecimalFormat("#,##0.00");
@@ -248,7 +260,7 @@ public class GridDisplay extends JPanel {
         }
 
         return "Cell (" + r + "," + c + ") - " + status +
-                " | " + pctTxt + "% | " + volTxt + " CB.M (M)";
+                " | " + pctTxt + "% | " + volTxt + " CB.M ";
     }
 
 

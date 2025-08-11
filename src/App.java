@@ -1,5 +1,7 @@
 
-import com.formdev.flatlaf.intellijthemes.*;
+import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -282,11 +284,11 @@ public class App extends JFrame {
 
         box.add(title);
         box.add(Box.createVerticalStrut(10));
-        box.add(colorItem(Settings.NO_GAS, Color.RED));
+        box.add(colorItem(Settings.NO_GAS,Settings.COLOR_NO_GAS));
         box.add(Box.createVerticalStrut(5));
-        box.add(colorItem(Settings.LOW_GAS, Color.YELLOW));
+        box.add(colorItem(Settings.LOW_GAS, Settings.COLOR_LOW_GAS));
         box.add(Box.createVerticalStrut(5));
-        box.add(colorItem(Settings.HIGH_GAS, Color.GREEN));
+        box.add(colorItem(Settings.HIGH_GAS, Settings.COLOR_HIGH_GAS));
 
         return box;
     }
@@ -391,7 +393,12 @@ public class App extends JFrame {
             File file = fc.getSelectedFile();
             if (data.loadFromFile(file.getAbsolutePath())) {
                 update();
-                status.setText(Settings.STATUS_LOAD + file.getName());
+                int zeroCount = data.countZeroCells();
+                if (zeroCount > 0) {
+                    status.setText(Settings.STATUS_LOAD + file.getName() + " (Warn: " + zeroCount + " invalid)");
+                } else {
+                    status.setText(Settings.STATUS_LOAD + file.getName());
+                }
             } else {
                 status.setText(Settings.STATUS_FAIL);
                 Display.showMessage(this, Settings.STATUS_ERROR, Settings.STATUS_CHECK, JOptionPane.ERROR_MESSAGE);
@@ -403,20 +410,25 @@ public class App extends JFrame {
     private void calc() {
         if (!hasData()) { 
             status.setText(Settings.LOAD_FIRST_MSG);
+            Display.showMessage(this, Settings.STATUS_ERROR, Settings.LOAD_FIRST_MSG, JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
             double inputValue = Double.parseDouble(input.getText());
             double fluidLevelInMeters;
-
             if (isKm) {
                 fluidLevelInMeters = inputValue * 1000.0;
-                status.setText(Settings.CALC_WITH_LEVEL + inputValue + " KM (" + fluidLevelInMeters + " M)");
+                String calcText = Settings.CALC_WITH_LEVEL + inputValue + " KM (" + fluidLevelInMeters + " M)";
+                if (calcText.length() > 35) {
+                    calcText = Settings.CALC_WITH_LEVEL + inputValue + " KM\n(" + fluidLevelInMeters + " M)";
+                }
+                status.setText(calcText);
             } else {
                 fluidLevelInMeters = inputValue;
                 status.setText(Settings.CALC_WITH_LEVEL + inputValue + " M");
             }
+            
 
             data.setFluidLevel(fluidLevelInMeters);
             update();
@@ -479,7 +491,8 @@ public class App extends JFrame {
             display = vol / 1000000000.0;
         }
 
-        total.setText(String.format(Settings.TOTAL_GAS, fmt.format(display)) + " " + unit);
+        String totalText = String.format(Settings.TOTAL_GAS, fmt.format(display)) + " " + unit;
+        total.setText(totalText);
         showUnit(txt);
         showStats();
 

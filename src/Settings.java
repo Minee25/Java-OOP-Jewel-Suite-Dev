@@ -26,8 +26,8 @@ public interface Settings {
     Color COLOR_LOW_GAS = new Color(241, 196, 15); 
     Color COLOR_HIGH_GAS = new Color(46, 204, 113); 
 
-    // ฟอนต์ - ใช้ Tahoma ที่รองรับภาษาไทยในทุกระบบ
-    String FONT_NAME = "Tahoma"; // รองรับภาษาไทยดีที่สุด
+
+    String FONT_NAME = "Tahoma";
     int FONT_SIZE_TITLE = 24;
     int FONT_SIZE_NORMAL = 13;
     int FONT_SIZE_INPUT = 15;
@@ -72,7 +72,7 @@ public interface Settings {
     String STATUS_READY = "Ready";
 
     // สถานะ
-    String STATUS_LOAD = "Loaded: ";
+    String STATUS_LOAD = "File: ";
     String STATUS_FAIL = "Load failed!";
     String STATUS_ERROR = "Error!";
     String STATUS_CHECK = "Invalid file format";
@@ -140,7 +140,7 @@ public interface Settings {
     String INVALID_NUMBER_MSG = "Invalid number";
     String INVALID_INPUT_MSG = "Enter valid number";
     String FILE_CLEARED_MSG = "Cleared";
-    String CALC_WITH_LEVEL = "Calculated: ";
+    String CALC_WITH_LEVEL = "Calc: ";
     String HOVER_DEFAULT = "...";
     String STATS_PREFIX = "Gas Area: ";
     String STATS_CELLS = " cells ";

@@ -14,6 +14,7 @@ public class Display {
                 true);
         dlg.setSize(850, 550);
         dlg.setLocationRelativeTo(null);
+        dlg.setUndecorated(true);
         dlg.setResizable(false);
 
         JPanel main = new JPanel(new BorderLayout());

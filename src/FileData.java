@@ -1,7 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-public class FileData {
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+public class FileData extends JFrame {
     private double[][] data;
     private double fluid;
     private int rows;
@@ -9,9 +12,10 @@ public class FileData {
 
     public FileData() {
         fluid = Settings.DEFAULT_FLUID;
-        load();
+
     }
 
+    // test
     public boolean load() {
         return readFile("dept.txt");
     }
@@ -32,18 +36,57 @@ public class FileData {
             }
             
             rows = lines.size();
-            String[] firstRow = lines.get(0).split("\\s+");
-            cols = firstRow.length;
+            
+            int maxCols = 0;
+            for (String line : lines) {
+                String[] values = line.split("\\s+");
+                maxCols = Math.max(maxCols, values.length);
+            }
+            
+            cols = maxCols;
             data = new double[rows][cols];
+            
+            int invalidCount = 0;
             
             for (int r = 0; r < rows; r++) {
                 String[] values = lines.get(r).split("\\s+");
                 for (int c = 0; c < Math.min(cols, values.length); c++) {
-                    data[r][c] = Double.parseDouble(values[c]);
+                    try {
+                        String value = values[c].trim();
+                        if (value.isEmpty()) {
+                            data[r][c] = 0.0;
+                            invalidCount++;
+                        } else {
+                            double parsedValue = Double.parseDouble(value);
+                            if (Double.isNaN(parsedValue) || Double.isInfinite(parsedValue)) {
+                                data[r][c] = 0.0;
+                                invalidCount++;
+                                System.out.println("Invalid special value at [" + r + "," + c + "]: '" + value + "' -> set to 0.0");
+                            } else {
+                                data[r][c] = parsedValue;
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        data[r][c] = 0.0;
+                        invalidCount++;
+                        System.out.println("Invalid data at [" + r + "," + c + "]: '" + values[c] + "' -> set to 0.0");
+                    }
+                }
+                
+                for (int c = values.length; c < cols; c++) {
+                    data[r][c] = 0.0;
+                    invalidCount++;
                 }
             }
+            
+            if (invalidCount > 0) {
+                Display.showMessage(this, "Warning: Found ", invalidCount + " invalid values, set to 0.0", JOptionPane.ERROR_MESSAGE);
+
+            }
+            
             return true;
         } catch (Exception e) {
+            System.out.println("Error reading file: " + e.getMessage());
             return false;
         }
     }
@@ -67,29 +110,50 @@ public class FileData {
         double top = getTop(r, c);
         double bottom = getBottom(r, c);
 
+        if (Double.isNaN(top) || Double.isNaN(bottom) || Double.isInfinite(top) || Double.isInfinite(bottom)) {
+            return 0.0;
+        }
+
         if (fluid <= top)
             return 0;
 
-
         double depth = fluid - top;
-        System.out.println("debug "+bottom+" "+r+" "+c+" "+depth+" "+Settings.CELL_SIZE * Settings.CELL_SIZE * depth);
-        if (depth <= 0)
+        if (depth <= 0 || Double.isNaN(depth) || Double.isInfinite(depth))
             return 0;
 
-        return Settings.CELL_SIZE * Settings.CELL_SIZE * depth;
+        double result = Settings.CELL_SIZE * Settings.CELL_SIZE * depth;
+        if (Double.isNaN(result) || Double.isInfinite(result)) {
+            return 0.0;
+        }
+
+        return result;
     }
 
     // หาเปอ 
     public double getPercent(int r, int c) {
         double top = getTop(r, c);
         double bottom = getBottom(r, c);
+        
+        if (Double.isNaN(top) || Double.isNaN(bottom) || Double.isInfinite(top) || Double.isInfinite(bottom)) {
+            return 0.0;
+        }
+        
         double total = bottom - top; 
 
-        if (total <= 0)
+        if (total <= 0 || Double.isNaN(total) || Double.isInfinite(total))
             return 0;
 
         double gas = Math.max(0, Math.min(fluid, bottom) - top);
-        return gas / total;
+        if (Double.isNaN(gas) || Double.isInfinite(gas)) {
+            return 0.0;
+        }
+        
+        double result = gas / total;
+        if (Double.isNaN(result) || Double.isInfinite(result)) {
+            return 0.0;
+        }
+        
+        return result;
     }
 
     // หาเปอและไว้ทำสี
@@ -185,5 +249,29 @@ public class FileData {
 
     public boolean loadFromFile(String path) {
         return readFile(path);
+    }
+    
+    public boolean isValidNumber(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return false;
+        }
+        try {
+            Double.parseDouble(str.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    
+    public int countZeroCells() {
+        int count = 0;
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (data[r][c] == 0.0) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
