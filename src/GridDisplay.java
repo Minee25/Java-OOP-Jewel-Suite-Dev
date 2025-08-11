@@ -66,20 +66,13 @@ public class GridDisplay extends JPanel {
         JPanel mainGrid = new JPanel(new GridLayout(rows, cols, 1, 1));
         cells = new JPanel[rows][cols];
 
-
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 JPanel cell = makeCell(r, c);
                 cells[r][c] = cell;
                 mainGrid.add(cell);
-                
-
-                cell.setBackground(Color.LIGHT_GRAY);
             }
         }
-        
-   
-        animateColors(rows, cols);
 
         JPanel gridWithCoords = addNumbers(mainGrid, rows, cols);
         grid.add(gridWithCoords, BorderLayout.CENTER);
@@ -136,7 +129,7 @@ public class GridDisplay extends JPanel {
         String txt = String.format("%.0f%%", pct);
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
-        lbl.setFont(new  Font(Settings.FONT_NAME, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
+        lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
         cell.add(lbl, BorderLayout.CENTER);
         cell.addMouseListener(new CellMouse(r, c, cell));
         return cell;
@@ -258,28 +251,7 @@ public class GridDisplay extends JPanel {
                 " | " + pctTxt + "% | " + volTxt + " CB.M (M)";
     }
 
-    private void animateColors(int rows, int cols) {
-        Thread animationThread = new Thread() {
-            public void run() {
-        
-                for (int r = 0; r < rows; r++) {
-                    for (int c = 0; c < cols; c++) {
-                        JPanel cell = cells[r][c];
-                        Color realColor = getColor(r, c);
-                        cell.setBackground(realColor);
-                        
-                  
-                        try {
-                            Thread.sleep(2); 
-                        } catch (InterruptedException e) {
-                            return;
-                        }
-                    }
-                }
-            }
-        };
-        animationThread.start();
-    }
+
 
     public void refresh() {
         grid.removeAll();

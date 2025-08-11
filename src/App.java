@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
-// App หลักสืบทอดจาก JFrame
+//คลาสแม่หลัก หลักสืบทอดจาก JFrame
 public class App extends JFrame {
     private FileData data;
     private JPanel panel;
@@ -50,10 +50,12 @@ public class App extends JFrame {
         setLaf(Settings.CURRENT_THEME);
     }
 
+    // UIManager.setLookAndFeel ให้lib จัดการgui 
+    // repaintAll สร้างใหม่ทั้งหมด ใช้กับเปลี่บนธีม
     private void setLaf(String name) {
         try {
-            if (name == "dark") {
-                UIManager.setLookAndFeel(new FlatArcDarkOrangeIJTheme());
+            if ("MONOKAI".equals(name)) {
+                UIManager.setLookAndFeel(new FlatMonokaiProIJTheme());
             } else {
                 UIManager.setLookAndFeel(new FlatArcOrangeIJTheme());
             }
@@ -399,7 +401,7 @@ public class App extends JFrame {
 
     // คำนวณ
     private void calc() {
-        if (!hasData()) { // ตรวจสอบว่ามีข้อมูลมั้ย
+        if (!hasData()) { 
             status.setText(Settings.LOAD_FIRST_MSG);
             return;
         }
@@ -573,7 +575,8 @@ public class App extends JFrame {
     private JLabel getIcon() {
         try {
             ImageIcon appIcon = new ImageIcon(Settings.APP_ICON_PATH);
-            Image scaledIcon = appIcon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL, Image.SCALE_SMOOTH);
+            Image scaledIcon = appIcon.getImage().getScaledInstance(Settings.ICON_SIZE_SMALL, Settings.ICON_SIZE_SMALL,
+                    Image.SCALE_SMOOTH);
             return new JLabel(new ImageIcon(scaledIcon));
         } catch (Exception e) {
             return null;
@@ -605,11 +608,11 @@ public class App extends JFrame {
         isDark = !isDark;
 
         if (isDark) {
-            setLaf("dark");
+            setLaf("MONOKAI");
             status.setText(Settings.THEME_STATUS_DARK);
             btn.setText(Settings.THEME_LIGHT);
         } else {
-            setLaf("light");
+            setLaf("ARC_ORANGE");
             status.setText(Settings.THEME_STATUS_LIGHT);
             btn.setText(Settings.THEME_DARK);
         }
@@ -638,11 +641,11 @@ public class App extends JFrame {
         if (icon != null) {
             icon.setAlignmentX(Component.CENTER_ALIGNMENT);
             panel.add(icon);
-            panel.add(Box.createVerticalStrut(10)); 
+            panel.add(Box.createVerticalStrut(10));
         }
 
         panel.add(title);
-        panel.add(Box.createVerticalStrut(10)); 
+        panel.add(Box.createVerticalStrut(10));
         panel.add(text);
 
         loading.add(panel);
@@ -710,4 +713,7 @@ public class App extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        new App();
+    }
 }

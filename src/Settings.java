@@ -22,12 +22,12 @@ public interface Settings {
     double GAS_LIMIT = 0.5;
 
     // สี
-    Color COLOR_NO_GAS   = new Color(231, 76, 60);
-    Color COLOR_LOW_GAS  = new Color(241, 196, 15);
-    Color COLOR_HIGH_GAS = new Color(46, 204, 113);
+    Color COLOR_NO_GAS = new Color(231, 76, 60); 
+    Color COLOR_LOW_GAS = new Color(241, 196, 15); 
+    Color COLOR_HIGH_GAS = new Color(46, 204, 113); 
 
-
-    String FONT_NAME = "Tahoma"; 
+    // ฟอนต์ - ใช้ Tahoma ที่รองรับภาษาไทยในทุกระบบ
+    String FONT_NAME = "Tahoma"; // รองรับภาษาไทยดีที่สุด
     int FONT_SIZE_TITLE = 24;
     int FONT_SIZE_NORMAL = 13;
     int FONT_SIZE_INPUT = 15;
@@ -124,7 +124,6 @@ public interface Settings {
     String ABOUT_TITLE = "Gas Distribution System";
     String ABOUT_DISTRIBUTION = "By C++ Team";
 
-    // ข้อความต่างๆ
     String UNIT_METER = "Unit: M ";
     String UNIT_KM = "Unit: KM ";
     String UNIT_LABEL = "Unit:";
@@ -153,14 +152,12 @@ public interface Settings {
     String PERCENT_SIGN = "%";
     String SLASH = "/";
 
-    // ขนาดฟอนต์เพิ่มเติม
     int FONT_SIZE_SMALL = 8;
     int FONT_SIZE_TINY = 10;
     int FONT_SIZE_MEDIUM = 11;
     int FONT_SIZE_LARGE = 18;
     int FONT_SIZE_HUGE = 80;
 
-    // สีเพิ่มเติม
     Color COLOR_GRAY = Color.GRAY;
     Color COLOR_DARK_GRAY = Color.DARK_GRAY;
     Color COLOR_LIGHT_GRAY = Color.LIGHT_GRAY;

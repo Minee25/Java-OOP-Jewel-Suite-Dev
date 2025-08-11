@@ -100,7 +100,6 @@ public class Display {
             ImageIcon icon = new ImageIcon(path);
             Image scaled = icon.getImage().getScaledInstance(Settings.ABOUT_PIC_SIZE, Settings.ABOUT_PIC_SIZE,
                     Image.SCALE_SMOOTH);
-
             JLabel lbl = new JLabel();
             lbl.setIcon(new ImageIcon(scaled));
             lbl.setHorizontalAlignment(SwingConstants.CENTER);
