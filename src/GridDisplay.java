@@ -1,195 +1,249 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-public class GridDisplay extends DisplayPanel {
-    private int cellSize = 40;
-    private JPanel gridPanel;
-    private JPanel[][] cellPanels;
-    private int hoverRow = -1;
-    private int hoverCol = -1;
-    private JLabel infoLabel;
-    private Border normalBorder;
-    private Border hoverBorder;
+public class GridDisplay extends JPanel {
+    private FileData data;
+    private int size = 40;
+    private JPanel grid;
+    private JPanel[][] cells;
+    private int hoverR = -1;
+    private int hoverC = -1;
+    private JLabel info;
+    private Border normal;
+    private Border hover;
 
     public GridDisplay(FileData data) {
-        super(data);
-        initializeBorders();
-        setupGridPanel();
-        calculateCellSize();
-        createCellPanels();
+        this.data = data;
+        makeBorder();
+        makeGrid();
+        calcCellSize();
+        makeCells();
         setLayout(new BorderLayout());
-        add(gridPanel, BorderLayout.CENTER);
+        add(grid, BorderLayout.CENTER);
     }
 
-    private void initializeBorders() {
-        normalBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
-        hoverBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+    private void makeBorder() {
+        normal = BorderFactory.createLineBorder(Settings.COLOR_LIGHT_GRAY, 1);
+        hover = BorderFactory.createLineBorder(Settings.COLOR_BLACK, 2);
     }
 
-    private void setupGridPanel() {
-        gridPanel = new JPanel();
-        gridPanel.setBorder(BorderFactory.createCompoundBorder(
+    private void makeGrid() {
+        grid = new JPanel();
+        grid.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createEmptyBorder(20, 20, 20, 20),
-                BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"))
-        ));
+                BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"))));
     }
 
-    private void calculateCellSize() {
-        int cols = data.getCols();
-        int rows = data.getRows();
+    private void calcCellSize() {
+        int cols = data.getColumnCount();
+        int rows = data.getRowCount();
 
         if (cols > 0 && rows > 0) {
-            int widthSize = Settings.GRID_MAX_WIDTH / cols;
-            int heightSize = Settings.GRID_MAX_HEIGHT / rows;
+            int w = Settings.GRID_MAX_WIDTH / cols;
+            int h = Settings.GRID_MAX_HEIGHT / rows;
 
-            cellSize = Math.min(widthSize, heightSize);
-            cellSize = Math.max(Settings.GRID_MIN_CELL_SIZE, Math.min(cellSize, Settings.GRID_MAX_CELL_SIZE));
+            size = Math.min(w, h);
+            size = Math.max(30, Math.min(size, Settings.GRID_MAX_CELL_SIZE));
         }
     }
 
-    private void createCellPanels() {
-        int rows = data.getRows();
-        int cols = data.getCols();
+    private void makeCells() {
+        int rows = data.getRowCount();
+        int cols = data.getColumnCount();
 
         if (rows == 0 || cols == 0) {
-            gridPanel.setLayout(new BorderLayout());
-            JLabel emptyLabel = new JLabel("No data to display", SwingConstants.CENTER);
-            gridPanel.add(emptyLabel, BorderLayout.CENTER);
+            grid.setLayout(new BorderLayout());
+            JLabel empty = new JLabel(Settings.NO_DATA_MSG, SwingConstants.CENTER);
+            grid.add(empty, BorderLayout.CENTER);
             return;
         }
 
-        gridPanel.setLayout(new GridLayout(rows, cols, 1, 1));
-        cellPanels = new JPanel[rows][cols];
+        grid.setLayout(new BorderLayout());
 
+        JPanel mainGrid = new JPanel(new GridLayout(rows, cols, 1, 1));
+        cells = new JPanel[rows][cols];
+
+        // สร้าง cells ด้วยสีเทาก่อน
         for (int r = 0; r < rows; r++) {
-            System.out.print("row" + r + ": ");
             for (int c = 0; c < cols; c++) {
-                JPanel cellPanel = createCellPanel(r, c);
-                cellPanels[r][c] = cellPanel;
-                gridPanel.add(cellPanel);
-
-                // debug
-                System.out.print("col" + c);
-                if (c < cols - 1) System.out.print(", ");
+                JPanel cell = makeCell(r, c);
+                cells[r][c] = cell;
+                mainGrid.add(cell);
+                
+                // เริ่มต้นด้วยสีเทา
+                cell.setBackground(Color.LIGHT_GRAY);
             }
-            System.out.println(); // ขึ้นบรรทัดใหม่เมื่อจบ row
         }
+        
+   
+        animateColors(rows, cols);
 
-        // คำนวณขนาด
-        int totalWidth = cols * cellSize + (cols + 1);
-        int totalHeight = rows * cellSize + (rows + 1);
-        gridPanel.setPreferredSize(new Dimension(totalWidth + 40, totalHeight + 40));
+        JPanel gridWithCoords = addNumbers(mainGrid, rows, cols);
+        grid.add(gridWithCoords, BorderLayout.CENTER);
 
-        setPreferredSize(new Dimension(totalWidth + 60, totalHeight + 60));
+        int totalW = cols * size + 60;
+        int totalH = rows * size + 60;
+        grid.setPreferredSize(new Dimension(totalW + 40, totalH + 40));
+
+        setPreferredSize(new Dimension(totalW + 60, totalH + 60));
         setMinimumSize(new Dimension(Settings.GRID_MIN_SIZE_WIDTH, Settings.GRID_MIN_SIZE_HEIGHT));
         setMaximumSize(new Dimension(Settings.GRID_MAX_SIZE_WIDTH, Settings.GRID_MAX_SIZE_HEIGHT));
     }
 
-    private JPanel createCellPanel(int row, int col) {
-        JPanel cellPanel = new JPanel();
-        cellPanel.setPreferredSize(new Dimension(cellSize, cellSize));
-        cellPanel.setBackground(getColor(row, col));
-        cellPanel.setBorder(normalBorder);
-        cellPanel.setOpaque(true);
+    private JPanel addNumbers(JPanel mainGrid, int rows, int cols) {
+        JPanel wrapper = new JPanel(new BorderLayout());
 
-        // เพิ่ม mouse listeners
-        cellPanel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                handleCellHover(row, col, cellPanel);
-            }
+        JPanel topNumbers = new JPanel(new GridLayout(1, cols, 1, 1));
+        topNumbers.setBorder(BorderFactory.createEmptyBorder(0, 30, 5, 0));
+        for (int c = 0; c < cols; c++) {
+            JLabel num = new JLabel(String.valueOf(c), SwingConstants.CENTER);
+            num.setFont(new Font(Font.MONOSPACED, Font.BOLD, Settings.FONT_SIZE_TINY));
+            num.setForeground(Settings.COLOR_GRAY);
+            topNumbers.add(num);
+        }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
+        JPanel leftNumbers = new JPanel(new GridLayout(rows, 1, 1, 1));
+        leftNumbers.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        for (int r = 0; r < rows; r++) {
+            JLabel num = new JLabel(String.valueOf(r), SwingConstants.CENTER);
+            num.setFont(new Font(Font.MONOSPACED, Font.BOLD, Settings.FONT_SIZE_TINY));
+            num.setForeground(Settings.COLOR_GRAY);
+            num.setPreferredSize(new Dimension(25, size));
+            leftNumbers.add(num);
+        }
 
-                handleCellExit(row, col, cellPanel);
-            }
-        });
+        JPanel gridArea = new JPanel(new BorderLayout());
+        gridArea.add(mainGrid, BorderLayout.CENTER);
+        gridArea.add(leftNumbers, BorderLayout.WEST);
 
-        return cellPanel;
+        wrapper.add(topNumbers, BorderLayout.NORTH);
+        wrapper.add(gridArea, BorderLayout.CENTER);
+
+        return wrapper;
     }
 
-    private void handleCellHover(int row, int col, JPanel cellPanel) {
+    private JPanel makeCell(int r, int c) {
+        JPanel cell = new JPanel(new BorderLayout());
+        cell.setPreferredSize(new Dimension(size, size));
+        cell.setBackground(getColor(r, c));
+        cell.setBorder(normal);
+        cell.setOpaque(true);
+
+        double pct = data.calculateGasPercentage(r, c) * 100;
+        String txt = String.format("%.0f%%", pct);
+
+        JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
+        lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
+        cell.add(lbl, BorderLayout.CENTER);
+        cell.addMouseListener(new CellMouse(r, c, cell));
+        return cell;
+    }
+
+    private class CellMouse implements MouseListener {
+        private int r, c;
+        private JPanel cell;
+
+        public CellMouse(int r, int c, JPanel cell) {
+            this.r = r;
+            this.c = c;
+            this.cell = cell;
+        }
+
+        public void mouseEntered(MouseEvent e) {
+            mouseIn(r, c, cell);
+        }
+
+        public void mouseExited(MouseEvent e) {
+            mouseOut(r, c, cell);
+        }
+
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        public void mousePressed(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+    }
+
+    private void mouseIn(int r, int c, JPanel cell) {
         clearHover();
 
-        hoverRow = row;
-        hoverCol = col;
+        hoverR = r;
+        hoverC = c;
 
-        cellPanel.setBorder(hoverBorder);
-        cellPanel.setBackground(getColor(row, col).brighter());
+        cell.setBorder(hover);
+        Color hoverColor = getColor(r, c).brighter();
+        cell.setBackground(hoverColor);
 
-        showInfo(row, col);
+        showInfo(r, c);
     }
 
-    private void handleCellExit(int row, int col, JPanel cellPanel) {
-        if (hoverRow == row && hoverCol == col) {
-            cellPanel.setBorder(normalBorder);
-            cellPanel.setBackground(getColor(row, col));
-            infoLabel.setText("...");
+    private void mouseOut(int r, int c, JPanel cell) {
+        if (hoverR == r && hoverC == c) {
+            cell.setBorder(normal);
+            Color normalColor = getColor(r, c);
+            cell.setBackground(normalColor);
+
+            if (info != null)
+                info.setText(Settings.HOVER_DEFAULT);
         }
     }
 
-    public void setInfoLabel(JLabel label) {
-
-        this.infoLabel = label;
-    }
-
-    public void clearInfo() {
-        if (infoLabel != null) {
-            infoLabel.setText(Settings.GRID_HOVER_MESSAGE);
-        }
+    public void setInfoLabel(JLabel lbl) {
+        this.info = lbl;
     }
 
     private void clearHover() {
-        if (hoverRow != -1 && hoverCol != -1 && cellPanels != null &&
-                hoverRow < cellPanels.length && hoverCol < cellPanels[0].length) {
-            JPanel previousPanel = cellPanels[hoverRow][hoverCol];
-            if (previousPanel != null) {
-                previousPanel.setBorder(normalBorder);
-                previousPanel.setBackground(getColor(hoverRow, hoverCol));
+        if (hoverR != -1 && hoverC != -1 && cells != null &&
+                hoverR < cells.length && hoverC < cells[0].length) {
+            JPanel prev = cells[hoverR][hoverC];
+            if (prev != null) {
+                prev.setBorder(normal);
+                Color normalColor = getColor(hoverR, hoverC);
+                prev.setBackground(normalColor);
+
             }
         }
-        hoverRow = -1;
-        hoverCol = -1;
-        clearInfo();
+        hoverR = -1;
+        hoverC = -1;
+        if (info != null)
+            info.setText(Settings.GRID_HOVER_MESSAGE);
     }
 
-    private void showInfo(int row, int col) {
-        if (infoLabel != null) {
-            String info = makeInfoText(row, col);
-            infoLabel.setText(info);
+    private void showInfo(int r, int c) {
+        if (info != null) {
+            String txt = makeInfo(r, c);
+            info.setText(txt);
         }
     }
 
     private Color getColor(int r, int c) {
-        int level = data.getLevel(r, c);
+        int level = data.getGasLevel(r, c);
 
-        if (level == 0) {
+        if (level == 0)
             return Settings.COLOR_NO_GAS;
-        } else if (level == 1) {
+        if (level == 1)
             return Settings.COLOR_LOW_GAS;
-        } else if (level == 2) {
-
+        if (level == 2)
             return Settings.COLOR_HIGH_GAS;
-        } else {
-            return Color.WHITE;
-        }
+        return Settings.COLOR_WHITE;
     }
 
-    private String makeInfoText(int r, int c) {
-        int level = data.getLevel(r, c);
-        double percent = data.getPercent(r, c) * 100;
-        double volumeValue = data.getVolume(r, c);
+    private String makeInfo(int r, int c) {
+        int level = data.getGasLevel(r, c);
+        double pct = data.calculateGasPercentage(r, c) * 100;
+        double vol = data.calculateGasVolume(r, c);
 
-        DecimalFormat percentFormat = new DecimalFormat("0.00");
-        DecimalFormat volumeFormat = new DecimalFormat("#,##0.00");
+        DecimalFormat pctFmt = new DecimalFormat("0.00");
+        DecimalFormat volFmt = new DecimalFormat("#,##0.00");
 
-        String volume = volumeFormat.format(volumeValue);
-        String percentText = percentFormat.format(percent);
+        String volTxt = volFmt.format(vol);
+        String pctTxt = pctFmt.format(pct);
 
         String status;
         if (level == 0) {
@@ -201,16 +255,36 @@ public class GridDisplay extends DisplayPanel {
         }
 
         return "Cell (" + r + "," + c + ") - " + status +
-                " | " + percentText + "% | " + volume + " CB.M";
+                " | " + pctTxt + "% | " + volTxt + " CB.M (M)";
     }
 
+    private void animateColors(int rows, int cols) {
+        Thread animationThread = new Thread() {
+            public void run() {
+        
+                for (int r = 0; r < rows; r++) {
+                    for (int c = 0; c < cols; c++) {
+                        JPanel cell = cells[r][c];
+                        Color realColor = getColor(r, c);
+                        cell.setBackground(realColor);
+                        
+                  
+                        try {
+                            Thread.sleep(2); 
+                        } catch (InterruptedException e) {
+                            return;
+                        }
+                    }
+                }
+            }
+        };
+        animationThread.start();
+    }
 
-    @Override
     public void refresh() {
-
-        gridPanel.removeAll();
-        calculateCellSize();
-        createCellPanels();
+        grid.removeAll();
+        calcCellSize();
+        makeCells();
         revalidate();
         repaint();
     }

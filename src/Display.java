@@ -2,27 +2,28 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Display {
     public static void showMessage(Component parent, String title, String msg, int type) {
         JOptionPane.showMessageDialog(parent, msg, title, type);
     }
-    //โชว์หน้าต่างของabout
+
     public static void showAbout(Component parent) {
-        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
+        JDialog dlg = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
-        dialog.setSize(850, 550);
-        dialog.setLocationRelativeTo(null);//เซ็ตให้แสดงตรงกลาง
-        dialog.setResizable(false);//เอาไว้ไม่ให้ปรับขนาดได้
+        dlg.setSize(850, 550);
+        dlg.setLocationRelativeTo(null);
+        dlg.setResizable(false);
 
         JPanel main = new JPanel(new BorderLayout());
         main.setBorder(new EmptyBorder(30, 30, 30, 30));
 
         JLabel title = new JLabel(Settings.ABOUT_TITLE, SwingConstants.CENTER);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
 
         JLabel sub = new JLabel(Settings.ABOUT_DISTRIBUTION, SwingConstants.CENTER);
-        sub.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        sub.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
 
         JPanel top = new JPanel();
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
@@ -33,20 +34,19 @@ public class Display {
 
         JPanel team = new JPanel(new GridLayout(1, 3, 25, 0));
 
-        team.add(makeMember(Settings.IMG1, Settings.MEMBER1, Settings.ID1, Settings.JOB1));
-        team.add(makeMember(Settings.IMG2, Settings.MEMBER2, Settings.ID2, Settings.JOB2));
-        team.add(makeMember(Settings.IMG3, Settings.MEMBER3, Settings.ID3, Settings.JOB3));
+        team.add(makePerson(Settings.IMG1, Settings.MEMBER1, Settings.ID1, Settings.JOB1));
+        team.add(makePerson(Settings.IMG2, Settings.MEMBER2, Settings.ID2, Settings.JOB2));
+        team.add(makePerson(Settings.IMG3, Settings.MEMBER3, Settings.ID3, Settings.JOB3));
 
         JPanel btns = new JPanel(new FlowLayout());
         btns.setBorder(new EmptyBorder(20, 0, 0, 0));
 
         JButton close = new JButton(Settings.BTN_CLOSE_ABOUT);
         close.setPreferredSize(new Dimension(Settings.ABOUT_CLOSE_BTN_WIDTH, Settings.ABOUT_CLOSE_BTN_HEIGHT));
-        close.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        close.addActionListener(new AbstractAction() {
-            @Override
+        close.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
+        close.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dialog.dispose();
+                dlg.dispose();
             }
         });
         btns.add(close);
@@ -55,61 +55,59 @@ public class Display {
         main.add(team, BorderLayout.CENTER);
         main.add(btns, BorderLayout.SOUTH);
 
-        dialog.add(main);
-        dialog.setVisible(true);
+        dlg.add(main);
+        dlg.setVisible(true);
     }
-    //สร้างหน้าmemberขึ้นมา
-    private static JPanel makeMember(String img, String name, String id, String job) {
+
+    private static JPanel makePerson(String img, String name, String id, String job) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
         box.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 2, true),
-                new EmptyBorder(30, 25, 30, 25)
-        ));
+                BorderFactory.createLineBorder(Settings.COLOR_GRAY, 2, true),
+                new EmptyBorder(30, 25, 30, 25)));
         box.setOpaque(false);
 
-        JLabel pic = makePic(img);
+        JLabel pic = getPic(img);
         if (pic != null) {
             pic.setAlignmentX(Component.CENTER_ALIGNMENT);
             box.add(pic);
             box.add(Box.createVerticalStrut(20));
         }
 
-        JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
-        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel nameLbl = new JLabel(name, SwingConstants.CENTER);
+        nameLbl.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 16));
+        nameLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel idLabel = new JLabel("Student ID: " + id, SwingConstants.CENTER);
-        idLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        idLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
+        idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
+        idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel jobLabel = new JLabel("Role: " + job, SwingConstants.CENTER);
-        jobLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        jobLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel jobLbl = new JLabel("Role: " + job, SwingConstants.CENTER);
+        jobLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
+        jobLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        box.add(nameLabel);
+        box.add(nameLbl);
         box.add(Box.createVerticalStrut(10));
-        box.add(idLabel);
+        box.add(idLbl);
         box.add(Box.createVerticalStrut(8));
-        box.add(jobLabel);
+        box.add(jobLbl);
 
         return box;
     }
 
-    private static JLabel makePic(String path) {
+    private static JLabel getPic(String path) {
         try {
-            ImageIcon orig = new ImageIcon(path);
-            Image scaled = orig.getImage().getScaledInstance(Settings.ABOUT_PIC_SIZE, Settings.ABOUT_PIC_SIZE,
+            ImageIcon icon = new ImageIcon(path);
+            Image scaled = icon.getImage().getScaledInstance(Settings.ABOUT_PIC_SIZE, Settings.ABOUT_PIC_SIZE,
                     Image.SCALE_SMOOTH);
 
-            JLabel pic = new JLabel();
-            pic.setIcon(new ImageIcon(scaled));
-            pic.setHorizontalAlignment(SwingConstants.CENTER);
-            return pic;
+            JLabel lbl = new JLabel();
+            lbl.setIcon(new ImageIcon(scaled));
+            lbl.setHorizontalAlignment(SwingConstants.CENTER);
+            return lbl;
         } catch (Exception e) {
-            // ถ้าไม่มีรูป ให้แสดงไอคอนเริ่มต้น
             JLabel def = new JLabel("👤", SwingConstants.CENTER);
-            def.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 80));
+            def.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_HUGE));
             def.setPreferredSize(new Dimension(Settings.ABOUT_PIC_SIZE, Settings.ABOUT_PIC_SIZE));
             return def;
         }

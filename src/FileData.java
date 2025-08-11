@@ -2,44 +2,37 @@ import java.io.*;
 import java.util.*;
 
 public class FileData {
-    // ตัวแปรเก็บข้อมูล
-    private double[][] grid; // เก็บค่าความลึกของชั้นหินล่าง (Base Horizon) ของแต่ละช่อง
-    private double level;    // ระดับ Fluid Contact
-    private int rows;        // จำนวนแถวในตาราง (10 แถว)
-    private int cols;        // จำนวนหลักในตาราง (20 หลัก)
+    private double[][] data;
+    private double fluid;
+    private int rows;
+    private int cols;
 
-    // ฟังก์ชันสร้างออบเจ็กต์ - ตั้งค่าเริ่มต้น
     public FileData() {
-        level = Settings.DEFAULT_FLUID ; // ตั้งระดับชั้นfluidริ่มต้น
-        load(); // โหลดข้อมูลจากไฟล์
+        fluid = Settings.DEFAULT_FLUID;
+        load();
     }
 
-    // ฟังก์ชันโหลดข้อมูลจากไฟล์ dept.txt
     public boolean load() {
-        return loadFromFile("dept.txt");
+        return readFile("dept.txt");
     }
 
-    // ฟังก์ชันอ่านข้อมูลจากไฟล์
-    public boolean loadFromFile(String path) {
-        try (Scanner scan = new Scanner(new File(path))) {
-            // สร้าง List
+    public boolean readFile(String path) {
+        try (Scanner sc = new Scanner(new File(path))) {
             List<Double> nums = new ArrayList<>();
 
-            while (scan.hasNextDouble()) {
-                nums.add(scan.nextDouble());
+            while (sc.hasNextDouble()) {
+                nums.add(sc.nextDouble());
             }
 
-            // กำหนดขนาดตาราง (10 แถว x 20 หลัก = 200 ช่อง)
             rows = Settings.GRID_H;
             cols = Settings.GRID_W;
-            grid = new double[rows][cols];
+            data = new double[rows][cols];
 
             int i = 0;
             for (int r = 0; r < rows; r++) {
                 for (int c = 0; c < cols; c++) {
                     if (i < nums.size()) {
-                        grid[r][c] = nums.get(i++);
-
+                        data[r][c] = nums.get(i++);
                     }
                 }
             }
@@ -49,100 +42,133 @@ public class FileData {
         }
     }
 
-    //หาความลึกของชั้นหินล่าง (Base Horizon) ค่าเดิมจากไฟล์
     public double getBottom(int r, int c) {
-        // ตรวจสอบว่าตำแหน่งที่ขออยู่ในตารางไหม
         if (r >= 0 && r < rows && c >= 0 && c < cols) {
-
-            return grid[r][c];
+            return data[r][c];
         }
         return 0;
     }
 
-    //ความลึกของชั้นหินบน (Top Horizon)
     public double getTop(int r, int c) {
-        // ชั้นหินบน = ชั้นหินล่าง - ความหนาของชั้นหิน 200
         return getBottom(r, c) - Settings.TOP_BASE;
     }
 
-    // คำนวณก๊าซในแต่ละช่อง
     public double getVolume(int r, int c) {
-        double top = getTop(r, c);       // ความลึกชั้นหินบน
-        double bottom = getBottom(r, c); // ความลึกชั้นหินล่าง
+        double top = getTop(r, c);
+        double bottom = getBottom(r, c);
 
+        if (fluid <= top)
+            return 0;
 
-        // ไม่มี
-        if (level <= top) return 0;
+        double depth = Math.min(fluid, bottom) - top;
+        if (depth <= 0)
+            return 0;
 
-        double depth = Math.min(level, bottom) - top; // ความลึก
-        if (depth <= 0) return 0;
-
-        // คำนวณปริมาตร = พื้นที่ช่อง × ความสูงก๊าซ
         return Settings.CELL_SIZE * Settings.CELL_SIZE * depth;
     }
 
-    // เปอร์เซ็นต์ก๊าซในแต่ละช่อง
     public double getPercent(int r, int c) {
-        double top = getTop(r, c);       // ความลึกชั้นหินบน
-        double bottom = getBottom(r, c); // ความลึกชั้นหินล่าง
-        double total = bottom - top;     // ความหนาชั้นหินทั้งหมด (เช่น 2549-2449=100 เมตร)
+        double top = getTop(r, c);
+        double bottom = getBottom(r, c);
+        double total = bottom - top;
 
-        if (total <= 0) return 0; // ถ้าความหนา = 0 → ไม่มีชั้นหิน
+        if (total <= 0)
+            return 0;
 
-        double gas = Math.max(0, Math.min(level, bottom) - top);
-
+        double gas = Math.max(0, Math.min(fluid, bottom) - top);
         return gas / total;
     }
 
-    // ฟังก์ชันกำหนดระดับสีสำหรับแสดงผล
     public int getLevel(int r, int c) {
-        double percent = getPercent(r, c); // หาเปอร์เซ็นต์ก๊าซ
+        double pct = getPercent(r, c);
 
-        System.out.println(r+" "+ c+" "+percent);
-        // กำหนดเงื่อนไขการแสดงสี
-        if (percent <= 0) return 0;
-        if (percent < Settings.GAS_LIMIT) return 1;
+        if (pct <= 0)
+            return 0;
+        if (pct < Settings.GAS_LIMIT)
+            return 1;
         return 2;
     }
 
-    // ฟังก์ชันคำนวณปริมาตรก๊าซทั้งหมดในพื้นที่
     public double getTotalVolume() {
-        double total = 0.0; // ตัวแปรเก็บผลรวม
+        double total = 0.0;
 
-        // วนลูปทุกช่องในตาราง (200 ช่อง)
-        for (int r = 0; r < rows; r++) {        // วนแถว (0-9)
-            for (int c = 0; c < cols; c++) {    // วนหลัก (0-19)
-                total += getVolume(r, c);       // บวกปริมาตรก๊าซของแต่ละช่อง
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                total += getVolume(r, c);
             }
         }
-        return total; // คืนผลรวมปริมาตรก๊าซทั้งหมด
+        return total;
     }
 
-    // ฟังก์ชันปรับค่าระดับ Fluid Contact (เส้นแบ่งน้ำ-ก๊าซ)
-    public void setFluidLevel(double val) {
-        level = val; // เปลี่ยนระดับน้ำ (จะส่งผลต่อการคำนวณปริมาตรก๊าซ)
+    public void setFluid(double level) {
+        fluid = level;
     }
 
-    // ฟังก์ชันดูระดับ Fluid Contact ปัจจุบัน
-    public double getFluidLevel() {
-        return level;
+    public double getFluid() {
+        return fluid;
     }
 
-    // ฟังก์ชันดูจำนวนแถว
     public int getRows() {
         return rows;
     }
 
-    // ฟังก์ชันดูจำนวนหลัก
     public int getCols() {
         return cols;
     }
 
-    // ฟังก์ชันล้างข้อมูลทั้งหมด
-    public void clearData() {
-        grid = new double[0][0]; // สร้างตารางว่าง
-        rows = 0;                // รีเซ็ตจำนวนแถว
-        cols = 0;                // รีเซ็ตจำนวนหลัก
-        level = Settings.DEFAULT_FLUID; // รีเซ็ตระดับน้ำกลับเป็นค่าเริ่มต้น
+    public void clear() {
+        data = new double[0][0];
+        rows = 0;
+        cols = 0;
+        fluid = Settings.DEFAULT_FLUID;
+    }
+
+
+    public double getBottomDepth(int r, int c) {
+        return getBottom(r, c);
+    }
+
+    public double getTopDepth(int r, int c) {
+        return getTop(r, c);
+    }
+
+    public double calculateGasVolume(int r, int c) {
+        return getVolume(r, c);
+    }
+
+    public double calculateGasPercentage(int r, int c) {
+        return getPercent(r, c);
+    }
+
+    public int getGasLevel(int r, int c) {
+        return getLevel(r, c);
+    }
+
+    public double calculateTotalGasVolume() {
+        return getTotalVolume();
+    }
+
+    public int getRowCount() {
+        return getRows();
+    }
+
+    public int getColumnCount() {
+        return getCols();
+    }
+
+    public double getFluidLevel() {
+        return getFluid();
+    }
+
+    public void setFluidLevel(double level) {
+        setFluid(level);
+    }
+
+    public void clearAllData() {
+        clear();
+    }
+
+    public boolean loadFromFile(String path) {
+        return readFile(path);
     }
 }
