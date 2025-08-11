@@ -18,24 +18,28 @@ public class FileData {
 
     public boolean readFile(String path) {
         try (Scanner sc = new Scanner(new File(path))) {
-            List<Double> nums = new ArrayList<>();
-
-            while (sc.hasNextDouble()) {
-                nums.add(sc.nextDouble());
+            List<String> lines = new ArrayList<>();
+            
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine().trim();
+                if (!line.isEmpty()) {
+                    lines.add(line);
+                }
             }
-
-            rows = Settings.GRID_H;
-            cols = Settings.GRID_W;
+            
+            if (lines.isEmpty()) {
+                return false;
+            }
+            
+            rows = lines.size();
+            String[] firstRow = lines.get(0).split("\\s+");
+            cols = firstRow.length;
             data = new double[rows][cols];
-
-            int i = 0;
+            
             for (int r = 0; r < rows; r++) {
-                for (int c = 0; c < cols; c++) {
-                    if (i < nums.size()) {
-
-                        data[r][c] = nums.get(i++);
-                        System.out.println("debug scaner "+ data[r][c]);
-                    }
+                String[] values = lines.get(r).split("\\s+");
+                for (int c = 0; c < Math.min(cols, values.length); c++) {
+                    data[r][c] = Double.parseDouble(values[c]);
                 }
             }
             return true;
