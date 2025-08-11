@@ -17,7 +17,7 @@ public class FileData extends JFrame {
 
     // test
     public boolean load() {
-        return readFile("dept.txt");
+        return readFile("data/dept.txt");
     }
 
     public boolean readFile(String path) {

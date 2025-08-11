@@ -14,8 +14,6 @@ public interface Settings {
     int INPUT_HEIGHT = 45;
 
     // ข้อมูล
-    int GRID_W = 20;
-    int GRID_H = 10;
     double CELL_SIZE = 150.0;
     double DEFAULT_FLUID = 2500.0;
     double TOP_BASE = 200.0;
@@ -88,7 +86,6 @@ public interface Settings {
     // Grid Display
     int GRID_MAX_WIDTH = 800;
     int GRID_MAX_HEIGHT = 600;
-    int GRID_MIN_CELL_SIZE = 22;
     int GRID_MAX_CELL_SIZE = 50;
     int GRID_MIN_SIZE_WIDTH = 600;
     int GRID_MIN_SIZE_HEIGHT = 400;
@@ -144,9 +141,6 @@ public interface Settings {
     String HOVER_DEFAULT = "...";
     String STATS_PREFIX = "Gas Area: ";
     String STATS_CELLS = " cells ";
-    String UNIT_M_SUFFIX = " M";
-    String UNIT_KM_SUFFIX = " KM ";
-    String UNIT_M_BRACKET = " M)";
     String OPEN_BRACKET = "(";
     String CLOSE_BRACKET = ")";
     String PERCENT_SIGN = "%";
@@ -154,12 +148,10 @@ public interface Settings {
 
     int FONT_SIZE_SMALL = 8;
     int FONT_SIZE_TINY = 10;
-    int FONT_SIZE_MEDIUM = 11;
     int FONT_SIZE_LARGE = 18;
     int FONT_SIZE_HUGE = 80;
 
     Color COLOR_GRAY = Color.GRAY;
-    Color COLOR_DARK_GRAY = Color.DARK_GRAY;
     Color COLOR_LIGHT_GRAY = Color.LIGHT_GRAY;
     Color COLOR_BLACK = Color.BLACK;
     Color COLOR_WHITE = Color.WHITE;

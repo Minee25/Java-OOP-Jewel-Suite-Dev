@@ -1,7 +1,6 @@
 
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
-
+import java.io.*;
 //คลาสแม่หลัก หลักสืบทอดจาก JFrame
 public class App extends JFrame {
     private FileData data;
@@ -30,6 +29,7 @@ public class App extends JFrame {
     private boolean isKm;
     private JLabel unitLabel;
     private JLabel statsLabel;
+    private String themeFile = "src/db/data.txt";
     // แสดงหน้าแอพขึ้นมา
 
     public App() {
@@ -49,7 +49,11 @@ public class App extends JFrame {
     }
 
     private void theme() {
-        setLaf(Settings.CURRENT_THEME);
+        String savedTheme = loadThemeFromFile();
+        setLaf(savedTheme);
+        isDark = savedTheme.equals("MONOKAI");
+
+
     }
 
     // UIManager.setLookAndFeel ให้lib จัดการgui
@@ -621,14 +625,17 @@ public class App extends JFrame {
 
         if (isDark) {
             setLaf("MONOKAI");
+            saveThemeToFile("MONOKAI");
             status.setText(Settings.THEME_STATUS_DARK);
             btn.setText(Settings.THEME_LIGHT);
         } else {
             setLaf("ARC_ORANGE");
+            saveThemeToFile("ARC_ORANGE");
             status.setText(Settings.THEME_STATUS_LIGHT);
             btn.setText(Settings.THEME_DARK);
         }
     }
+
 
     private void showLoadingScreen() {
         JDialog loading = new JDialog();
@@ -667,6 +674,22 @@ public class App extends JFrame {
             Thread.sleep(2000);
             loading.dispose();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private String loadThemeFromFile() {
+        try (BufferedReader br = new BufferedReader(new FileReader(themeFile))) {
+            return br.readLine();
+        } catch (IOException e) {
+            return Settings.CURRENT_THEME; // ถ้าไม่มีไฟล์ ใช้ค่ามาตรฐาน
+        }
+    }
+
+
+    private void saveThemeToFile(String theme) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(themeFile))) {
+            bw.write(theme);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
