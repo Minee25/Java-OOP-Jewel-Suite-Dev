@@ -16,7 +16,7 @@ public interface Settings {
     // ข้อมูล
     int GRID_W = 20;
     int GRID_H = 10;
-    double CELL_SIZE = 150.0;
+    double CELL_SIZE = 200.0;
     double DEFAULT_FLUID = 2500.0;
     double TOP_BASE = 200.0;
     double GAS_LIMIT = 0.5;

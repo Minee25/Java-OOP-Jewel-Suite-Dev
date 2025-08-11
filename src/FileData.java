@@ -32,7 +32,9 @@ public class FileData {
             for (int r = 0; r < rows; r++) {
                 for (int c = 0; c < cols; c++) {
                     if (i < nums.size()) {
+
                         data[r][c] = nums.get(i++);
+                        System.out.println("debug scaner "+ data[r][c]);
                     }
                 }
             }
@@ -44,10 +46,7 @@ public class FileData {
 
     // Base Horizon ค่าดั่งเดิมจากไฟล์ในแต่ละช่อง
     public double getBottom(int r, int c) {
-        if (r >= 0 && r < rows && c >= 0 && c < cols) {
-            return data[r][c];
-        }
-        return 0;
+        return data[r][c];
     }
     // Top Horizon - Settings.TOP_BASE(200) ตามที่กำหนดให้
     public double getTop(int r, int c) {
@@ -67,7 +66,9 @@ public class FileData {
         if (fluid <= top)
             return 0;
 
-        double depth = Math.min(fluid, bottom) - top;
+
+        double depth = fluid - top;
+        System.out.println("debug "+bottom+" "+r+" "+c+" "+depth+" "+Settings.CELL_SIZE * Settings.CELL_SIZE * depth);
         if (depth <= 0)
             return 0;
 
