@@ -106,7 +106,7 @@ public class App extends JFrame {
 
         repaint();
     }
-
+    //เอาไว้เซ็ตหน้าวินโดวหน้าหลัก
     private void window() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -115,7 +115,7 @@ public class App extends JFrame {
         setResizable(true);
         setUndecorated(Settings.WINDOW_MENU);
     }
-
+    //สร้างโครงของui
     private void ui() {
         JPanel main = new JPanel(new BorderLayout());
         main.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -125,7 +125,7 @@ public class App extends JFrame {
 
         add(main);
     }
-
+    //เซ็ตค่าต่างๆของพาแนลบนๆ
     private void top(JPanel p) {
         JPanel top = new JPanel(new BorderLayout());
         top.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -186,7 +186,7 @@ public class App extends JFrame {
 
         p.add(top, BorderLayout.NORTH);
     }
-
+    //เซ็ตค่าต่างๆของพาแนลกลางๆ
     private void middle(JPanel p) {
         JPanel mid = new JPanel(new BorderLayout(15, 15));
         mid.setBorder(new EmptyBorder(15, 0, 15, 0));

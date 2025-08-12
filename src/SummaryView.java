@@ -1,9 +1,11 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 
 // ? แก้สีแต่ละอันให้ตรงกับsettingด้วยไนท์
+// มันตรงแล้วนะ
 
 // แสดงผลรวมทั้งหมด
 public class SummaryView extends JDialog {
@@ -152,7 +154,12 @@ public class SummaryView extends JDialog {
     
     private JPanel createButtonPanel() {
         JButton closeButton = new JButton(Settings.SUMMARY_CLOSE);
-        closeButton.addActionListener(event -> dispose());
+        closeButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
         
 
         if (isDarkTheme) {
