@@ -13,6 +13,7 @@ import java.io.*;
 
 // คลาสแม่ไว้รันโปรแกรมหลัก สืบทอดม JFrame
 public class App extends JFrame {
+    
     private FileData data;
     private JPanel panel;
     private GridDisplay gridPanel;
@@ -46,7 +47,7 @@ public class App extends JFrame {
         data = new FileData();
         setup();
         setVisible(true);
-        setExtendedState(Settings.FULL_S_W);
+        setExtendedState(Settings.FULL_S_W); // ขนาดจอตอนรันเสร็จ
     }
 
     private void setup() {
@@ -72,8 +73,9 @@ public class App extends JFrame {
         }
     }
 
-    // เช็ตธีม จากlib 
+    // เช็ตธีม จากlib UIManager.setLookAndFeel 
     //  repaintAll(); สร้างใหม่ทั้งหมดเมื่อเช็ตธีมเสร็จ
+    // setForeground ไว้เช็ตสีตามธีม
     private void setLaf(String name) {
         try {
             if ("MONOKAI".equals(name)) {
@@ -619,6 +621,7 @@ public class App extends JFrame {
         }
     }
 
+    // ไอไนท์ทำ แต่มันไม่ขึ้นในmac วินโดวน่าจะขึ้นปกติ
     private void icon() {
         try {
             ImageIcon icon = new ImageIcon(Settings.ICON_APP);
@@ -627,6 +630,7 @@ public class App extends JFrame {
         }
     }
 
+    // โลโก้โปรแกรม Image.SCALE_SMOOTH ไม่บีบขนาดมั้งนะ
     private JLabel getIcon() {
         try {
             ImageIcon appIcon = new ImageIcon(Settings.APP_ICON_PATH);
@@ -638,24 +642,6 @@ public class App extends JFrame {
         }
     }
 
-    private class ClickLoad implements MouseListener {
-        public void mouseClicked(MouseEvent e) {
-            if (!hasData())
-                load();
-        }
-
-        public void mousePressed(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-    }
 
     private void showThemes(JButton btn) {
         isDark = !isDark;
@@ -883,6 +869,28 @@ public class App extends JFrame {
         }
 
         new SummaryView(this, n, vol, total).setVisible(true);
+    }
+
+
+
+    // จัดการ acction
+    private class ClickLoad implements MouseListener {
+        public void mouseClicked(MouseEvent e) {
+            if (!hasData())
+                load();
+        }
+
+        public void mousePressed(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
     }
 
     private class ThemeButtonListener implements ActionListener {
