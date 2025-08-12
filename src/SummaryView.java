@@ -3,6 +3,9 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+// ? แก้สีแต่ละอันให้ตรงกับsettingด้วยไนท์
+
+// แสดงผลรวมทั้งหมด
 public class SummaryView extends JDialog {
     
  
@@ -289,6 +292,8 @@ public class SummaryView extends JDialog {
     }
     
 
+
+    // หลอดโหลด ของแต่ละสี
     private JProgressBar createPercentageBar(int percentage, Color color) {
         JProgressBar progressBar = new JProgressBar(0, 100);
         progressBar.setValue(Math.max(0, Math.min(100, percentage)));

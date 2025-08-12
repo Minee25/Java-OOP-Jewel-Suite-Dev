@@ -15,7 +15,7 @@ public class FileData extends JFrame {
 
     }
 
-    // test
+    // test ไว้เทสเฉย 
     public boolean load() {
         return readFile("data/dept.txt");
     }
@@ -90,6 +90,12 @@ public class FileData extends JFrame {
             return false;
         }
     }
+
+    // ? คำนวณยากรอถามรุ้นพี่
+    // =====================
+
+
+
 
     // Base Horizon ค่าดั่งเดิมจากไฟล์ในแต่ละช่อง
     public double getBottom(int r, int c) {

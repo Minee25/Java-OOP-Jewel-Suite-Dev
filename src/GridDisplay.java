@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+// คลาสแสดงตารางแก้ส
 public class GridDisplay extends JPanel {
     private FileData data;
     private int size = 40;
@@ -92,6 +93,7 @@ public class GridDisplay extends JPanel {
         setMaximumSize(new Dimension(Settings.GRID_MAX_SIZE_WIDTH, Settings.GRID_MAX_SIZE_HEIGHT));
     }
 
+    // สร้างเลขแสดงจำนวนแถวและคอลัม
     private JPanel addNumbers(JPanel mainGrid, int rows, int cols) {
         JPanel wrapper = new JPanel(new BorderLayout());
 

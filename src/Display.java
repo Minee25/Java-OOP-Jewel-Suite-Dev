@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// คลาสไว้แสดง แจ้งเตือน และ about 
 public class Display {
     public static void showMessage(Component parent, String title, String msg, int type) {
         JOptionPane.showMessageDialog(parent, msg, title, type);
@@ -130,6 +131,7 @@ public class Display {
         return box;
     }
 
+    // ทำรูปโปรไฟล์
     private static JLabel getPic(String path) {
         try {
             ImageIcon icon = new ImageIcon(path);

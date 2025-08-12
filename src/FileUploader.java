@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 
+// หน้ากรอบแสดงให้อัพโหลดไฟล์หน้าแรก
 public class FileUploader extends JPanel {
     private FileData data;
     private boolean isDarkTheme;
     
-    // References to labels for color updates
     private JLabel iconLabel;
     private JLabel titleLabel;
     private JLabel subLabel;
@@ -22,7 +22,7 @@ public class FileUploader extends JPanel {
 
         add(Box.createVerticalStrut(150));
 
-        iconLabel = new JLabel("📁", SwingConstants.CENTER);
+        iconLabel = new JLabel("?", SwingConstants.CENTER);
         iconLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 32));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
@@ -59,6 +59,7 @@ public class FileUploader extends JPanel {
         add(subLabel);
     }
 
+    // เช็คว่าตอนนี้ใช้ธีมอะไร
     private boolean isCurrentThemeDark() {
         return UIManager.getLookAndFeel().getName().contains("Monokai");
     }

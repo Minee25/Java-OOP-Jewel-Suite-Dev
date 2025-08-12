@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.io.*;
 
+// คลาสแม่ไว้รันโปรแกรมหลัก สืบทอดม JFrame
 public class App extends JFrame {
     private FileData data;
     private JPanel panel;
@@ -28,7 +29,6 @@ public class App extends JFrame {
     private JButton sum;
     private boolean isDark = false;
 
-    // References to title labels for color updates
     private JLabel appTitleLabel;
     private JLabel appVersionLabel;
     private JLabel controlTitleLabel;
@@ -36,8 +36,7 @@ public class App extends JFrame {
     private JLabel legendTitleLabel;
     private JLabel resultTitleLabel;
     private JLabel gridTitleLabel;
-    
-    // References to color legend labels
+
     private JLabel noGasLabel;
     private JLabel lowGasLabel;
     private JLabel highGasLabel;
@@ -58,6 +57,7 @@ public class App extends JFrame {
         update();
     }
 
+
     private void theme() {
         String[] loaded = loadSettings();
         String savedTheme = loaded[0];
@@ -72,6 +72,8 @@ public class App extends JFrame {
         }
     }
 
+    // เช็ตธีม จากlib 
+    //  repaintAll(); สร้างใหม่ทั้งหมดเมื่อเช็ตธีมเสร็จ
     private void setLaf(String name) {
         try {
             if ("MONOKAI".equals(name)) {
@@ -578,6 +580,7 @@ public class App extends JFrame {
         updateBtns();
     }
 
+    // ? เดะมาแก้ต่อ
     private void showStats() {
         if (!hasData())
             return;
@@ -684,7 +687,7 @@ public class App extends JFrame {
             total.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
 
-        // Update title labels
+   
         if (appTitleLabel != null) {
             appTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
@@ -707,7 +710,7 @@ public class App extends JFrame {
             gridTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
         
-        // Update color legend labels
+   
         if (noGasLabel != null) {
             noGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         }
@@ -718,7 +721,7 @@ public class App extends JFrame {
             highGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         }
         
-        // Update FileUploader colors
+  
         if (filePanel != null) {
             filePanel.refresh();
         }
@@ -738,7 +741,6 @@ public class App extends JFrame {
             total.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
 
-        // Update title labels
         if (appTitleLabel != null) {
             appTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
@@ -761,7 +763,7 @@ public class App extends JFrame {
             gridTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
         
-        // Update color legend labels
+        
         if (noGasLabel != null) {
             noGasLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
         }
@@ -773,6 +775,7 @@ public class App extends JFrame {
         }
     }
 
+    // หน้าโหลด
     private void showLoadingScreen() {
         JDialog loading = new JDialog();
         loading.setTitle("Loading...");
@@ -807,13 +810,16 @@ public class App extends JFrame {
         loading.setVisible(true);
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(2000); // waitรอ 2วิ
             loading.dispose();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
+
+    // ====== db ====== //
+    // บันทึกฐานข้อมูล และดึงค่าจากฐานข้อมมูล ini
     private void saveSettings(String theme) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
             bw.write("THEME=" + theme);
@@ -841,6 +847,7 @@ public class App extends JFrame {
         return new String[] { theme };
     }
 
+   
     private void saveDB() {
         String themeToSave;
         if (isDark) {
