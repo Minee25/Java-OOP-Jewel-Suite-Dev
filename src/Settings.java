@@ -4,7 +4,7 @@ import static java.awt.Frame.*;
 // ตั้งค่า
 public interface Settings {
 
-    String DB =  "src/db/settings.ini";
+    String DB = "src/db/settings.ini";
     // ธีม
     String CURRENT_THEME = "ARC_ORANGE";
 
@@ -21,10 +21,9 @@ public interface Settings {
     double GAS_LIMIT = 0.5;
 
     // สี
-    Color COLOR_NO_GAS = new Color(231, 76, 60); 
-    Color COLOR_LOW_GAS = new Color(241, 196, 15); 
-    Color COLOR_HIGH_GAS = new Color(46, 204, 113); 
-
+    Color COLOR_NO_GAS = new Color(231, 76, 60);
+    Color COLOR_LOW_GAS = new Color(241, 196, 15);
+    Color COLOR_HIGH_GAS = new Color(46, 204, 113);
 
     String FONT_NAME = "Tahoma";
     int FONT_SIZE_TITLE = 24;
@@ -53,7 +52,7 @@ public interface Settings {
     String EXIT_MSG = "Exit application?";
 
     // ส่วนควบคุม
-    String INPUT_LABEL = "Liquid Depth";
+    String INPUT_LABEL = "Liquid Depth (M)";
     String BTN_CALC = "Calculate";
     String BTN_LOAD = "Load File";
     String BTN_CLEAR = "Clear";
@@ -79,7 +78,7 @@ public interface Settings {
     // อัพโหลดไฟล์
     String GRID_TITLE = "Gas Distribution Grid";
 
-    String FILE_TITLE = "Drop dept.txt file here";
+    String FILE_TITLE = "open file here";
     String FILE_SUB = "or click to select";
     String SELECT_FILE_TITLE = "Select dept.txt";
     String FILE_OF_TYPE = "Text Files (*.txt)";
@@ -139,7 +138,6 @@ public interface Settings {
     String INVALID_INPUT_MSG = "Enter valid number";
     String FILE_CLEARED_MSG = "Cleared";
     String CALC_WITH_LEVEL = "Calc: ";
-    String HOVER_DEFAULT = "...";
     String STATS_PREFIX = "Gas Area: ";
     String STATS_CELLS = " cells ";
     String OPEN_BRACKET = "(";
@@ -157,8 +155,33 @@ public interface Settings {
     Color COLOR_BLACK = Color.BLACK;
     Color COLOR_WHITE = Color.WHITE;
 
+    Color DARK_TEXT_PRIMARY = new Color(255, 255, 255);
+    Color DARK_TEXT_SECONDARY = new Color(220, 220, 220);
+    Color DARK_TEXT_MUTED = new Color(180, 180, 180);
+
+    Color LIGHT_TEXT_PRIMARY = new Color(33, 33, 33);
+    Color LIGHT_TEXT_SECONDARY = new Color(66, 66, 66);
+    Color LIGHT_TEXT_MUTED = new Color(117, 117, 117);
 
     String BTN_SUMMARY = "Summary";
-    String SUMMARY_TITLE = "Overview";
+    String SUMMARY_TITLE = "Gas Distribution Overview";
+
+    // SummaryView ข้อความ
+    String SUMMARY_TOTAL_CELLS = "Total Cells";
+    String SUMMARY_TOTAL_VOLUME = "Total Volume";
+    String SUMMARY_TYPE = "Type";
+    String SUMMARY_CELL_COUNT = "Cell Count";
+    String SUMMARY_VOLUME = "Volume";
+    String SUMMARY_PERCENTAGE = "Percentage";
+    String SUMMARY_CLOSE = "Close";
+    String SUMMARY_CELLS_UNIT = " cells";
+    String SUMMARY_VOLUME_UNIT = " CB.M";
+
+    // Table headers
+    String SUMMARY_HEADER_EMPTY = "";
+    String SUMMARY_HEADER_TYPE = "Type";
+    String SUMMARY_HEADER_CELLS = "Cells";
+    String SUMMARY_HEADER_VOLUME = "Volume";
+    String SUMMARY_HEADER_PERCENT = "% Cells";
 
 }

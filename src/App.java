@@ -1,18 +1,16 @@
-
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.io.*;
-//คลาสแม่หลัก หลักสืบทอดจาก JFrame
+
 public class App extends JFrame {
     private FileData data;
     private JPanel panel;
@@ -25,13 +23,24 @@ public class App extends JFrame {
     private JButton clear;
     private JPanel btns;
     private JLabel info;
-    private JCheckBox km;
-    private boolean isKm;
-    private JLabel unitLabel;
     private JLabel statsLabel;
     private String settingsFile = Settings.DB;
     private JButton sum;
-    // แสดงหน้าแอพขึ้นมา
+    private boolean isDark = false;
+
+    // References to title labels for color updates
+    private JLabel appTitleLabel;
+    private JLabel appVersionLabel;
+    private JLabel controlTitleLabel;
+    private JLabel inputLabel;
+    private JLabel legendTitleLabel;
+    private JLabel resultTitleLabel;
+    private JLabel gridTitleLabel;
+    
+    // References to color legend labels
+    private JLabel noGasLabel;
+    private JLabel lowGasLabel;
+    private JLabel highGasLabel;
 
     public App() {
         showLoadingScreen();
@@ -45,27 +54,24 @@ public class App extends JFrame {
         icon();
         window();
         ui();
-        update();
         theme();
+        update();
     }
 
     private void theme() {
         String[] loaded = loadSettings();
         String savedTheme = loaded[0];
-        boolean savedKm = Boolean.parseBoolean(loaded[1]);
 
         setLaf(savedTheme);
         isDark = savedTheme.equals("MONOKAI");
 
-        km.setSelected(savedKm);
-        isKm = savedKm;
-
-
-
+        if (isDark) {
+            updateTextColorsForDarkTheme();
+        } else {
+            updateTextColorsForLightTheme();
+        }
     }
 
-    // UIManager.setLookAndFeel ให้lib จัดการgui
-    // repaintAll สร้างใหม่ทั้งหมด ใช้กับเปลี่บนธีม
     private void setLaf(String name) {
         try {
             if ("MONOKAI".equals(name)) {
@@ -89,6 +95,13 @@ public class App extends JFrame {
         if (btns != null) {
             SwingUtilities.updateComponentTreeUI(btns);
         }
+
+        if (isDark) {
+            updateTextColorsForDarkTheme();
+        } else {
+            updateTextColorsForLightTheme();
+        }
+
         repaint();
     }
 
@@ -118,16 +131,26 @@ public class App extends JFrame {
         JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JLabel icon = getIcon();
-        JLabel title = new JLabel(Settings.APP_TITLE);
-        title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
+        appTitleLabel = new JLabel(Settings.APP_TITLE);
+        appTitleLabel.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
+        if (isDark) {
+            appTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            appTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
-        JLabel ver = new JLabel(Settings.APP_VERSION);
-        ver.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
+        appVersionLabel = new JLabel(Settings.APP_VERSION);
+        appVersionLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
+        if (isDark) {
+            appVersionLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            appVersionLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
         JPanel titles = new JPanel();
         titles.setLayout(new BoxLayout(titles, BoxLayout.Y_AXIS));
-        titles.add(title);
-        titles.add(ver);
+        titles.add(appTitleLabel);
+        titles.add(appVersionLabel);
 
         if (icon != null) {
             left.add(icon);
@@ -178,11 +201,17 @@ public class App extends JFrame {
         left.setBorder(new EmptyBorder(20, 20, 20, 20));
         left.setPreferredSize(new Dimension(320, 0));
 
-        JLabel title = new JLabel(Settings.CONTROL_TITLE);
-        title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_LARGE));
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        controlTitleLabel = new JLabel(Settings.CONTROL_TITLE);
+        controlTitleLabel.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_LARGE));
+        controlTitleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        left.add(title);
+        if (isDark) {
+            controlTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            controlTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+
+        left.add(controlTitleLabel);
         left.add(Box.createVerticalStrut(25));
         left.add(inputPanel());
         left.add(Box.createVerticalStrut(25));
@@ -198,8 +227,14 @@ public class App extends JFrame {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 
-        JLabel lbl = new JLabel(Settings.INPUT_LABEL);
-        lbl.setAlignmentX(Component.LEFT_ALIGNMENT);
+        inputLabel = new JLabel(Settings.INPUT_LABEL);
+        inputLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        if (isDark) {
+            inputLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            inputLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         JPanel inp = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         inp.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.INPUT_HEIGHT));
@@ -209,26 +244,11 @@ public class App extends JFrame {
         input.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_INPUT));
         inp.add(input);
 
-        JPanel unit = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-        unit.setMaximumSize(new Dimension(Settings.BTN_WIDTH, 40));
-        unit.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        JLabel unitLbl = new JLabel(Settings.UNIT_LABEL);
-        unitLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_NORMAL));
-
-        km = new JCheckBox(Settings.UNIT_KM_TEXT);
-        km.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_NORMAL));
-        km.addActionListener(new UnitCheckboxListener());
-
-        unit.add(unitLbl);
-        unit.add(km);
-
         JButton calc = new JButton(Settings.BTN_CALC);
         calc.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_BIG));
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_BUTTON));
         calc.addActionListener(new CalculateButtonListener());
-
 
         btns = new JPanel();
         btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
@@ -251,7 +271,6 @@ public class App extends JFrame {
         btns.add(sum);
         btns.add(Box.createVerticalStrut(5));
 
-
         clear = new JButton(Settings.BTN_CLEAR);
         clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -259,12 +278,9 @@ public class App extends JFrame {
         clear.addActionListener(new ClearButtonListener());
         btns.add(clear);
 
-
-        box.add(lbl);
+        box.add(inputLabel);
         box.add(Box.createVerticalStrut(8));
         box.add(inp);
-        box.add(Box.createVerticalStrut(5));
-        box.add(unit);
         box.add(Box.createVerticalStrut(15));
         box.add(calc);
         box.add(Box.createVerticalStrut(10));
@@ -273,75 +289,90 @@ public class App extends JFrame {
         return box;
     }
 
-    private void changeUnit(boolean km) {
-        try {
-            double val = Double.parseDouble(input.getText());
-
-            if (isKm != km) {
-                if (km) {
-                    val = val / 1000.0;
-                } else {
-                    val = val * 1000.0;
-                }
-                input.setText(String.format("%.3f", val));
-            }
-
-            isKm = km;
-            String txt;
-            if (isKm) {
-                txt = Settings.UNIT_KM;
-            } else {
-                txt = Settings.UNIT_METER;
-            }
-            showUnit(txt);
-
-        } catch (NumberFormatException e) {
-            status.setText(Settings.INVALID_INPUT_MSG);
-        }
-    }
-
     private JPanel colorPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel(Settings.LEGEND_TITLE);
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        legendTitleLabel = new JLabel(Settings.LEGEND_TITLE);
+        legendTitleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        box.add(title);
+        if (isDark) {
+            legendTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            legendTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+
+        box.add(legendTitleLabel);
         box.add(Box.createVerticalStrut(10));
-        box.add(colorItem(Settings.NO_GAS, Settings.COLOR_NO_GAS));
+        
+        // Create color items and store label references
+        JPanel noGasItem = createColorItem(Settings.NO_GAS, Settings.COLOR_NO_GAS);
+        noGasLabel = getColorItemLabel(noGasItem);
+        box.add(noGasItem);
+        
         box.add(Box.createVerticalStrut(5));
-        box.add(colorItem(Settings.LOW_GAS, Settings.COLOR_LOW_GAS));
+        
+        JPanel lowGasItem = createColorItem(Settings.LOW_GAS, Settings.COLOR_LOW_GAS);
+        lowGasLabel = getColorItemLabel(lowGasItem);
+        box.add(lowGasItem);
+        
         box.add(Box.createVerticalStrut(5));
-        box.add(colorItem(Settings.HIGH_GAS, Settings.COLOR_HIGH_GAS));
+        
+        JPanel highGasItem = createColorItem(Settings.HIGH_GAS, Settings.COLOR_HIGH_GAS);
+        highGasLabel = getColorItemLabel(highGasItem);
+        box.add(highGasItem);
 
         return box;
     }
 
-    private JPanel colorItem(String txt, Color c) {
+    private JPanel createColorItem(String txt, Color c) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         row.setMaximumSize(new Dimension(Settings.BTN_WIDTH, 30));
 
-        JPanel box = new JPanel();
-        box.setPreferredSize(new Dimension(24, 24));
-        box.setBackground(c);
-        box.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        JPanel colorBox = new JPanel();
+        colorBox.setPreferredSize(new Dimension(24, 24));
+        colorBox.setBackground(c);
+        colorBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 
         JLabel lbl = new JLabel(txt);
         lbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
-        row.add(box);
+
+        if (isDark) {
+            lbl.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            lbl.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
+
+        row.add(colorBox);
         row.add(Box.createHorizontalStrut(12));
         row.add(lbl);
 
         return row;
+    }
+    
+    private JLabel getColorItemLabel(JPanel colorItem) {
+        // Get the label from the color item panel (it's the 3rd component)
+        Component[] components = colorItem.getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JLabel) {
+                return (JLabel) comp;
+            }
+        }
+        return null;
     }
 
     private JPanel resultPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
 
-        JLabel title = new JLabel(Settings.RESULT_TITLE);
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        resultTitleLabel = new JLabel(Settings.RESULT_TITLE);
+        resultTitleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        if (isDark) {
+            resultTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            resultTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         total = new JLabel(Settings.TOTAL_GAS);
         total.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
@@ -350,22 +381,26 @@ public class App extends JFrame {
         status = new JLabel(Settings.STATUS_READY);
         status.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        unitLabel = new JLabel(Settings.UNIT_METER);
-        unitLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
-        unitLabel.setForeground(Settings.COLOR_GRAY);
-        unitLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        if (isDark) {
+            status.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            status.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         statsLabel = new JLabel("Statistics: -");
         statsLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
-        statsLabel.setForeground(Settings.COLOR_GRAY);
         statsLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        box.add(title);
+        if (isDark) {
+            statsLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            statsLabel.setForeground(Settings.LIGHT_TEXT_MUTED);
+        }
+
+        box.add(resultTitleLabel);
         box.add(Box.createVerticalStrut(10));
         box.add(total);
         box.add(Box.createVerticalStrut(8));
-        box.add(unitLabel);
-        box.add(Box.createVerticalStrut(5));
         box.add(statsLabel);
         box.add(Box.createVerticalStrut(8));
         box.add(status);
@@ -377,26 +412,37 @@ public class App extends JFrame {
         JPanel right = new JPanel(new BorderLayout(0, 10));
         right.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-        JLabel title = new JLabel(Settings.GRID_TITLE);
-        title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 18));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        gridTitleLabel = new JLabel(Settings.GRID_TITLE);
+        gridTitleLabel.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 18));
+        gridTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        gridTitleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        if (isDark) {
+            gridTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            gridTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         filePanel = new FileUploader(data);
         panel = filePanel;
         panel.addMouseListener(new ClickLoad());
 
-        info = new JLabel("Hover");
+        info = new JLabel("");
         info.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
         info.setHorizontalAlignment(SwingConstants.CENTER);
-        info.setForeground(Color.GRAY);
         info.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
+        if (isDark) {
+            info.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            info.setForeground(Settings.LIGHT_TEXT_MUTED);
+        }
 
         JPanel grid = new JPanel(new BorderLayout());
         grid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         grid.add(panel, BorderLayout.CENTER);
 
-        right.add(title, BorderLayout.NORTH);
+        right.add(gridTitleLabel, BorderLayout.NORTH);
         right.add(grid, BorderLayout.CENTER);
         right.add(info, BorderLayout.SOUTH);
 
@@ -431,7 +477,6 @@ public class App extends JFrame {
         }
     }
 
-    // คำนวณ
     private void calc() {
         if (!hasData()) {
             status.setText(Settings.LOAD_FIRST_MSG);
@@ -441,20 +486,8 @@ public class App extends JFrame {
 
         try {
             double inputValue = Double.parseDouble(input.getText());
-            double fluidLevelInMeters;
-            if (isKm) {
-                fluidLevelInMeters = inputValue * 1000.0;
-                String calcText = Settings.CALC_WITH_LEVEL + inputValue + " KM (" + fluidLevelInMeters + " M)";
-                if (calcText.length() > 35) {
-                    calcText = Settings.CALC_WITH_LEVEL + inputValue + " KM\n(" + fluidLevelInMeters + " M)";
-                }
-                status.setText(calcText);
-            } else {
-                fluidLevelInMeters = inputValue;
-                status.setText(Settings.CALC_WITH_LEVEL + inputValue + " M");
-            }
-
-            data.setFluidLevel(fluidLevelInMeters);
+            data.setFluidLevel(inputValue);
+            status.setText(Settings.CALC_WITH_LEVEL + inputValue + " M");
             update();
         } catch (NumberFormatException e) {
             status.setText(Settings.INVALID_NUMBER_MSG);
@@ -464,21 +497,16 @@ public class App extends JFrame {
     private void clear() {
         data.clearAllData();
         input.setText(String.valueOf(Settings.DEFAULT_FLUID));
-
-        isKm = false;
-        km.setSelected(false);
-        showUnit(Settings.UNIT_METER);
-
         update();
         updateBtns();
         status.setText(Settings.FILE_CLEARED_MSG);
+        info.setText("");
     }
 
     private void updateBtns() {
         btns.removeAll();
 
         if (hasData()) {
-
             clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             clear.setAlignmentX(Component.LEFT_ALIGNMENT);
             clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
@@ -487,22 +515,17 @@ public class App extends JFrame {
 
             btns.add(Box.createVerticalStrut(5));
 
-
             sum.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             sum.setAlignmentX(Component.LEFT_ALIGNMENT);
             sum.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
             sum.updateUI();
             btns.add(sum);
         } else {
-
             load.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             load.setAlignmentX(Component.LEFT_ALIGNMENT);
             load.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
             load.updateUI();
             btns.add(load);
-
-            btns.add(Box.createVerticalStrut(5));
-
         }
 
         SwingUtilities.updateComponentTreeUI(btns);
@@ -514,24 +537,8 @@ public class App extends JFrame {
         double vol = data.calculateTotalGasVolume();
         DecimalFormat fmt = new DecimalFormat("#,##0.00");
 
-        String unit;
-        String txt;
-        if (isKm) {
-            unit = Settings.UNIT_KM3;
-            txt = Settings.UNIT_KM;
-        } else {
-            unit = Settings.UNIT_M3;
-            txt = Settings.UNIT_METER;
-        }
-
-        double display = vol;
-        if (isKm) {
-            display = vol / 1000000000.0;
-        }
-
-        String totalText = String.format(Settings.TOTAL_GAS, fmt.format(display)) + " " + unit;
+        String totalText = String.format(Settings.TOTAL_GAS, fmt.format(vol)) + " " + Settings.UNIT_M3;
         total.setText(totalText);
-        showUnit(txt);
         showStats();
 
         if (panel != null) {
@@ -569,12 +576,6 @@ public class App extends JFrame {
             }
         }
         updateBtns();
-    }
-
-    private void showUnit(String txt) {
-        if (unitLabel != null) {
-            unitLabel.setText(txt);
-        }
     }
 
     private void showStats() {
@@ -653,23 +654,124 @@ public class App extends JFrame {
         }
     }
 
-    private boolean isDark = false;
-
     private void showThemes(JButton btn) {
         isDark = !isDark;
         if (isDark) {
             setLaf("MONOKAI");
-
+            updateTextColorsForDarkTheme();
             status.setText(Settings.THEME_STATUS_DARK);
             btn.setText(Settings.THEME_LIGHT);
         } else {
             setLaf("ARC_ORANGE");
+            updateTextColorsForLightTheme();
             status.setText(Settings.THEME_STATUS_LIGHT);
             btn.setText(Settings.THEME_DARK);
         }
         saveDB();
     }
 
+    private void updateTextColorsForDarkTheme() {
+        if (statsLabel != null) {
+            statsLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        if (info != null) {
+            info.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        if (status != null) {
+            status.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (total != null) {
+            total.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+
+        // Update title labels
+        if (appTitleLabel != null) {
+            appTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (appVersionLabel != null) {
+            appVersionLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        if (controlTitleLabel != null) {
+            controlTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (inputLabel != null) {
+            inputLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (legendTitleLabel != null) {
+            legendTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (resultTitleLabel != null) {
+            resultTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        if (gridTitleLabel != null) {
+            gridTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        }
+        
+        // Update color legend labels
+        if (noGasLabel != null) {
+            noGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        if (lowGasLabel != null) {
+            lowGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        if (highGasLabel != null) {
+            highGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        }
+        
+        // Update FileUploader colors
+        if (filePanel != null) {
+            filePanel.refresh();
+        }
+    }
+
+    private void updateTextColorsForLightTheme() {
+        if (statsLabel != null) {
+            statsLabel.setForeground(Settings.LIGHT_TEXT_MUTED);
+        }
+        if (info != null) {
+            info.setForeground(Settings.LIGHT_TEXT_MUTED);
+        }
+        if (status != null) {
+            status.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (total != null) {
+            total.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+
+        // Update title labels
+        if (appTitleLabel != null) {
+            appTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (appVersionLabel != null) {
+            appVersionLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
+        if (controlTitleLabel != null) {
+            controlTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (inputLabel != null) {
+            inputLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (legendTitleLabel != null) {
+            legendTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (resultTitleLabel != null) {
+            resultTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        if (gridTitleLabel != null) {
+            gridTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
+        
+        // Update color legend labels
+        if (noGasLabel != null) {
+            noGasLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
+        if (lowGasLabel != null) {
+            lowGasLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
+        if (highGasLabel != null) {
+            highGasLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
+    }
 
     private void showLoadingScreen() {
         JDialog loading = new JDialog();
@@ -712,11 +814,10 @@ public class App extends JFrame {
         }
     }
 
-    private void saveSettings(String theme, boolean kmSelected) {
+    private void saveSettings(String theme) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
             bw.write("THEME=" + theme);
-            bw.newLine();
-            bw.write("UNIT_KM=" + kmSelected);
+            bw.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -724,23 +825,23 @@ public class App extends JFrame {
 
     private String[] loadSettings() {
         String theme = Settings.CURRENT_THEME;
-        boolean kmSelected = false;
+
         try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
             String line;
             while ((line = br.readLine()) != null) {
+                line = line.trim();
                 if (line.startsWith("THEME=")) {
-                    theme = line.substring(6);
-                } else if (line.startsWith("UNIT_KM=")) {
-                    kmSelected = Boolean.parseBoolean(line.substring(8));
+                    theme = line.substring(6).trim();
                 }
             }
         } catch (IOException e) {
 
         }
-        return new String[]{theme, String.valueOf(kmSelected)};
+
+        return new String[] { theme };
     }
 
-    private void saveDB(){
+    private void saveDB() {
         String themeToSave;
         if (isDark) {
             themeToSave = "MONOKAI";
@@ -748,8 +849,7 @@ public class App extends JFrame {
             themeToSave = "ARC_ORANGE";
         }
 
-        saveSettings(themeToSave, km.isSelected());
-
+        saveSettings(themeToSave);
     }
 
     private void showSummary() {
@@ -768,7 +868,8 @@ public class App extends JFrame {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 int lv = data.getLevel(r, c);
-                if (lv < 0 || lv > 2) lv = 0;
+                if (lv < 0 || lv > 2)
+                    lv = 0;
                 n[lv]++;
                 vol[lv] += data.getVolume(r, c);
             }
@@ -776,7 +877,6 @@ public class App extends JFrame {
 
         new SummaryView(this, n, vol, total).setVisible(true);
     }
-
 
     private class ThemeButtonListener implements ActionListener {
         private JButton button;
@@ -808,14 +908,6 @@ public class App extends JFrame {
         }
     }
 
-    private class UnitCheckboxListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            changeUnit(km.isSelected());
-            saveDB();
-
-        }
-    }
-
     private class CalculateButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             calc();
@@ -839,6 +931,4 @@ public class App extends JFrame {
             showSummary();
         }
     }
-
-
 }

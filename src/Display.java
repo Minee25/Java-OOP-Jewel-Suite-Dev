@@ -10,6 +10,8 @@ public class Display {
     }
 
     public static void showAbout(Component parent) {
+        boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai");
+        
         JDialog dlg = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
         dlg.setSize(850, 550);
@@ -22,9 +24,21 @@ public class Display {
 
         JLabel title = new JLabel(Settings.ABOUT_TITLE, SwingConstants.CENTER);
         title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
+        
+        if (isDarkTheme) {
+            title.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            title.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         JLabel sub = new JLabel(Settings.ABOUT_DISTRIBUTION, SwingConstants.CENTER);
         sub.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
+        
+        if (isDarkTheme) {
+            sub.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            sub.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
         JPanel top = new JPanel();
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
@@ -75,17 +89,37 @@ public class Display {
             box.add(Box.createVerticalStrut(20));
         }
 
+        boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai");
+        
         JLabel nameLbl = new JLabel(name, SwingConstants.CENTER);
         nameLbl.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 16));
         nameLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            nameLbl.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            nameLbl.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
         JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
         idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            idLbl.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            idLbl.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
         JLabel jobLbl = new JLabel("Role: " + job, SwingConstants.CENTER);
         jobLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         jobLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            jobLbl.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            jobLbl.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
         box.add(nameLbl);
         box.add(Box.createVerticalStrut(10));
@@ -106,7 +140,7 @@ public class Display {
             lbl.setHorizontalAlignment(SwingConstants.CENTER);
             return lbl;
         } catch (Exception e) {
-            JLabel def = new JLabel("👤", SwingConstants.CENTER);
+            JLabel def = new JLabel("?", SwingConstants.CENTER);
             def.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, Settings.FONT_SIZE_HUGE));
             def.setPreferredSize(new Dimension(Settings.ABOUT_PIC_SIZE, Settings.ABOUT_PIC_SIZE));
             return def;

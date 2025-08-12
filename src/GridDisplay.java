@@ -14,15 +14,21 @@ public class GridDisplay extends JPanel {
     private JLabel info;
     private Border normal;
     private Border hover;
+    private boolean isDarkTheme;
 
     public GridDisplay(FileData data) {
         this.data = data;
+        this.isDarkTheme = isCurrentThemeDark();
         makeBorder();
         makeGrid();
         calcCellSize();
         makeCells();
         setLayout(new BorderLayout());
         add(grid, BorderLayout.CENTER);
+    }
+    
+    private boolean isCurrentThemeDark() {
+        return UIManager.getLookAndFeel().getName().contains("Monokai");
     }
 
     private void makeBorder() {
@@ -94,7 +100,11 @@ public class GridDisplay extends JPanel {
         for (int c = 0; c < cols; c++) {
             JLabel num = new JLabel(String.valueOf(c), SwingConstants.CENTER);
             num.setFont(new Font(Font.MONOSPACED, Font.BOLD, Settings.FONT_SIZE_TINY));
-            num.setForeground(Settings.COLOR_GRAY);
+            if (isDarkTheme) {
+                num.setForeground(Settings.DARK_TEXT_SECONDARY);
+            } else {
+                num.setForeground(Settings.LIGHT_TEXT_MUTED);
+            }
             topNumbers.add(num);
         }
 
@@ -103,7 +113,11 @@ public class GridDisplay extends JPanel {
         for (int r = 0; r < rows; r++) {
             JLabel num = new JLabel(String.valueOf(r), SwingConstants.CENTER);
             num.setFont(new Font(Font.MONOSPACED, Font.BOLD, Settings.FONT_SIZE_TINY));
-            num.setForeground(Settings.COLOR_GRAY);
+            if (isDarkTheme) {
+                num.setForeground(Settings.DARK_TEXT_SECONDARY);
+            } else {
+                num.setForeground(Settings.LIGHT_TEXT_MUTED);
+            }
             num.setPreferredSize(new Dimension(25, size));
             leftNumbers.add(num);
         }
@@ -135,6 +149,14 @@ public class GridDisplay extends JPanel {
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
         lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
+        
+        Color cellBg = getColor(r, c);
+        if (isColorDark(cellBg)) {
+            lbl.setForeground(Color.WHITE);
+        } else {
+            lbl.setForeground(Color.BLACK);
+        }
+        
         cell.add(lbl, BorderLayout.CENTER);
         cell.addMouseListener(new CellMouse(r, c, cell));
         return cell;
@@ -188,7 +210,7 @@ public class GridDisplay extends JPanel {
             cell.setBackground(normalColor);
 
             if (info != null)
-                info.setText(Settings.HOVER_DEFAULT);
+                info.setText(Settings.GRID_HOVER_MESSAGE);
         }
     }
 
@@ -265,7 +287,13 @@ public class GridDisplay extends JPanel {
 
 
 
+    private boolean isColorDark(Color color) {
+      
+        return color.equals(Settings.COLOR_NO_GAS);
+    }
+
     public void refresh() {
+        this.isDarkTheme = isCurrentThemeDark();
         grid.removeAll();
         calcCellSize();
         makeCells();

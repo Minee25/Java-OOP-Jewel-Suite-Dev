@@ -3,9 +3,16 @@ import java.awt.*;
 
 public class FileUploader extends JPanel {
     private FileData data;
+    private boolean isDarkTheme;
+    
+    // References to labels for color updates
+    private JLabel iconLabel;
+    private JLabel titleLabel;
+    private JLabel subLabel;
 
     public FileUploader(FileData data) {
         this.data = data;
+        this.isDarkTheme = isCurrentThemeDark();
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createCompoundBorder(
@@ -15,27 +22,75 @@ public class FileUploader extends JPanel {
 
         add(Box.createVerticalStrut(150));
 
-        JLabel icon = new JLabel("?", SwingConstants.CENTER);
-        icon.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 32));
-        icon.setAlignmentX(Component.CENTER_ALIGNMENT);
+        iconLabel = new JLabel("📁", SwingConstants.CENTER);
+        iconLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 32));
+        iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            iconLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            iconLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
-        JLabel title = new JLabel(Settings.FILE_TITLE, SwingConstants.CENTER);
-        title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel = new JLabel(Settings.FILE_TITLE, SwingConstants.CENTER);
+        titleLabel.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            titleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+        } else {
+            titleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+        }
 
-        JLabel sub = new JLabel(Settings.FILE_SUB, SwingConstants.CENTER);
-        sub.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
-        sub.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subLabel = new JLabel(Settings.FILE_SUB, SwingConstants.CENTER);
+        subLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
+        subLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        if (isDarkTheme) {
+            subLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+        } else {
+            subLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+        }
 
-        add(icon);
+        add(iconLabel);
         add(Box.createVerticalStrut(10));
-        add(title);
+        add(titleLabel);
         add(Box.createVerticalStrut(5));
-        add(sub);
+        add(subLabel);
+    }
+
+    private boolean isCurrentThemeDark() {
+        return UIManager.getLookAndFeel().getName().contains("Monokai");
     }
 
     public void refresh() {
+        this.isDarkTheme = isCurrentThemeDark();
+        updateTextColors();
         revalidate();
         repaint();
+    }
+    
+    private void updateTextColors() {
+        if (isDarkTheme) {
+            if (iconLabel != null) {
+                iconLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+            }
+            if (titleLabel != null) {
+                titleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
+            }
+            if (subLabel != null) {
+                subLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
+            }
+        } else {
+            if (iconLabel != null) {
+                iconLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+            }
+            if (titleLabel != null) {
+                titleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
+            }
+            if (subLabel != null) {
+                subLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
+            }
+        }
     }
 }
