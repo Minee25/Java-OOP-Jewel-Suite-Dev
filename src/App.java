@@ -165,17 +165,17 @@ public class App extends JFrame {
         JButton theme = new JButton(Settings.THEME_DARK);
         theme.setPreferredSize(new Dimension(90, 35));
         theme.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        theme.addActionListener(new ThemeAction(this, theme));
+        theme.addActionListener(new Actions.ThemeAction(this, theme));
 
         JButton about = new JButton(Settings.BTN_ABOUT);
         about.setPreferredSize(new Dimension(100, 35));
         about.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        about.addActionListener(new AboutAction(about));
+        about.addActionListener(new Actions.AboutAction(about));
 
         JButton exit = new JButton(Settings.BTN_EXIT);
         exit.setPreferredSize(new Dimension(80, 35));
         exit.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        exit.addActionListener(new ExitAction(this));
+        exit.addActionListener(new Actions.ExitAction(this));
 
         right.add(theme);
         right.add(about);
@@ -250,7 +250,7 @@ public class App extends JFrame {
         calc.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_BIG));
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_BUTTON));
-        calc.addActionListener(new CalculateAction(this));
+        calc.addActionListener(new Actions.CalculateAction(this));
 
         btns = new JPanel();
         btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
@@ -261,7 +261,7 @@ public class App extends JFrame {
         load.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         load.setAlignmentX(Component.LEFT_ALIGNMENT);
         load.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        load.addActionListener(new LoadAction(this));
+        load.addActionListener(new Actions.LoadAction(this));
         btns.add(load);
         btns.add(Box.createVerticalStrut(5));
 
@@ -269,7 +269,7 @@ public class App extends JFrame {
         sum.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         sum.setAlignmentX(Component.LEFT_ALIGNMENT);
         sum.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        sum.addActionListener(new SummaryAction(this));
+        sum.addActionListener(new Actions.SummaryAction(this));
         btns.add(sum);
         btns.add(Box.createVerticalStrut(5));
 
@@ -277,7 +277,7 @@ public class App extends JFrame {
         clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
         clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        clear.addActionListener(new ClearAction(this));
+        clear.addActionListener(new Actions.ClearAction(this));
         btns.add(clear);
 
         box.add(inputLabel);
@@ -427,7 +427,7 @@ public class App extends JFrame {
 
         filePanel = new FileUploader(data);
         panel = filePanel;
-        panel.addMouseListener(new ClickLoadAction(this));
+        panel.addMouseListener(new Actions.ClickLoadAction(this));
 
         info = new JLabel("");
         info.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
@@ -564,7 +564,7 @@ public class App extends JFrame {
             } else {
                 filePanel = new FileUploader(data);
                 panel = filePanel;
-                panel.addMouseListener(new ClickLoadAction(this));
+                panel.addMouseListener(new Actions.ClickLoadAction(this));
                 gridPanel = null;
             }
             right.add(panel, BorderLayout.CENTER);

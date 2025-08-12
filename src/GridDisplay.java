@@ -160,7 +160,7 @@ public class GridDisplay extends JPanel {
         }
         
         cell.add(lbl, BorderLayout.CENTER);
-        cell.addMouseListener(new CellMouseAction(r, c, cell, this));
+        cell.addMouseListener(new Actions.CellMouseAction(r, c, cell, this));
         return cell;
     }
 
