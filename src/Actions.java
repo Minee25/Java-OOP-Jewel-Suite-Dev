@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 // รวมพวกแอคชั่นปุ่ม
 public class Actions {
     
-
+    //แอคชั่นปของปุ่มabout
     public static class AboutAction implements ActionListener {
         private JButton btn;
         
@@ -20,7 +20,7 @@ public class Actions {
             Display.showAbout(btn);
         }
     }
-    
+    //แอคชั่นปของปุ่มCalculate
     public static class CalculateAction implements ActionListener {
         private App app;
         
@@ -32,7 +32,7 @@ public class Actions {
             app.calculate();
         }
     }
-    
+    //แอคชั่นปของปุ่มClear
     public static class ClearAction implements ActionListener {
         private App app;
         
@@ -44,7 +44,7 @@ public class Actions {
             app.clearData();
         }
     }
-    
+    //แอคชั่นปของปุ่มExit
     public static class ExitAction implements ActionListener {
         private App app;
         
@@ -56,7 +56,7 @@ public class Actions {
             app.exitApp();
         }
     }
-    
+    //แอคชั่นปของปุ่มLoadFile
     public static class LoadAction implements ActionListener {
         private App app;
         
@@ -68,7 +68,7 @@ public class Actions {
             app.loadFile();
         }
     }
-    
+    //แอคชั่นปของปุ่มSummary
     public static class SummaryAction implements ActionListener {
         private App app;
         
@@ -80,7 +80,7 @@ public class Actions {
             app.showSummary();
         }
     }
-    
+    //แอคชั่นปของปุ่มเปลี่ยนธีม
     public static class ThemeAction implements ActionListener {
         private App app;
         private JButton btn;
@@ -94,7 +94,7 @@ public class Actions {
             app.changeTheme(btn);
         }
     }
-    
+    //แอคชั่นปของเมาส์เวลาชี้ที่ช่องมันจะแสดงคอรั่มและโรว
     public static class CellMouseAction implements MouseListener {
         private int r, c;
         private JPanel cell;
