@@ -4,8 +4,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
@@ -13,7 +12,7 @@ import java.io.*;
 
 // คลาสแม่ไว้รันโปรแกรมหลัก สืบทอดม JFrame
 public class App extends JFrame {
-    
+
     private FileData data;
     private JPanel panel;
     private GridDisplay gridPanel;
@@ -58,7 +57,6 @@ public class App extends JFrame {
         update();
     }
 
-
     private void theme() {
         String[] loaded = loadSettings();
         String savedTheme = loaded[0];
@@ -73,8 +71,8 @@ public class App extends JFrame {
         }
     }
 
-    // เช็ตธีม จากlib UIManager.setLookAndFeel 
-    //  repaintAll(); สร้างใหม่ทั้งหมดเมื่อเช็ตธีมเสร็จ
+    // เช็ตธีม จากlib UIManager.setLookAndFeel
+    // repaintAll(); สร้างใหม่ทั้งหมดเมื่อเช็ตธีมเสร็จ
     // setForeground ไว้เช็ตสีตามธีม
     private void setLaf(String name) {
         try {
@@ -167,17 +165,17 @@ public class App extends JFrame {
         JButton theme = new JButton(Settings.THEME_DARK);
         theme.setPreferredSize(new Dimension(90, 35));
         theme.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        theme.addActionListener(new ThemeButtonListener(theme));
+        theme.addActionListener(new ThemeAction(this, theme));
 
         JButton about = new JButton(Settings.BTN_ABOUT);
         about.setPreferredSize(new Dimension(100, 35));
         about.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        about.addActionListener(new AboutButtonListener(about));
+        about.addActionListener(new AboutAction(about));
 
         JButton exit = new JButton(Settings.BTN_EXIT);
         exit.setPreferredSize(new Dimension(80, 35));
         exit.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
-        exit.addActionListener(new ExitButtonListener());
+        exit.addActionListener(new ExitAction(this));
 
         right.add(theme);
         right.add(about);
@@ -252,7 +250,7 @@ public class App extends JFrame {
         calc.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_BIG));
         calc.setAlignmentX(Component.LEFT_ALIGNMENT);
         calc.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_BUTTON));
-        calc.addActionListener(new CalculateButtonListener());
+        calc.addActionListener(new CalculateAction(this));
 
         btns = new JPanel();
         btns.setLayout(new BoxLayout(btns, BoxLayout.Y_AXIS));
@@ -263,7 +261,7 @@ public class App extends JFrame {
         load.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         load.setAlignmentX(Component.LEFT_ALIGNMENT);
         load.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        load.addActionListener(new LoadButtonListener());
+        load.addActionListener(new LoadAction(this));
         btns.add(load);
         btns.add(Box.createVerticalStrut(5));
 
@@ -271,7 +269,7 @@ public class App extends JFrame {
         sum.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         sum.setAlignmentX(Component.LEFT_ALIGNMENT);
         sum.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        sum.addActionListener(new SummaryButtonListener());
+        sum.addActionListener(new SummaryAction(this));
         btns.add(sum);
         btns.add(Box.createVerticalStrut(5));
 
@@ -279,7 +277,7 @@ public class App extends JFrame {
         clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
         clear.setAlignmentX(Component.LEFT_ALIGNMENT);
         clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-        clear.addActionListener(new ClearButtonListener());
+        clear.addActionListener(new ClearAction(this));
         btns.add(clear);
 
         box.add(inputLabel);
@@ -308,20 +306,20 @@ public class App extends JFrame {
 
         box.add(legendTitleLabel);
         box.add(Box.createVerticalStrut(10));
-        
+
         // Create color items and store label references
         JPanel noGasItem = createColorItem(Settings.NO_GAS, Settings.COLOR_NO_GAS);
         noGasLabel = getColorItemLabel(noGasItem);
         box.add(noGasItem);
-        
+
         box.add(Box.createVerticalStrut(5));
-        
+
         JPanel lowGasItem = createColorItem(Settings.LOW_GAS, Settings.COLOR_LOW_GAS);
         lowGasLabel = getColorItemLabel(lowGasItem);
         box.add(lowGasItem);
-        
+
         box.add(Box.createVerticalStrut(5));
-        
+
         JPanel highGasItem = createColorItem(Settings.HIGH_GAS, Settings.COLOR_HIGH_GAS);
         highGasLabel = getColorItemLabel(highGasItem);
         box.add(highGasItem);
@@ -353,7 +351,7 @@ public class App extends JFrame {
 
         return row;
     }
-    
+
     private JLabel getColorItemLabel(JPanel colorItem) {
         // Get the label from the color item panel (it's the 3rd component)
         Component[] components = colorItem.getComponents();
@@ -429,7 +427,7 @@ public class App extends JFrame {
 
         filePanel = new FileUploader(data);
         panel = filePanel;
-        panel.addMouseListener(new ClickLoad());
+        panel.addMouseListener(new ClickLoadAction(this));
 
         info = new JLabel("");
         info.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
@@ -453,11 +451,11 @@ public class App extends JFrame {
         p.add(right, BorderLayout.CENTER);
     }
 
-    private boolean hasData() {
+    public boolean hasData() {
         return data.getRowCount() > 0 && data.getColumnCount() > 0;
     }
 
-    private void load() {
+    public void loadFile() {
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle(Settings.SELECT_FILE_TITLE);
         fc.setFileFilter(new FileNameExtensionFilter(Settings.FILE_OF_TYPE, "txt"));
@@ -481,7 +479,7 @@ public class App extends JFrame {
         }
     }
 
-    private void calc() {
+    public void calculate() {
         if (!hasData()) {
             status.setText(Settings.LOAD_FIRST_MSG);
             Display.showMessage(this, Settings.STATUS_ERROR, Settings.LOAD_FIRST_MSG, JOptionPane.ERROR_MESSAGE);
@@ -498,7 +496,7 @@ public class App extends JFrame {
         }
     }
 
-    private void clear() {
+    public void clearData() {
         data.clearAllData();
         input.setText(String.valueOf(Settings.DEFAULT_FLUID));
         update();
@@ -566,7 +564,7 @@ public class App extends JFrame {
             } else {
                 filePanel = new FileUploader(data);
                 panel = filePanel;
-                panel.addMouseListener(new ClickLoad());
+                panel.addMouseListener(new ClickLoadAction(this));
                 gridPanel = null;
             }
             right.add(panel, BorderLayout.CENTER);
@@ -613,7 +611,7 @@ public class App extends JFrame {
         }
     }
 
-    private void exit() {
+    public void exitApp() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
@@ -642,8 +640,7 @@ public class App extends JFrame {
         }
     }
 
-
-    private void showThemes(JButton btn) {
+    public void changeTheme(JButton btn) {
         isDark = !isDark;
         if (isDark) {
             setLaf("MONOKAI");
@@ -673,7 +670,6 @@ public class App extends JFrame {
             total.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
 
-   
         if (appTitleLabel != null) {
             appTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
@@ -695,8 +691,7 @@ public class App extends JFrame {
         if (gridTitleLabel != null) {
             gridTitleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
         }
-        
-   
+
         if (noGasLabel != null) {
             noGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         }
@@ -706,8 +701,7 @@ public class App extends JFrame {
         if (highGasLabel != null) {
             highGasLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         }
-        
-  
+
         if (filePanel != null) {
             filePanel.refresh();
         }
@@ -748,8 +742,7 @@ public class App extends JFrame {
         if (gridTitleLabel != null) {
             gridTitleLabel.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
-        
-        
+
         if (noGasLabel != null) {
             noGasLabel.setForeground(Settings.LIGHT_TEXT_SECONDARY);
         }
@@ -803,7 +796,6 @@ public class App extends JFrame {
         }
     }
 
-
     // ====== db ====== //
     // บันทึกฐานข้อมูล และดึงค่าจากฐานข้อมมูล ini
     private void saveSettings(String theme) {
@@ -833,7 +825,6 @@ public class App extends JFrame {
         return new String[] { theme };
     }
 
-   
     private void saveDB() {
         String themeToSave;
         if (isDark) {
@@ -845,7 +836,7 @@ public class App extends JFrame {
         saveSettings(themeToSave);
     }
 
-    private void showSummary() {
+    public void showSummary() {
         if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
             JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);
             return;
@@ -873,77 +864,4 @@ public class App extends JFrame {
 
 
 
-    // จัดการ acction
-    private class ClickLoad implements MouseListener {
-        public void mouseClicked(MouseEvent e) {
-            if (!hasData())
-                load();
-        }
-
-        public void mousePressed(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-    }
-
-    private class ThemeButtonListener implements ActionListener {
-        private JButton button;
-
-        public ThemeButtonListener(JButton button) {
-            this.button = button;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            showThemes(button);
-        }
-    }
-
-    private class AboutButtonListener implements ActionListener {
-        private JButton button;
-
-        public AboutButtonListener(JButton button) {
-            this.button = button;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            Display.showAbout(button);
-        }
-    }
-
-    private class ExitButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            exit();
-        }
-    }
-
-    private class CalculateButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            calc();
-        }
-    }
-
-    private class LoadButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            load();
-        }
-    }
-
-    private class ClearButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            clear();
-        }
-    }
-
-    private class SummaryButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            showSummary();
-        }
-    }
 }

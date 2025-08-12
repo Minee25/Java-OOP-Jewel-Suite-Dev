@@ -160,39 +160,13 @@ public class GridDisplay extends JPanel {
         }
         
         cell.add(lbl, BorderLayout.CENTER);
-        cell.addMouseListener(new CellMouse(r, c, cell));
+        cell.addMouseListener(new CellMouseAction(r, c, cell, this));
         return cell;
     }
 
-    private class CellMouse implements MouseListener {
-        private int r, c;
-        private JPanel cell;
 
-        public CellMouse(int r, int c, JPanel cell) {
-            this.r = r;
-            this.c = c;
-            this.cell = cell;
-        }
 
-        public void mouseEntered(MouseEvent e) {
-            mouseIn(r, c, cell);
-        }
-
-        public void mouseExited(MouseEvent e) {
-            mouseOut(r, c, cell);
-        }
-
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        public void mousePressed(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-        }
-    }
-
-    private void mouseIn(int r, int c, JPanel cell) {
+    public void handleMouseIn(int r, int c, JPanel cell) {
         clearHover();
 
         hoverR = r;
@@ -205,7 +179,7 @@ public class GridDisplay extends JPanel {
         showInfo(r, c);
     }
 
-    private void mouseOut(int r, int c, JPanel cell) {
+    public void handleMouseOut(int r, int c, JPanel cell) {
         if (hoverR == r && hoverC == c) {
             cell.setBorder(normal);
             Color normalColor = getColor(r, c);
