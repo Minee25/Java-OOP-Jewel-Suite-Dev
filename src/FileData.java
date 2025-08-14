@@ -107,7 +107,7 @@ public class FileData extends JFrame {
     }
 
     /*
-    ดังนั้นหากขุดเจาะที่บริเวณนี้ จะไดQแกGสเป1นปริมาตร กวQาง x ยาว x ลึก
+    ดังนั้นหากขุดเจาะที่บริเวณนี้ จะได้แก๊สเป็นปริมาตร กว้าง x ยาว x ลึก
     200 x 200 x (3000 – (3125 - 200)) = 3,000,000 ลบ.เมตร.
     Settings.CELL_SIZE (150 ) ตามที่กำหนดมา
     หาค่าน้อย Math.min(fluid, bottom)
@@ -137,30 +137,47 @@ public class FileData extends JFrame {
 
     // หาเปอ 
     public double getPercent(int r, int c) {
+        System.out.println("==== DEBUG getPercent() ====");
+        System.out.println("Row=" + r + ", Col=" + c);
+
         double top = getTop(r, c);
         double bottom = getBottom(r, c);
-        
+
+        System.out.println("top=" + top + ", bottom=" + bottom);
+
         if (Double.isNaN(top) || Double.isNaN(bottom) || Double.isInfinite(top) || Double.isInfinite(bottom)) {
+            System.out.println("Invalid top/bottom -> return 0.0");
             return 0.0;
         }
-        
-        double total = bottom - top; 
 
-        if (total <= 0 || Double.isNaN(total) || Double.isInfinite(total))
+        double total = bottom - top;
+        System.out.println("total=" + total);
+
+        if (total <= 0 || Double.isNaN(total) || Double.isInfinite(total)) {
+            System.out.println("total <= 0 or invalid -> return 0");
             return 0;
+        }
 
         double gas = Math.max(0, Math.min(fluid, bottom) - top);
+        System.out.println("gas=" + gas);
+
         if (Double.isNaN(gas) || Double.isInfinite(gas)) {
+            System.out.println("gas invalid -> return 0.0");
             return 0.0;
         }
-        
+
         double result = gas / total;
+        System.out.println("result=" + result);
+
         if (Double.isNaN(result) || Double.isInfinite(result)) {
+            System.out.println("result invalid -> return 0.0");
             return 0.0;
         }
-        
+
+        System.out.println("============================");
         return result;
     }
+
 
     // หาเปอและไว้ทำสี
     public int getLevel(int r, int c) {

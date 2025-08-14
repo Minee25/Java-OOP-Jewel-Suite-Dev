@@ -28,7 +28,7 @@ public class App extends JFrame {
     private String settingsFile = Settings.DB;
     private JButton sum;
     private boolean isDark = false;
-    private JCheckBox Check;
+    private boolean setCheckConfirmClear = false;
 
     private JLabel appTitleLabel;
     private JLabel appVersionLabel;
@@ -498,16 +498,40 @@ public class App extends JFrame {
     }
 
     public void clearData() {
-        int result = JOptionPane.showConfirmDialog(this, "Are you Sure Clear file?", "Clear File",
-                JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION) {
+
+        if (setCheckConfirmClear){
             data.clearAllData();
             input.setText(String.valueOf(Settings.DEFAULT_FLUID));
             update();
             updateBtns();
             status.setText(Settings.FILE_CLEARED_MSG);
             info.setText("");
+        }else{
+            JCheckBox chkBox = new JCheckBox(Settings.INFO_CHECK_BOX);
+
+            int option = JOptionPane.showConfirmDialog(
+                    this,
+                    new Object[] { Settings.TEXT_CLEAR, chkBox },
+                    Settings.TITLE_CLEAR,
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            boolean optionData = option == JOptionPane.OK_OPTION;
+            boolean chkBoxData = chkBox.isSelected();
+            setCheckConfirmClear = chkBoxData;
+
+            if (optionData){
+                data.clearAllData();
+                input.setText(String.valueOf(Settings.DEFAULT_FLUID));
+                update();
+                updateBtns();
+                status.setText(Settings.FILE_CLEARED_MSG);
+                info.setText("");
+
+            }
         }
+
 
     }
 

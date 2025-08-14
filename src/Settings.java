@@ -184,4 +184,8 @@ public interface Settings {
     String SUMMARY_HEADER_VOLUME = "Volume";
     String SUMMARY_HEADER_PERCENT = "% Cells";
 
+    //Clear ข้อความ
+    String TITLE_CLEAR = "Confirm Clear";
+    String TEXT_CLEAR = "Will you clear this file?";
+    String INFO_CHECK_BOX = "Do not show this dialog in the future";
 }
