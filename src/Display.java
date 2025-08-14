@@ -6,13 +6,14 @@ import java.awt.event.ActionListener;
 
 // คลาสไว้แสดง แจ้งเตือน และ about 
 public class Display {
+
     public static void showMessage(Component parent, String title, String msg, int type) {
         JOptionPane.showMessageDialog(parent, msg, title, type);
     }
 
     public static void showAbout(Component parent) {
         boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai");
-        
+
         JDialog dlg = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
         dlg.setSize(850, 550);
@@ -25,7 +26,7 @@ public class Display {
 
         JLabel title = new JLabel(Settings.ABOUT_TITLE, SwingConstants.CENTER);
         title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
-        
+
         if (isDarkTheme) {
             title.setForeground(Settings.DARK_TEXT_PRIMARY);
         } else {
@@ -34,7 +35,7 @@ public class Display {
 
         JLabel sub = new JLabel(Settings.ABOUT_DISTRIBUTION, SwingConstants.CENTER);
         sub.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
-        
+
         if (isDarkTheme) {
             sub.setForeground(Settings.DARK_TEXT_SECONDARY);
         } else {
@@ -91,11 +92,11 @@ public class Display {
         }
 
         boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai");
-        
+
         JLabel nameLbl = new JLabel(name, SwingConstants.CENTER);
         nameLbl.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 16));
         nameLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             nameLbl.setForeground(Settings.DARK_TEXT_PRIMARY);
         } else {
@@ -105,7 +106,7 @@ public class Display {
         JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
         idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             idLbl.setForeground(Settings.DARK_TEXT_SECONDARY);
         } else {
@@ -115,7 +116,7 @@ public class Display {
         JLabel jobLbl = new JLabel("Role: " + job, SwingConstants.CENTER);
         jobLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         jobLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             jobLbl.setForeground(Settings.DARK_TEXT_SECONDARY);
         } else {
@@ -148,5 +149,7 @@ public class Display {
             return def;
         }
     }
+
+
 
 }

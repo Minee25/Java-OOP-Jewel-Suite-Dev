@@ -7,15 +7,15 @@ import javax.swing.JPanel;
 
 // รวมพวกแอคชั่นปุ่ม
 public class Actions {
-    
+
     //แอคชั่นปของปุ่มabout
     public static class AboutAction implements ActionListener {
         private JButton btn;
-        
+
         public AboutAction(JButton btn) {
             this.btn = btn;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             Display.showAbout(btn);
         }
@@ -23,11 +23,11 @@ public class Actions {
     //แอคชั่นปของปุ่มCalculate
     public static class CalculateAction implements ActionListener {
         private App app;
-        
+
         public CalculateAction(App app) {
             this.app = app;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.calculate();
         }
@@ -35,11 +35,11 @@ public class Actions {
     //แอคชั่นปของปุ่มClear
     public static class ClearAction implements ActionListener {
         private App app;
-        
+
         public ClearAction(App app) {
             this.app = app;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.clearData();
         }
@@ -47,11 +47,11 @@ public class Actions {
     //แอคชั่นปของปุ่มExit
     public static class ExitAction implements ActionListener {
         private App app;
-        
+
         public ExitAction(App app) {
             this.app = app;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.exitApp();
         }
@@ -59,11 +59,11 @@ public class Actions {
     //แอคชั่นปของปุ่มLoadFile
     public static class LoadAction implements ActionListener {
         private App app;
-        
+
         public LoadAction(App app) {
             this.app = app;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.loadFile();
         }
@@ -71,11 +71,11 @@ public class Actions {
     //แอคชั่นปของปุ่มSummary
     public static class SummaryAction implements ActionListener {
         private App app;
-        
+
         public SummaryAction(App app) {
             this.app = app;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.showSummary();
         }
@@ -84,12 +84,12 @@ public class Actions {
     public static class ThemeAction implements ActionListener {
         private App app;
         private JButton btn;
-        
+
         public ThemeAction(App app, JButton btn) {
             this.app = app;
             this.btn = btn;
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             app.changeTheme(btn);
         }
@@ -124,7 +124,7 @@ public class Actions {
         public void mouseReleased(MouseEvent e) {
         }
     }
-    
+
     public static class ClickLoadAction implements MouseListener {
         private App app;
 
@@ -150,4 +150,6 @@ public class Actions {
         public void mouseExited(MouseEvent e) {
         }
     }
+
+
 }

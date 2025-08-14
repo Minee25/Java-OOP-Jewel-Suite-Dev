@@ -34,7 +34,7 @@ public interface Settings {
     // หน้าต่าง
     int WIN_W = 1350;
     int WIN_H = 800;
-    Boolean WINDOW_MENU = false;
+    Boolean WINDOW_MENU = true;
     int FULL_S_W = MAXIMIZED_BOTH;
 
     // ไอคอน
@@ -181,4 +181,8 @@ public interface Settings {
     String SUMMARY_HEADER_VOLUME = "Volume";
     String SUMMARY_HEADER_PERCENT = "% Cells";
 
+    //Clear ข้อความ
+    String TITLE_CLEAR = "Confirm Clear";
+    String TEXT_CLEAR = "Will you clear this file?";
+    String INFO_CHECK_BOX = "Do not show this dialog in the future";
 }
