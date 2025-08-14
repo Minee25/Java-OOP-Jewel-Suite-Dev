@@ -308,7 +308,6 @@ public class App extends JFrame {
         box.add(legendTitleLabel);
         box.add(Box.createVerticalStrut(10));
 
-        // Create color items and store label references
         JPanel noGasItem = createColorItem(Settings.NO_GAS, Settings.COLOR_NO_GAS);
         noGasLabel = getColorItemLabel(noGasItem);
         box.add(noGasItem);
@@ -354,7 +353,7 @@ public class App extends JFrame {
     }
 
     private JLabel getColorItemLabel(JPanel colorItem) {
-        // Get the label from the color item panel (it's the 3rd component)
+    
         Component[] components = colorItem.getComponents();
         for (Component comp : components) {
             if (comp instanceof JLabel) {

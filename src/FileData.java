@@ -186,7 +186,7 @@ public class FileData extends JFrame {
 
         if (pct <= 0)
             return 0;
-        if (pct <= 50)
+        if (pct < Settings.GAS_LIMIT)
             return 1;
         return 2;
     }
