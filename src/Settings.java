@@ -169,10 +169,7 @@ public interface Settings {
     // SummaryView ข้อความ
     String SUMMARY_TOTAL_CELLS = "Total Cells";
     String SUMMARY_TOTAL_VOLUME = "Total Volume";
-    String SUMMARY_TYPE = "Type";
-    String SUMMARY_CELL_COUNT = "Cell Count";
-    String SUMMARY_VOLUME = "Volume";
-    String SUMMARY_PERCENTAGE = "Percentage";
+
     String SUMMARY_CLOSE = "Close";
     String SUMMARY_CELLS_UNIT = " cells";
     String SUMMARY_VOLUME_UNIT = " CB.M";

@@ -166,9 +166,10 @@ public class FileData extends JFrame {
     public int getLevel(int r, int c) {
         double pct = getPercent(r, c);
 
+
         if (pct <= 0)
             return 0;
-        if (pct < Settings.GAS_LIMIT)
+        if (pct <= 50)
             return 1;
         return 2;
     }
