@@ -28,6 +28,7 @@ public class App extends JFrame {
     private String settingsFile = Settings.DB;
     private JButton sum;
     private boolean isDark = false;
+    private JCheckBox Check;
 
     private JLabel appTitleLabel;
     private JLabel appVersionLabel;
@@ -196,7 +197,7 @@ public class App extends JFrame {
 
         p.add(mid, BorderLayout.CENTER);
     }
-
+    //ทำงานในส่วนpanelฝั่งด้านขวา
     private void left(JPanel p) {
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -224,7 +225,7 @@ public class App extends JFrame {
 
         p.add(left, BorderLayout.WEST);
     }
-
+    //
     private JPanel inputPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -497,12 +498,17 @@ public class App extends JFrame {
     }
 
     public void clearData() {
-        data.clearAllData();
-        input.setText(String.valueOf(Settings.DEFAULT_FLUID));
-        update();
-        updateBtns();
-        status.setText(Settings.FILE_CLEARED_MSG);
-        info.setText("");
+        int result = JOptionPane.showConfirmDialog(this, "Are you Sure Clear file?", "Clear File",
+                JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION) {
+            data.clearAllData();
+            input.setText(String.valueOf(Settings.DEFAULT_FLUID));
+            update();
+            updateBtns();
+            status.setText(Settings.FILE_CLEARED_MSG);
+            info.setText("");
+        }
+
     }
 
     private void updateBtns() {

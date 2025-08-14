@@ -34,7 +34,7 @@ public interface Settings {
     // หน้าต่าง
     int WIN_W = 1350;
     int WIN_H = 800;
-    Boolean WINDOW_MENU = false;
+    Boolean WINDOW_MENU = true;
     int FULL_S_W = MAXIMIZED_BOTH;
 
     // ไอคอน
