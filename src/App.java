@@ -639,7 +639,7 @@ public class App extends JFrame {
             statsLabel.setText(statsText);
         }
     }
-
+    //สร้างปุ่มExit
     public void exitApp() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION);
@@ -864,7 +864,7 @@ public class App extends JFrame {
 
         saveSettings(themeToSave);
     }
-
+    //โชว์ค่าเแลี่ยและผมรามต่างๆน่าจะใช่แหละ
     public void showSummary() {
         if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
             JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);

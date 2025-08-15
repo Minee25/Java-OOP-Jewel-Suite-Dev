@@ -102,7 +102,7 @@ public class Display {
         } else {
             nameLbl.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
-
+        //ข้อความตรงที่รูปโปร
         JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
         idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
