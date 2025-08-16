@@ -114,7 +114,7 @@ public class App extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(Settings.WIN_W, Settings.WIN_H);
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(true);//กำหนดการขยายหน้าจอ
         setUndecorated(Settings.WINDOW_MENU);
     }
 
@@ -177,7 +177,7 @@ public class App extends JFrame {
         theme.addActionListener(new Actions.ThemeAction(this, theme));
 
         JButton about = new JButton(Settings.BTN_ABOUT);
-        about.setPreferredSize(new Dimension(100, 35));
+        about.setPreferredSize(new Dimension(100, 35));//ปรับขนาดให้พอดี
         about.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_NORMAL));
         about.addActionListener(new Actions.AboutAction(about));
 
@@ -199,7 +199,7 @@ public class App extends JFrame {
     // เซ็ตค่าต่างๆของพาแนลกลางๆ
     private void middle(JPanel p) {
         JPanel mid = new JPanel(new BorderLayout(15, 15));
-        mid.setBorder(new EmptyBorder(15, 0, 15, 0));
+        mid.setBorder(new EmptyBorder(15, 0, 15, 0));//ใช้สร้างช่องว่าง EmptyBorder
 
         left(mid);
         right(mid);

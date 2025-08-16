@@ -96,6 +96,7 @@ public class GridDisplay extends JPanel {
     }
 
     // สร้างเลขแสดงจำนวนแถวและคอลัม
+    // setForeground กำหนดสีตัวอักษร
     private JPanel addNumbers(JPanel mainGrid, int rows, int cols) {
         JPanel wrapper = new JPanel(new BorderLayout());
 
@@ -273,7 +274,7 @@ public class GridDisplay extends JPanel {
         String info = String.format(Settings.INFO,
                 r+1, c+1, top, base, vlF, presen
         );
-        Display.showMessage(this, "detailCell", info, JOptionPane.INFORMATION_MESSAGE);
+        Display.showMessage(this, "DetailCell", info, JOptionPane.INFORMATION_MESSAGE);
 
 
     }
