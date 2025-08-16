@@ -45,7 +45,9 @@ public class SummaryView extends JDialog {
         int totalActiveCells = calculateTotalActiveCells();
 
         JPanel mainPanel = new JPanel(new BorderLayout(16, 16));
-        mainPanel.setBorder(new EmptyBorder(16, 16, 16, 16));
+        mainPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Settings.COLOR_GRAY, 2, true),
+                new EmptyBorder(16, 16, 16, 16))); // เส้นขอบ
 
         JLabel titleLabel = createTitleLabel();
 

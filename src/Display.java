@@ -22,7 +22,9 @@ public class Display {
         dlg.setResizable(false);
 
         JPanel main = new JPanel(new BorderLayout());
-        main.setBorder(new EmptyBorder(30, 30, 30, 30));
+        main.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Settings.COLOR_GRAY, 2, true),
+                new EmptyBorder(30, 30, 30, 30))); // เส้นขอบ
 
         JLabel title = new JLabel(Settings.ABOUT_TITLE, SwingConstants.CENTER);
         title.setFont(new Font(Settings.FONT_NAME, Font.BOLD, Settings.FONT_SIZE_TITLE));
@@ -77,7 +79,7 @@ public class Display {
     }
 
     // สร้างแต่ละคน
-    // setOpaque สีทืบไหม
+    // setOpaque สีทึบไหม
     private static JPanel makePerson(String img, String name, String id, String job) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));

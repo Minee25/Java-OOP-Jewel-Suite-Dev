@@ -261,6 +261,34 @@ public class GridDisplay extends JPanel {
         return "Cell (" + r + "," + c + ") - " + status +
                 " | " + pctTxt + "% | " + volTxt + " CB.M ";
     }
+    public void detailCell(int r, int c) {
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Info");
+        dialog.setSize(250, 150);
+        dialog.setLocationRelativeTo(null);
+        double base = data.getBottomDepth(r, c);
+        double top = data.getTopDepth(r, c);
+        double presen = data.calculateGasPercentage(r, c);
+        double volume = data.calculateGasVolume(r, c);
+        // ใส่เนื้อหาใน dialog
+        JPanel diMain = new JPanel(new BorderLayout());
+
+        JLabel text = new JLabel("<html>"
+                +"Roll" + r + ""
+                +"\nBase:" + base + "<br>"
+                +"\nTop:" + top  + "<br>"
+                +"\nPresen:" +presen*100 + "<br>"
+                +"\nVolume:" +volume);
+        text.setFont(new Font("Tahoma", Font.BOLD, Settings.FONT_SIZE_TITLE));
+
+        dialog.add(text);
+        dialog.add(diMain);
+        dialog.setVisible(true); // แสดงผล
+
+
+
+    }
+
 
     private boolean isColorDark(Color color) {
         return color.equals(Settings.COLOR_NO_GAS);
