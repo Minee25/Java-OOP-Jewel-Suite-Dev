@@ -8,3 +8,4 @@ out/
 .DS_Store
 Thumbs.db
 src/db/settings.ini
+src/db/settings.ini
