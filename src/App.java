@@ -291,7 +291,7 @@ public class App extends JFrame {
 
         return box;
     }
-
+    //เซ็ตสีต่างๆและสีบอกระดับ
     private JPanel colorPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -362,7 +362,7 @@ public class App extends JFrame {
         }
         return null;
     }
-
+    //จัดการส่งค่าของแก๊สทีได้มาไป...
     private JPanel resultPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -533,7 +533,7 @@ public class App extends JFrame {
 
 
     }
-
+    //อัปเดตปุ่มเหมือนการรีเฟรชขึ้นมาใหม่รึป่าว
     private void updateBtns() {
         btns.removeAll();
 
@@ -563,7 +563,7 @@ public class App extends JFrame {
         btns.revalidate();
         btns.repaint();
     }
-
+    //อัปเดตค่าที่อยู่ตรงกลางมั้งนะ
     private void update() {
         double vol = data.calculateTotalGasVolume();
         DecimalFormat fmt = new DecimalFormat("#,##0.00");
@@ -639,7 +639,7 @@ public class App extends JFrame {
             statsLabel.setText(statsText);
         }
     }
-
+    //สร้างปุ่มExit
     public void exitApp() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION);
@@ -648,7 +648,7 @@ public class App extends JFrame {
         }
     }
 
-    // ไอไนท์ทำ แต่มันไม่ขึ้นในmac วินโดวน่าจะขึ้นปกติ
+    // ไอไนท์ทำ แต่มันไม่ขึ้นในmac วินโดวน่าจะขึ้นปกติ *น่าจะใช่แหละ
     private void icon() {
         try {
             ImageIcon icon = new ImageIcon(Settings.ICON_APP);
@@ -668,7 +668,7 @@ public class App extends JFrame {
             return null;
         }
     }
-
+    //เอาไว้ใช้ในการเปลี่ยนธีม
     public void changeTheme(JButton btn) {
         isDark = !isDark;
         if (isDark) {
@@ -864,7 +864,7 @@ public class App extends JFrame {
 
         saveSettings(themeToSave);
     }
-
+    //โชว์ค่าเแลี่ยและผมรามต่างๆน่าจะใช่แหละ
     public void showSummary() {
         if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
             JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);
