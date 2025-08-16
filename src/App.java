@@ -353,7 +353,7 @@ public class App extends JFrame {
     }
 
     private JLabel getColorItemLabel(JPanel colorItem) {
-    
+
         Component[] components = colorItem.getComponents();
         for (Component comp : components) {
             if (comp instanceof JLabel) {
@@ -541,8 +541,8 @@ public class App extends JFrame {
             clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             clear.setAlignmentX(Component.LEFT_ALIGNMENT);
             clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-            clear.updateUI();
-            btns.add(clear);
+                clear.updateUI();
+                btns.add(clear);
 
             btns.add(Box.createVerticalStrut(5));
 
