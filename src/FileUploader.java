@@ -5,7 +5,7 @@ import java.awt.*;
 public class FileUploader extends JPanel {
     private FileData data;
     private boolean isDarkTheme;
-    
+
     private JLabel iconLabel;
     private JLabel titleLabel;
     private JLabel subLabel;
@@ -17,7 +17,7 @@ public class FileUploader extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Settings.COLOR_GRAY, 2, true),
-                BorderFactory.createEmptyBorder(20, 20, 20, 20)));
+                BorderFactory.createEmptyBorder(20, 20, 20, 20))); // ทำเส้นและกรอบ
         setOpaque(true);
 
         add(Box.createVerticalStrut(150));
@@ -25,7 +25,7 @@ public class FileUploader extends JPanel {
         iconLabel = new JLabel("?", SwingConstants.CENTER);
         iconLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 32));
         iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             iconLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         } else {
@@ -35,7 +35,7 @@ public class FileUploader extends JPanel {
         titleLabel = new JLabel(Settings.FILE_TITLE, SwingConstants.CENTER);
         titleLabel.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             titleLabel.setForeground(Settings.DARK_TEXT_PRIMARY);
         } else {
@@ -45,7 +45,7 @@ public class FileUploader extends JPanel {
         subLabel = new JLabel(Settings.FILE_SUB, SwingConstants.CENTER);
         subLabel.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
         subLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         if (isDarkTheme) {
             subLabel.setForeground(Settings.DARK_TEXT_SECONDARY);
         } else {
@@ -70,7 +70,7 @@ public class FileUploader extends JPanel {
         revalidate();
         repaint();
     }
-    
+
     private void updateTextColors() {
         if (isDarkTheme) {
             if (iconLabel != null) {

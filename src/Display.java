@@ -12,7 +12,7 @@ public class Display {
     }
 
     public static void showAbout(Component parent) {
-        boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai");
+        boolean isDarkTheme = UIManager.getLookAndFeel().getName().contains("Monokai"); // เช็คธีม
 
         JDialog dlg = new JDialog((Frame) SwingUtilities.getWindowAncestor(parent), "About " + Settings.APP_TITLE,
                 true);
@@ -76,12 +76,14 @@ public class Display {
         dlg.setVisible(true);
     }
 
+    // สร้างแต่ละคน
+    // setOpaque สีทืบไหม
     private static JPanel makePerson(String img, String name, String id, String job) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
         box.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Settings.COLOR_GRAY, 2, true),
-                new EmptyBorder(30, 25, 30, 25)));
+                new EmptyBorder(30, 25, 30, 25))); // เส้นขอบ
         box.setOpaque(false);
 
         JLabel pic = getPic(img);
@@ -102,7 +104,7 @@ public class Display {
         } else {
             nameLbl.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
-        //ข้อความตรงที่รูปโปร
+        // ข้อความตรงที่รูปโปร
         JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
         idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -149,7 +151,5 @@ public class Display {
             return def;
         }
     }
-
-
 
 }

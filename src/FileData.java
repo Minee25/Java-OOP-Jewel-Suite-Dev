@@ -15,7 +15,7 @@ public class FileData extends JFrame {
 
     }
 
-    // test ไว้เทสเฉย 
+    // test ไว้เทสเฉย
     public boolean load() {
         return readFile("data/dept.txt");
     }
@@ -23,31 +23,32 @@ public class FileData extends JFrame {
     public boolean readFile(String path) {
         try (Scanner sc = new Scanner(new File(path))) {
             List<String> lines = new ArrayList<>();
-            
+
             while (sc.hasNextLine()) {
                 String line = sc.nextLine().trim();
                 if (!line.isEmpty()) {
                     lines.add(line);
                 }
             }
-            
+
             if (lines.isEmpty()) {
                 return false;
             }
-            
+
             rows = lines.size();
-            
+
             int maxCols = 0;
             for (String line : lines) {
                 String[] values = line.split("\\s+");
-                maxCols = Math.max(maxCols, values.length);
+                maxCols = Math.max(maxCols, values.length); // หาคอลัมมากสุดมาใช้สำหรับคำนวณ
             }
-            
+
             cols = maxCols;
             data = new double[rows][cols];
-            
+
             int invalidCount = 0;
-            
+
+            // isNaN ป้องกันไม่ใช่ตัวเลข isInfinite เลขจำนวนเยอะเกิน
             for (int r = 0; r < rows; r++) {
                 String[] values = lines.get(r).split("\\s+");
                 for (int c = 0; c < Math.min(cols, values.length); c++) {
@@ -61,7 +62,8 @@ public class FileData extends JFrame {
                             if (Double.isNaN(parsedValue) || Double.isInfinite(parsedValue)) {
                                 data[r][c] = 0.0;
                                 invalidCount++;
-                                System.out.println("Invalid special value at [" + r + "," + c + "]: '" + value + "' -> set to 0.0");
+                                System.out.println("Invalid special value at [" + r + "," + c + "]: '" + value
+                                        + "' -> set to 0.0");
                             } else {
                                 data[r][c] = parsedValue;
                             }
@@ -72,18 +74,19 @@ public class FileData extends JFrame {
                         System.out.println("Invalid data at [" + r + "," + c + "]: '" + values[c] + "' -> set to 0.0");
                     }
                 }
-                
+
                 for (int c = values.length; c < cols; c++) {
                     data[r][c] = 0.0;
                     invalidCount++;
                 }
             }
-            
+
             if (invalidCount > 0) {
-                Display.showMessage(this, "Warning: Found ", invalidCount + " invalid values, set to 0.0", JOptionPane.ERROR_MESSAGE);
+                Display.showMessage(this, "Warning: Found ", invalidCount + " invalid values, set to 0.0",
+                        JOptionPane.ERROR_MESSAGE);
 
             }
-            
+
             return true;
         } catch (Exception e) {
             System.out.println("Error reading file: " + e.getMessage());
@@ -94,24 +97,22 @@ public class FileData extends JFrame {
     // ? คำนวณยากรอถามรุ้นพี่
     // =====================
 
-
-
-
     // Base Horizon ค่าดั่งเดิมจากไฟล์ในแต่ละช่อง
     public double getBottom(int r, int c) {
         return data[r][c];
     }
+
     // Top Horizon - Settings.TOP_BASE(200) ตามที่กำหนดให้
     public double getTop(int r, int c) {
         return getBottom(r, c) - Settings.TOP_BASE;
     }
 
     /*
-    ดังนั้นหากขุดเจาะที่บริเวณนี้ จะได้แก๊สเป็นปริมาตร กว้าง x ยาว x ลึก
-    200 x 200 x (3000 – (3125 - 200)) = 3,000,000 ลบ.เมตร.
-    Settings.CELL_SIZE (150 ) ตามที่กำหนดมา
-    หาค่าน้อย Math.min(fluid, bottom)
-    */ 
+     * ดังนั้นหากขุดเจาะที่บริเวณนี้ จะได้แก๊สเป็นปริมาตร กว้าง x ยาว x ลึก
+     * 200 x 200 x (3000 – (3125 - 200)) = 3,000,000 ลบ.เมตร.
+     * Settings.CELL_SIZE (150 ) ตามที่กำหนดมา
+     * หาค่าน้อย Math.min(fluid, bottom)
+     */
     public double getVolume(int r, int c) {
         double top = getTop(r, c);
         double bottom = getBottom(r, c);
@@ -135,7 +136,7 @@ public class FileData extends JFrame {
         return result;
     }
 
-    // หาเปอ 
+    // หาเปอ
     public double getPercent(int r, int c) {
         System.out.println("==== DEBUG getPercent() ====");
         System.out.println("Row=" + r + ", Col=" + c);
@@ -178,11 +179,9 @@ public class FileData extends JFrame {
         return result;
     }
 
-
     // หาเปอและไว้ทำสี
     public int getLevel(int r, int c) {
         double pct = getPercent(r, c);
-
 
         if (pct <= 0)
             return 0;
@@ -225,7 +224,6 @@ public class FileData extends JFrame {
         cols = 0;
         fluid = Settings.DEFAULT_FLUID;
     }
-
 
     public double getBottomDepth(int r, int c) {
         return getBottom(r, c);
@@ -274,7 +272,7 @@ public class FileData extends JFrame {
     public boolean loadFromFile(String path) {
         return readFile(path);
     }
-    
+
     public boolean isValidNumber(String str) {
         if (str == null || str.trim().isEmpty()) {
             return false;
@@ -286,7 +284,7 @@ public class FileData extends JFrame {
             return false;
         }
     }
-    
+
     public int countZeroCells() {
         int count = 0;
         for (int r = 0; r < rows; r++) {

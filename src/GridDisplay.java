@@ -27,7 +27,7 @@ public class GridDisplay extends JPanel {
         setLayout(new BorderLayout());
         add(grid, BorderLayout.CENTER);
     }
-    
+
     private boolean isCurrentThemeDark() {
         return UIManager.getLookAndFeel().getName().contains("Monokai");
     }
@@ -44,6 +44,7 @@ public class GridDisplay extends JPanel {
                 BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"))));
     }
 
+    // ไว้ปรับขนาดแต่ละช่องเผื่อมันเยอะและมันทับกันเกินไป
     private void calcCellSize() {
         int cols = data.getColumnCount();
         int rows = data.getRowCount();
@@ -61,6 +62,7 @@ public class GridDisplay extends JPanel {
         int rows = data.getRowCount();
         int cols = data.getColumnCount();
 
+        // ไม่มีค่าก็สร้างช่องวว่าง
         if (rows == 0 || cols == 0) {
             grid.setLayout(new BorderLayout());
             JLabel empty = new JLabel(Settings.NO_DATA_MSG, SwingConstants.CENTER);
@@ -151,20 +153,18 @@ public class GridDisplay extends JPanel {
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
         lbl.setFont(new Font(Font.MONOSPACED, Font.BOLD, Math.max(Settings.FONT_SIZE_SMALL, size / 6)));
-        
+
         Color cellBg = getColor(r, c);
         if (isColorDark(cellBg)) {
             lbl.setForeground(Color.WHITE);
         } else {
             lbl.setForeground(Color.BLACK);
         }
-        
+
         cell.add(lbl, BorderLayout.CENTER);
         cell.addMouseListener(new Actions.CellMouseAction(r, c, cell, this));
         return cell;
     }
-
-
 
     public void handleMouseIn(int r, int c, JPanel cell) {
         clearHover();
@@ -230,11 +230,12 @@ public class GridDisplay extends JPanel {
         return Settings.COLOR_WHITE;
     }
 
+    // DecimalFormat ไว่้ทำฟอแมชจำนวนเลขให้เข้าใจง่าย เช่น 1,000
     private String makeInfo(int r, int c) {
         int level = data.getGasLevel(r, c);
         double pct = data.calculateGasPercentage(r, c) * 100;
         double vol = data.calculateGasVolume(r, c);
-        
+
         if (Double.isNaN(pct) || Double.isInfinite(pct)) {
             pct = 0.0;
         }
@@ -261,10 +262,7 @@ public class GridDisplay extends JPanel {
                 " | " + pctTxt + "% | " + volTxt + " CB.M ";
     }
 
-
-
     private boolean isColorDark(Color color) {
-      
         return color.equals(Settings.COLOR_NO_GAS);
     }
 
