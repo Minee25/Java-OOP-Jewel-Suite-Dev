@@ -5,8 +5,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 
-import java.awt.event.MouseListener;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.io.*;
 
@@ -93,8 +91,11 @@ public class App extends JFrame {
         }
     }
 
+
     private void repaintAll() {
+        // อัปเดต gui ของหน้าต่างหลัก ทั้งหมด //updateComponentTreeUI
         SwingUtilities.updateComponentTreeUI(this);
+
         if (btns != null) {
             SwingUtilities.updateComponentTreeUI(btns);
         }
@@ -105,8 +106,10 @@ public class App extends JFrame {
             updateTextColorsForLightTheme();
         }
 
+        // สร้างgui ใหม่ทั้งหมด เพื่ออัพเดท
         repaint();
     }
+
     //เอาไว้เซ็ตหน้าวินโดวหน้าหลัก
     private void window() {
         setTitle(Settings.APP_TITLE);
@@ -119,6 +122,7 @@ public class App extends JFrame {
     //สร้างโครงของui
     private void ui() {
         JPanel main = new JPanel(new BorderLayout());
+        //มีระยะห่าง ขอบด้านใน (padding)
         main.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         top(main);
@@ -151,7 +155,9 @@ public class App extends JFrame {
         }
 
         JPanel titles = new JPanel();
+        //เลือกแนวตั้ง (Y_AXIS) เอามาวางเรียงลงด้านล่างทีละตัว
         titles.setLayout(new BoxLayout(titles, BoxLayout.Y_AXIS));
+
         titles.add(appTitleLabel);
         titles.add(appVersionLabel);
 

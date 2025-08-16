@@ -7,3 +7,4 @@ out/
 # System files
 .DS_Store
 Thumbs.db
+src/db/settings.ini
