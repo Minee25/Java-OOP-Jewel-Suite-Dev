@@ -267,8 +267,11 @@ public class GridDisplay extends JPanel {
         double presen = data.calculateGasPercentage(r, c) *100;
         double volume = data.calculateGasVolume(r, c);
 
+        DecimalFormat volFmt = new DecimalFormat("#,##0.00");
+        String vlF = volFmt.format(volume);
+
         String info = String.format(Settings.INFO,
-                r+1, c+1, top, base, volume, presen
+                r+1, c+1, top, base, vlF, presen
         );
         Display.showMessage(this, "detailCell", info, JOptionPane.INFORMATION_MESSAGE);
 

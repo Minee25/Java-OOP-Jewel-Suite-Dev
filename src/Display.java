@@ -9,7 +9,6 @@ public class Display {
 
     public static void showMessage(Component parent, String title, String msg, int type) {
         JOptionPane.showMessageDialog(parent, msg, title, type);
-
     }
 
     public static void showAbout(Component parent) {

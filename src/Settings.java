@@ -186,11 +186,11 @@ public interface Settings {
     String TEXT_CLEAR = "Will you clear this file?";
     String INFO_CHECK_BOX = "Do not show this dialog in the future";
 
-
+    //detailCell
     String INFO =
-            "Channel: [%d, %d]\n" +
-                    "Upper Floor: %.1f m3\n" +
-                    "Lower Floor: %.1f m3\n" +
-                    "Volume: %.0f m3\n" +
+            "Cell: [%d, %d]\n" +
+                    "Top Horizon: %.1f \n" +
+                    "Base Horizon: %.1f \n" +
+                    "Volume: %s \n" +
                     "Gas: %.1f%%\n" ;
 }
