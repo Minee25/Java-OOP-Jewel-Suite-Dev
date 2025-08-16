@@ -349,7 +349,7 @@ public class App extends JFrame {
         JPanel colorBox = new JPanel();
         colorBox.setPreferredSize(new Dimension(24, 24));
         colorBox.setBackground(c);
-        colorBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        colorBox.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1)); // เส้นขอบ
 
         JLabel lbl = new JLabel(txt);
         lbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 12));
@@ -367,12 +367,12 @@ public class App extends JFrame {
         return row;
     }
 
+    // ไว้แคชค่า
     private JLabel getColorItemLabel(JPanel colorItem) {
-
-        Component[] components = colorItem.getComponents();
-        for (Component comp : components) {
-            if (comp instanceof JLabel) {
-                return (JLabel) comp;
+        for (int i = 0; i < colorItem.getComponentCount(); i++) {
+            Component c = colorItem.getComponent(i);
+            if (c instanceof JLabel) {
+                return (JLabel) c;
             }
         }
         return null;
