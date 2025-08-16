@@ -62,7 +62,7 @@ public class FileData extends JFrame {
                             if (Double.isNaN(parsedValue) || Double.isInfinite(parsedValue)) {
                                 data[r][c] = 0.0;
                                 invalidCount++;
-                                System.out.println("Invalid special value at [" + r + "," + c + "]: '" + value
+                                System.out.println("value at [" + r + "," + c + "]: '" + value
                                         + "' -> set to 0.0");
                             } else {
                                 data[r][c] = parsedValue;
@@ -71,7 +71,7 @@ public class FileData extends JFrame {
                     } catch (NumberFormatException e) {
                         data[r][c] = 0.0;
                         invalidCount++;
-                        System.out.println("Invalid data at [" + r + "," + c + "]: '" + values[c] + "' -> set to 0.0");
+                        System.out.println("data at [" + r + "," + c + "]: '" + values[c] + "' -> set to 0.0");
                     }
                 }
 

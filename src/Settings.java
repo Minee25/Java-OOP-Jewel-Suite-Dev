@@ -185,4 +185,12 @@ public interface Settings {
     String TITLE_CLEAR = "Confirm Clear";
     String TEXT_CLEAR = "Will you clear this file?";
     String INFO_CHECK_BOX = "Do not show this dialog in the future";
+
+
+    String INFO =
+            "Channel: [%d, %d]\n" +
+                    "Upper Floor: %.1f m3\n" +
+                    "Lower Floor: %.1f m3\n" +
+                    "Volume: %.0f m3\n" +
+                    "Gas: %.1f%%\n" ;
 }
