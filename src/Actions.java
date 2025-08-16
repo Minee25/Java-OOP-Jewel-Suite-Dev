@@ -116,8 +116,8 @@ public class Actions {
         }
 
         public void mouseClicked(MouseEvent e) {
+            grid.detailCell(this.r, this.c);
         }
-
         public void mousePressed(MouseEvent e) {
         }
 
