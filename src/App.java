@@ -91,7 +91,6 @@ public class App extends JFrame {
         }
     }
 
-
     private void repaintAll() {
         // อัปเดต gui ของหน้าต่างหลัก ทั้งหมด //updateComponentTreeUI
         SwingUtilities.updateComponentTreeUI(this);
@@ -110,7 +109,7 @@ public class App extends JFrame {
         repaint();
     }
 
-    //เอาไว้เซ็ตหน้าวินโดวหน้าหลัก
+    // เอาไว้เซ็ตหน้าวินโดวหน้าหลัก
     private void window() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -119,10 +118,11 @@ public class App extends JFrame {
         setResizable(true);
         setUndecorated(Settings.WINDOW_MENU);
     }
-    //สร้างโครงของui
+
+    // สร้างโครงของui
     private void ui() {
         JPanel main = new JPanel(new BorderLayout());
-        //มีระยะห่าง ขอบด้านใน (padding)
+        // มีระยะห่าง ขอบด้านใน (padding)
         main.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         top(main);
@@ -130,7 +130,10 @@ public class App extends JFrame {
 
         add(main);
     }
-    //เซ็ตค่าต่างๆของพาแนลบนๆ
+
+    // เซ็ตค่าต่างๆของพาแนลบนๆ
+    // createHorizontalStrut() = เพิ่มช่องว่างแนวนอน
+    // createVerticalStrut() = เพิ่มช่องว่างแนวตั้ง
     private void top(JPanel p) {
         JPanel top = new JPanel(new BorderLayout());
         top.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -155,7 +158,7 @@ public class App extends JFrame {
         }
 
         JPanel titles = new JPanel();
-        //เลือกแนวตั้ง (Y_AXIS) เอามาวางเรียงลงด้านล่างทีละตัว
+        // เลือกแนวตั้ง (Y_AXIS) เอามาวางเรียงลงด้านล่างทีละตัว
         titles.setLayout(new BoxLayout(titles, BoxLayout.Y_AXIS));
 
         titles.add(appTitleLabel);
@@ -193,7 +196,8 @@ public class App extends JFrame {
 
         p.add(top, BorderLayout.NORTH);
     }
-    //เซ็ตค่าต่างๆของพาแนลกลางๆ
+
+    // เซ็ตค่าต่างๆของพาแนลกลางๆ
     private void middle(JPanel p) {
         JPanel mid = new JPanel(new BorderLayout(15, 15));
         mid.setBorder(new EmptyBorder(15, 0, 15, 0));
@@ -203,7 +207,10 @@ public class App extends JFrame {
 
         p.add(mid, BorderLayout.CENTER);
     }
-    //ทำงานในส่วนpanelฝั่งด้านขวา
+
+    // ทำงานในส่วนpanelฝั่งด้านขวา
+    // setAlignmentX(Component.LEFT_ALIGNMENT) บังคับอยู่ชิดซ้าย
+
     private void left(JPanel p) {
         JPanel left = new JPanel();
         left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
@@ -231,6 +238,7 @@ public class App extends JFrame {
 
         p.add(left, BorderLayout.WEST);
     }
+
     //
     private JPanel inputPanel() {
         JPanel box = new JPanel();
@@ -297,7 +305,8 @@ public class App extends JFrame {
 
         return box;
     }
-    //เซ็ตสีต่างๆและสีบอกระดับ
+
+    // เซ็ตสีต่างๆและสีบอกระดับ
     private JPanel colorPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -368,7 +377,8 @@ public class App extends JFrame {
         }
         return null;
     }
-    //จัดการส่งค่าของแก๊สทีได้มาไป...
+
+    // จัดการส่งค่าของแก๊สทีได้มาไป...
     private JPanel resultPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -504,14 +514,14 @@ public class App extends JFrame {
 
     public void clearData() {
 
-        if (setCheckConfirmClear){
+        if (setCheckConfirmClear) {
             data.clearAllData();
             input.setText(String.valueOf(Settings.DEFAULT_FLUID));
             update();
             updateBtns();
             status.setText(Settings.FILE_CLEARED_MSG);
             info.setText("");
-        }else{
+        } else {
             JCheckBox chkBox = new JCheckBox(Settings.INFO_CHECK_BOX);
 
             int option = JOptionPane.showConfirmDialog(
@@ -519,14 +529,13 @@ public class App extends JFrame {
                     new Object[] { Settings.TEXT_CLEAR, chkBox },
                     Settings.TITLE_CLEAR,
                     JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
-            );
+                    JOptionPane.PLAIN_MESSAGE);
 
             boolean optionData = option == JOptionPane.OK_OPTION;
             boolean chkBoxData = chkBox.isSelected();
             setCheckConfirmClear = chkBoxData;
 
-            if (optionData){
+            if (optionData) {
                 data.clearAllData();
                 input.setText(String.valueOf(Settings.DEFAULT_FLUID));
                 update();
@@ -537,9 +546,9 @@ public class App extends JFrame {
             }
         }
 
-
     }
-    //อัปเดตปุ่มเหมือนการรีเฟรชขึ้นมาใหม่รึป่าว
+
+    // อัปเดตปุ่มเหมือนการรีเฟรชขึ้นมาใหม่รึป่าว
     private void updateBtns() {
         btns.removeAll();
 
@@ -547,8 +556,8 @@ public class App extends JFrame {
             clear.setMaximumSize(new Dimension(Settings.BTN_WIDTH, Settings.BTN_HEIGHT_MID));
             clear.setAlignmentX(Component.LEFT_ALIGNMENT);
             clear.setFont(new Font(Settings.FONT_NAME, Font.BOLD, 14));
-                clear.updateUI();
-                btns.add(clear);
+            clear.updateUI();
+            btns.add(clear);
 
             btns.add(Box.createVerticalStrut(5));
 
@@ -569,7 +578,8 @@ public class App extends JFrame {
         btns.revalidate();
         btns.repaint();
     }
-    //อัปเดตค่าที่อยู่ตรงกลางมั้งนะ
+
+    // อัปเดตค่าที่อยู่ตรงกลางมั้งนะ
     private void update() {
         double vol = data.calculateTotalGasVolume();
         DecimalFormat fmt = new DecimalFormat("#,##0.00");
@@ -645,7 +655,8 @@ public class App extends JFrame {
             statsLabel.setText(statsText);
         }
     }
-    //สร้างปุ่มExit
+
+    // สร้างปุ่มExit
     public void exitApp() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION);
@@ -674,7 +685,8 @@ public class App extends JFrame {
             return null;
         }
     }
-    //เอาไว้ใช้ในการเปลี่ยนธีม
+
+    // เอาไว้ใช้ในการเปลี่ยนธีม
     public void changeTheme(JButton btn) {
         isDark = !isDark;
         if (isDark) {
@@ -870,7 +882,8 @@ public class App extends JFrame {
 
         saveSettings(themeToSave);
     }
-    //โชว์ค่าเแลี่ยและผมรามต่างๆน่าจะใช่แหละ
+
+    // โชว์ค่าเแลี่ยและผมรามต่างๆน่าจะใช่แหละ
     public void showSummary() {
         if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
             JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);
@@ -896,7 +909,5 @@ public class App extends JFrame {
 
         new SummaryView(this, n, vol, total).setVisible(true);
     }
-
-
 
 }
