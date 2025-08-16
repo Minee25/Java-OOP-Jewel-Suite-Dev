@@ -207,7 +207,7 @@ public class App extends JFrame {
         p.add(mid, BorderLayout.CENTER);
     }
 
-    // ทำงานในส่วนpanelฝั่งด้านขวา
+    // ทำงานในส่วนpanelฝั่งด้านซ้าย
     // setAlignmentX(Component.LEFT_ALIGNMENT) บังคับอยู่ชิดซ้าย
 
     private void left(JPanel p) {
