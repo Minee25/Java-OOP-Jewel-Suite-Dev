@@ -46,7 +46,7 @@ public interface Settings {
 
     // ส่วนหัว
     String APP_TITLE = "Gas Distribution System";
-    String APP_VERSION = "v1.0.0";
+    String APP_VERSION = "Latest Versions";
     String BTN_ABOUT = "About";
     String BTN_CLOSE_ABOUT = "Close";
     String BTN_EXIT = "Exit";
@@ -63,7 +63,7 @@ public interface Settings {
     String LEGEND_TITLE = "Legend";
     String NO_GAS = "No Gas (0%)";
     String LOW_GAS = "Low Gas (<50%)";
-    String HIGH_GAS = "High Gas (>50%)";
+    String HIGH_GAS = "High Gas (>=50%)";
 
     // ผลลัพธ์
     String RESULT_TITLE = "Result:";
