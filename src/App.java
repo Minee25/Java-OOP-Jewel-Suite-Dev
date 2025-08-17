@@ -88,7 +88,7 @@ public class App extends JFrame {
     }
 
     private void repaintAll() {
-        // อัปเดต gui ของหน้าต่างหลัก ทั้งหมด //updateComponentTreeUI
+
         SwingUtilities.updateComponentTreeUI(this);
 
         if (btns != null) {
@@ -101,7 +101,7 @@ public class App extends JFrame {
             updateTextColorsForLightTheme();
         }
 
-        // สร้างgui ใหม่
+
         repaint();
     }
 
@@ -110,14 +110,14 @@ public class App extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(Settings.WIN_W, Settings.WIN_H);
         setLocationRelativeTo(null);
-        setResizable(true);//กำหนดการขยายหน้าจอ
+        setResizable(true);
         setUndecorated(Settings.WINDOW_MENU);
     }
 
 
     private void ui() {
         JPanel main = new JPanel(new BorderLayout());
-        // (padding)
+
         main.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         top(main);
@@ -190,10 +190,10 @@ public class App extends JFrame {
         p.add(top, BorderLayout.NORTH);
     }
 
-    // เซ็ตค่าต่างๆของพาแนลกลางๆ
+
     private void middle(JPanel p) {
         JPanel mid = new JPanel(new BorderLayout(15, 15));
-        mid.setBorder(new EmptyBorder(15, 0, 15, 0));//ใช้สร้างช่องว่าง EmptyBorder
+        mid.setBorder(new EmptyBorder(15, 0, 15, 0));
 
         left(mid);
         right(mid);
@@ -202,7 +202,7 @@ public class App extends JFrame {
     }
 
 
-    // setAlignmentX(Component.LEFT_ALIGNMENT) บังคับอยู่ชิดซ้าย
+
 
     private void left(JPanel p) {
         JPanel left = new JPanel();
