@@ -40,6 +40,7 @@ public class FileData extends JFrame {
             int maxCols = 0;
             for (String line : lines) {
                 String[] values = line.split("\\s+");
+
                 maxCols = Math.max(maxCols, values.length); // หาคอลัมมากสุดมาใช้สำหรับคำนวณ
             }
 
@@ -55,34 +56,42 @@ public class FileData extends JFrame {
                     try {
                         String value = values[c].trim();
                         if (value.isEmpty()) {
-                            data[r][c] = Double.NaN; 
+                            data[r][c] = Double.NaN;
                             invalidCount++;
                         } else {
                             double parsedValue = Double.parseDouble(value);
                             if (Double.isNaN(parsedValue) || Double.isInfinite(parsedValue)) {
-                                data[r][c] = Double.NaN; 
+                                data[r][c] = Double.NaN;
                                 invalidCount++;
-                                System.out.println("value at [" + r + "," + c + "]: '" + value
-                                        + "' -> set to NaN (invalid)");
+                                if (Settings.debugMode) {
+                                    System.out.println("value at [" + r + "," + c + "]: '" + value
+                                            + "' -> set to NaN (invalid)");
+                                }
+
                             } else {
                                 data[r][c] = parsedValue;
                             }
                         }
                     } catch (NumberFormatException e) {
-                        data[r][c] = Double.NaN; 
+                        data[r][c] = Double.NaN;
                         invalidCount++;
-                        System.out.println("data at [" + r + "," + c + "]: '" + values[c] + "' -> set to NaN (parse error)");
+                        if (Settings.debugMode) {
+                            System.out.println(
+                                    "data at [" + r + "," + c + "]: '" + values[c] + "' -> set to NaN (parse error)");
+                        }
+
                     }
                 }
 
                 for (int c = values.length; c < cols; c++) {
-                    data[r][c] = Double.NaN; 
+                    data[r][c] = Double.NaN;
                     invalidCount++;
                 }
             }
 
             if (invalidCount > 0) {
-                Display.showMessage(this, "Warning: Found ", invalidCount + " invalid values, marked as invalid (will show as gray)",
+                Display.showMessage(this, "Warning: Found ",
+                        invalidCount + " invalid values, marked as invalid (will show as gray)",
                         JOptionPane.WARNING_MESSAGE);
 
             }
@@ -126,7 +135,6 @@ public class FileData extends JFrame {
         if (isInvalidCell(r, c))
             return 0;
 
-
         double top = getTop(r, c);
         double bottom = getBottom(r, c);
         if (bottom <= 0)
@@ -144,14 +152,19 @@ public class FileData extends JFrame {
         return result;
     }
 
-    // หาเปอ
+    private void debugPer(String msg) {
+        if (Settings.debugMode) {
+            System.out.println(msg);
+        }
+    }
+
     public double getPercent(int r, int c) {
-        System.out.println("==== DEBUG getPercent() ====");
-        System.out.println("Row=" + r + ", Col=" + c);
+        debugPer("==== DEBUG getPercent() ====");
+        debugPer("Row=" + r + ", Col=" + c);
 
         if (isInvalidCell(r, c)) {
-            System.out.println("Invalid cell - returning NaN");
-            System.out.println("============================");
+            debugPer("Invalid cell - returning NaN");
+            debugPer("============================");
             return Double.NaN;
         }
 
@@ -159,15 +172,19 @@ public class FileData extends JFrame {
         double bottom = getBottom(r, c);
         if (bottom <= 0)
             return 0;
-        System.out.println("top=" + top + ", bottom=" + bottom);
+
+        debugPer("top=" + top + ", bottom=" + bottom);
 
         double total = bottom - top;
-        System.out.println("total=" + total);
+        debugPer("total=" + total);
+
         double gas = Math.max(0, Math.min(fluid, bottom) - top);
-        System.out.println("gas=" + gas);
+        debugPer("gas=" + gas);
+
         double result = gas / total;
-        System.out.println("result=" + result);
-        System.out.println("============================");
+        debugPer("result=" + result);
+        debugPer("============================");
+
         return result;
     }
 
@@ -191,7 +208,7 @@ public class FileData extends JFrame {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (!isInvalidCell(r, c)) { 
+                if (!isInvalidCell(r, c)) {
                     total += getVolume(r, c);
                 }
             }
@@ -286,14 +303,13 @@ public class FileData extends JFrame {
         int count = 0;
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (!isInvalidCell(r, c) && data[r][c] == 0.0) { 
+                if (!isInvalidCell(r, c) && data[r][c] == 0.0) {
                     count++;
                 }
             }
         }
         return count;
     }
-
 
     public int countInvalidCells() {
         int count = 0;
@@ -307,7 +323,6 @@ public class FileData extends JFrame {
         return count;
     }
 
-   
     public int countValidCells() {
         int count = 0;
         for (int r = 0; r < rows; r++) {

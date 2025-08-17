@@ -4,6 +4,8 @@ import static java.awt.Frame.*;
 // ตั้งค่า
 public interface Settings {
 
+
+    boolean debugMode = true;
     String DB = "src/db/settings.ini";
     // ธีม
     String CURRENT_THEME = "ARC_ORANGE";
