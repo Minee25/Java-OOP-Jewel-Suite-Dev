@@ -62,7 +62,7 @@ public class GridDisplay extends JPanel {
         int rows = data.getRowCount();
         int cols = data.getColumnCount();
 
-        // ไม่มีค่าก็สร้างช่องวว่าง
+
         if (rows == 0 || cols == 0) {
             grid.setLayout(new BorderLayout());
             JLabel empty = new JLabel(Settings.NO_DATA_MSG, SwingConstants.CENTER);
@@ -96,7 +96,7 @@ public class GridDisplay extends JPanel {
     }
 
     // สร้างเลขแสดงจำนวนแถวและคอลัม
-    // setForeground กำหนดสีตัวอักษร
+
     private JPanel addNumbers(JPanel mainGrid, int rows, int cols) {
         JPanel wrapper = new JPanel(new BorderLayout());
 
@@ -144,12 +144,16 @@ public class GridDisplay extends JPanel {
         cell.setBorder(normal);
         cell.setOpaque(true);
 
-        double pct = data.calculateGasPercentage(r, c) * 100;
         String txt;
-        if (Double.isNaN(pct) || Double.isInfinite(pct)) {
-            txt = "0%";
+        if (data.isInvalidCell(r, c)) {
+            txt = "?"; 
         } else {
-            txt = String.format("%.0f%%", pct);
+            double pct = data.calculateGasPercentage(r, c) * 100;
+            if (Double.isNaN(pct) || Double.isInfinite(pct)) {
+                txt = "0%";
+            } else {
+                txt = String.format("%.0f%%", pct);
+            }
         }
 
         JLabel lbl = new JLabel(txt, SwingConstants.CENTER);
@@ -222,6 +226,8 @@ public class GridDisplay extends JPanel {
     private Color getColor(int r, int c) {
         int level = data.getGasLevel(r, c);
 
+        if (level == -1) 
+            return Settings.COLOR_LIGHT_GRAY;
         if (level == 0)
             return Settings.COLOR_NO_GAS;
         if (level == 1)
@@ -234,6 +240,12 @@ public class GridDisplay extends JPanel {
     // DecimalFormat ไว่้ทำฟอแมชจำนวนเลขให้เข้าใจง่าย เช่น 1,000
     private String makeInfo(int r, int c) {
         int level = data.getGasLevel(r, c);
+        
+  
+        if (level == -1) {
+            return "Cell (" + r + "," + c + ") - Invalid Data | ?% | ? CB.M ";
+        }
+
         double pct = data.calculateGasPercentage(r, c) * 100;
         double vol = data.calculateGasVolume(r, c);
 
@@ -263,6 +275,14 @@ public class GridDisplay extends JPanel {
                 " | " + pctTxt + "% | " + volTxt + " CB.M ";
     }
     public void detailCell(int r, int c) {
+
+        if (data.isInvalidCell(r, c)) {
+            String info = String.format("Cell (%d,%d) has invalid data.", r, c);
+            Display.showMessage(this, "Invalid Cell", info, JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+
         double base = data.getBottomDepth(r, c);
         double top = data.getTopDepth(r, c);
         double presen = data.calculateGasPercentage(r, c) *100;
@@ -272,11 +292,9 @@ public class GridDisplay extends JPanel {
         String vlF = volFmt.format(volume);
 
         String info = String.format(Settings.INFO,
-                r+1, c+1, top, base, vlF, presen
+                r, c, top, base, vlF, presen
         );
         Display.showMessage(this, "DetailCell", info, JOptionPane.INFORMATION_MESSAGE);
-
-
     }
 
 

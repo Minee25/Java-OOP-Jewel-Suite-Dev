@@ -13,12 +13,13 @@ public class SummaryView extends JDialog {
     private int[] cellCounts;
     private double[] gasVolumes;
     private int totalCellCount;
+    private int invalidCellCount;
     private boolean isDarkTheme;
 
     private DecimalFormat numberFormatter;
 
     // สืบทอดมา
-    public SummaryView(JFrame owner, int[] countsPerLevel, double[] volumePerLevel, int totalCells) {
+    public SummaryView(JFrame owner, int[] countsPerLevel, double[] volumePerLevel, int totalCells, int invalidCells) {
         super(owner, Settings.SUMMARY_TITLE, true);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -27,6 +28,7 @@ public class SummaryView extends JDialog {
         this.cellCounts = countsPerLevel;
         this.gasVolumes = volumePerLevel;
         this.totalCellCount = totalCells;
+        this.invalidCellCount = invalidCells;
 
         this.isDarkTheme = isCurrentThemeDark();
 
@@ -68,7 +70,7 @@ public class SummaryView extends JDialog {
         setLocationRelativeTo(getOwner());
     }
 
-    // จำนวนทั้งหมด
+
     private double calculateTotalVolume() {
         double total = 0.0;
         for (double volume : gasVolumes) {
@@ -79,8 +81,8 @@ public class SummaryView extends JDialog {
 
     private int calculateTotalActiveCells() {
         int total = 0;
-        for (int count : cellCounts) {
-            total += count;
+        for (int i = 0; i < 3; i++) {
+            total += cellCounts[i];
         }
         return total;
     }
@@ -99,7 +101,7 @@ public class SummaryView extends JDialog {
     }
 
     private JPanel createSummaryCards(int totalActiveCells, double totalVolume) {
-        JPanel cardPanel = new JPanel(new GridLayout(1, 2, 12, 0));
+        JPanel cardPanel = new JPanel(new GridLayout(1, 3, 12, 0));
         cardPanel.setOpaque(false);
 
         JPanel cellCard = createInfoCard(Settings.SUMMARY_TOTAL_CELLS, String.valueOf(totalActiveCells));
@@ -107,8 +109,11 @@ public class SummaryView extends JDialog {
         String volumeText = numberFormatter.format(totalVolume) + Settings.SUMMARY_VOLUME_UNIT;
         JPanel volumeCard = createInfoCard(Settings.SUMMARY_TOTAL_VOLUME, volumeText);
 
+        JPanel invalidCard = createInfoCard("Invalid Cells", String.valueOf(invalidCellCount));
+
         cardPanel.add(cellCard);
         cardPanel.add(volumeCard);
+        cardPanel.add(invalidCard);
 
         return cardPanel;
     }
@@ -121,12 +126,12 @@ public class SummaryView extends JDialog {
         constraints.insets = new Insets(8, 8, 8, 8);
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        String[] gasTypeNames = { Settings.NO_GAS, Settings.LOW_GAS, Settings.HIGH_GAS };
-        Color[] gasTypeColors = { Settings.COLOR_NO_GAS, Settings.COLOR_LOW_GAS, Settings.COLOR_HIGH_GAS };
+        String[] gasTypeNames = { Settings.NO_GAS, Settings.LOW_GAS, Settings.HIGH_GAS, "Invalid Data" };
+        Color[] gasTypeColors = { Settings.COLOR_NO_GAS, Settings.COLOR_LOW_GAS, Settings.COLOR_HIGH_GAS, Settings.COLOR_LIGHT_GRAY };
 
         createTableHeader(tablePanel, constraints);
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             createTableDataRow(tablePanel, constraints, i + 1, gasTypeColors[i],
                     gasTypeNames[i], cellCounts[i], gasVolumes[i]);
         }
@@ -268,7 +273,7 @@ public class SummaryView extends JDialog {
         return colorDot;
     }
 
-    // หลอดโหลด ของแต่ละสี
+    // หลอดโหลด ของแต่ละสี JProgressBar
     private JProgressBar createPercentageBar(int percentage, Color color) {
         JProgressBar progressBar = new JProgressBar(0, 100);
         progressBar.setValue(Math.max(0, Math.min(100, percentage)));

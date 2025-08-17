@@ -78,8 +78,7 @@ public class Display {
         dlg.setVisible(true);
     }
 
-    // สร้างแต่ละคน
-    // setOpaque สีทึบไหม
+
     private static JPanel makePerson(String img, String name, String id, String job) {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -106,7 +105,7 @@ public class Display {
         } else {
             nameLbl.setForeground(Settings.LIGHT_TEXT_PRIMARY);
         }
-        // ข้อความตรงที่รูปโปร
+
         JLabel idLbl = new JLabel("Student ID: " + id, SwingConstants.CENTER);
         idLbl.setFont(new Font(Settings.FONT_NAME, Font.PLAIN, 14));
         idLbl.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -136,7 +135,7 @@ public class Display {
         return box;
     }
 
-    // ทำรูปโปรไฟล์
+
     private static JLabel getPic(String path) {
         try {
             ImageIcon icon = new ImageIcon(path);

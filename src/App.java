@@ -44,7 +44,7 @@ public class App extends JFrame {
         data = new FileData();
         setup();
         setVisible(true);
-        setExtendedState(Settings.FULL_S_W); // ขนาดจอตอนรันเสร็จ
+        setExtendedState(Settings.FULL_S_W); 
     }
 
     private void setup() {
@@ -69,9 +69,6 @@ public class App extends JFrame {
         }
     }
 
-    // เช็ตธีม จากlib UIManager.setLookAndFeel
-    // repaintAll(); สร้างใหม่ทั้งหมดเมื่อเช็ตธีมเสร็จ
-    // setForeground ไว้เช็ตสีตามธีม
     private void setLaf(String name) {
         try {
             if ("MONOKAI".equals(name)) {
@@ -104,11 +101,10 @@ public class App extends JFrame {
             updateTextColorsForLightTheme();
         }
 
-        // สร้างgui ใหม่ทั้งหมด เพื่ออัพเดท
+        // สร้างgui ใหม่
         repaint();
     }
 
-    // เอาไว้เซ็ตหน้าวินโดวหน้าหลัก
     private void window() {
         setTitle(Settings.APP_TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -118,10 +114,10 @@ public class App extends JFrame {
         setUndecorated(Settings.WINDOW_MENU);
     }
 
-    // สร้างโครงของui
+
     private void ui() {
         JPanel main = new JPanel(new BorderLayout());
-        // มีระยะห่าง ขอบด้านใน (padding)
+        // (padding)
         main.setBorder(new EmptyBorder(20, 20, 20, 20));
 
         top(main);
@@ -130,9 +126,7 @@ public class App extends JFrame {
         add(main);
     }
 
-    // เซ็ตค่าต่างๆของพาแนลบนๆ
-    // createHorizontalStrut() = เพิ่มช่องว่างแนวนอน
-    // createVerticalStrut() = เพิ่มช่องว่างแนวตั้ง
+
     private void top(JPanel p) {
         JPanel top = new JPanel(new BorderLayout());
         top.setBorder(new EmptyBorder(15, 20, 15, 20));
@@ -157,7 +151,7 @@ public class App extends JFrame {
         }
 
         JPanel titles = new JPanel();
-        // เลือกแนวตั้ง (Y_AXIS) เอามาวางเรียงลงด้านล่างทีละตัว
+
         titles.setLayout(new BoxLayout(titles, BoxLayout.Y_AXIS));
 
         titles.add(appTitleLabel);
@@ -207,7 +201,7 @@ public class App extends JFrame {
         p.add(mid, BorderLayout.CENTER);
     }
 
-    // ทำงานในส่วนpanelฝั่งด้านซ้าย
+
     // setAlignmentX(Component.LEFT_ALIGNMENT) บังคับอยู่ชิดซ้าย
 
     private void left(JPanel p) {
@@ -238,7 +232,7 @@ public class App extends JFrame {
         p.add(left, BorderLayout.WEST);
     }
 
-    //
+
     private JPanel inputPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -305,7 +299,7 @@ public class App extends JFrame {
         return box;
     }
 
-    // เซ็ตสีต่างๆและสีบอกระดับ
+
     private JPanel colorPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -337,7 +331,8 @@ public class App extends JFrame {
         JPanel highGasItem = createColorItem(Settings.HIGH_GAS, Settings.COLOR_HIGH_GAS);
         highGasLabel = getColorItemLabel(highGasItem);
         box.add(highGasItem);
-
+        box.add(Box.createVerticalStrut(5));
+      
         return box;
     }
 
@@ -366,7 +361,7 @@ public class App extends JFrame {
         return row;
     }
 
-    // ไว้แคชค่า
+
     private JLabel getColorItemLabel(JPanel colorItem) {
         for (int i = 0; i < colorItem.getComponentCount(); i++) {
             Component c = colorItem.getComponent(i);
@@ -377,7 +372,7 @@ public class App extends JFrame {
         return null;
     }
 
-    // จัดการส่งค่าของแก๊สทีได้มาไป...
+
     private JPanel resultPanel() {
         JPanel box = new JPanel();
         box.setLayout(new BoxLayout(box, BoxLayout.Y_AXIS));
@@ -547,7 +542,7 @@ public class App extends JFrame {
 
     }
 
-    // อัปเดตปุ่มเหมือนการรีเฟรชขึ้นมาใหม่รึป่าว
+
     private void updateBtns() {
         btns.removeAll();
 
@@ -578,7 +573,7 @@ public class App extends JFrame {
         btns.repaint();
     }
 
-    // อัปเดตค่าที่อยู่ตรงกลางมั้งนะ
+
     private void update() {
         double vol = data.calculateTotalGasVolume();
         DecimalFormat fmt = new DecimalFormat("#,##0.00");
@@ -655,7 +650,7 @@ public class App extends JFrame {
         }
     }
 
-    // สร้างปุ่มExit
+
     public void exitApp() {
         int result = JOptionPane.showConfirmDialog(this, Settings.EXIT_MSG, Settings.EXIT_TITLE,
                 JOptionPane.YES_NO_OPTION);
@@ -673,7 +668,7 @@ public class App extends JFrame {
         }
     }
 
-    // โลโก้โปรแกรม Image.SCALE_SMOOTH ไม่บีบขนาดมั้งนะ
+    //  Image.SCALE_SMOOTH ไม่บีบขนาดม
     private JLabel getIcon() {
         try {
             ImageIcon appIcon = new ImageIcon(Settings.APP_ICON_PATH);
@@ -685,7 +680,7 @@ public class App extends JFrame {
         }
     }
 
-    // เอาไว้ใช้ในการเปลี่ยนธีม
+
     public void changeTheme(JButton btn) {
         isDark = !isDark;
         if (isDark) {
@@ -800,7 +795,7 @@ public class App extends JFrame {
         }
     }
 
-    // หน้าโหลด
+
     private void showLoadingScreen() {
         JDialog loading = new JDialog();
         loading.setTitle("Loading...");
@@ -835,7 +830,7 @@ public class App extends JFrame {
         loading.setVisible(true);
 
         try {
-            Thread.sleep(2000); // waitรอ 2วิ
+            Thread.sleep(2000); // wait
             loading.dispose();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -843,7 +838,7 @@ public class App extends JFrame {
     }
 
     // ====== db ====== //
-    // บันทึกฐานข้อมูล และดึงค่าจากฐานข้อมมูล ini
+
     private void saveSettings(String theme) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
             bw.write("THEME=" + theme);
@@ -882,7 +877,7 @@ public class App extends JFrame {
         saveSettings(themeToSave);
     }
 
-    // โชว์ค่าเแลี่ยและผมรามต่างๆน่าจะใช่แหละ
+
     public void showSummary() {
         if (data == null || data.getRows() <= 0 || data.getCols() <= 0) {
             JOptionPane.showMessageDialog(this, Settings.LOAD_FIRST_MSG);
@@ -892,21 +887,28 @@ public class App extends JFrame {
         int rows = data.getRows();
         int cols = data.getCols();
         int total = rows * cols;
+        int invalidCells = 0;
 
-        int[] n = new int[3];
-        double[] vol = new double[3];
+        int[] n = new int[4]; 
+        double[] vol = new double[4];
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
                 int lv = data.getLevel(r, c);
-                if (lv < 0 || lv > 2)
-                    lv = 0;
-                n[lv]++;
-                vol[lv] += data.getVolume(r, c);
+                if (lv == -1) { 
+                    n[3]++;
+                    invalidCells++;
+                } else if (lv >= 0 && lv <= 2) {
+                    n[lv]++;
+                    vol[lv] += data.getVolume(r, c);
+                } else {
+                    n[0]++;
+                    vol[0] += data.getVolume(r, c);
+                }
             }
         }
 
-        new SummaryView(this, n, vol, total).setVisible(true);
+        new SummaryView(this, n, vol, total, invalidCells).setVisible(true);
     }
 
 }
